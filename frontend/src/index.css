@@ -1,1 +1,30 @@
 @import "tailwindcss";
+
+@theme {
+  --color-steel: #EDF0F2;
+  --color-paper: #FFFFFF;
+  --color-ink: #141A21;
+  --color-slate: #5B6570;
+  --color-blueprint: #1E5EA8;
+  --color-blueprint-light: #4A8BC2;
+  --color-ignition: #FF5A1F;
+
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+body {
+  background-color: var(--color-steel);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+}
+
+
+@keyframes grid-pan {
+  from { background-position: 0 0; }
+  to { background-position: 40px 40px; }
+}
+.animate-grid-pan {
+  animation: grid-pan 6s linear infinite;
+}

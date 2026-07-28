@@ -1,44 +1,50 @@
 import { Link } from 'react-router-dom'
-import { FaPhoneAlt, FaWhatsapp } from 'react-icons/fa'
+import { FaWhatsapp } from 'react-icons/fa'
 
 function Navbar() {
   return (
-    <header className="bg-white shadow-md sticky top-0 z-50">
-      {/* Top bar */}
-      <div className="bg-gray-900 text-gray-200 text-sm">
-        <div className="max-w-7xl mx-auto flex justify-between items-center px-4 py-2">
-          <span>Wholesale Auto Parts Supplier — Pakistan</span>
-          <div className="flex gap-4">
-            <a href="tel:+92XXXXXXXXXX" className="flex items-center gap-1 hover:text-white">
-              <FaPhoneAlt /> +92-XXX-XXXXXXX
-            </a>
-            <a href="https://wa.me/92XXXXXXXXXX" className="flex items-center gap-1 hover:text-white">
-              <FaWhatsapp /> WhatsApp
-            </a>
-          </div>
-        </div>
-      </div>
-
-      {/* Main nav */}
-      <div className="max-w-7xl mx-auto flex justify-between items-center px-4 py-4">
-        <Link to="/" className="text-2xl font-bold text-blue-700">
-          AutoParts<span className="text-gray-800">PK</span>
+    <header className="sticky top-0 z-50 bg-paper/90 backdrop-blur-md border-b border-ink/10">
+      <div className="max-w-7xl mx-auto flex justify-between items-center px-6 md:px-10 py-4">
+        <Link to="/" className="font-display font-semibold text-xl text-ink">
+          AutoParts<span className="text-blueprint">PK</span>
         </Link>
 
-        <nav className="hidden md:flex gap-8 font-medium text-gray-700">
-          <Link to="/" className="hover:text-blue-700">Home</Link>
-          <Link to="/products" className="hover:text-blue-700">Products</Link>
-          <Link to="/wholesale" className="hover:text-blue-700">Wholesale</Link>
-          <Link to="/about" className="hover:text-blue-700">About</Link>
-          <Link to="/contact" className="hover:text-blue-700">Contact</Link>
+        <nav className="hidden md:flex gap-8 font-body text-sm font-medium text-ink/80">
+          <Link to="/" className="hover:text-blueprint transition-colors">
+            Home
+          </Link>
+          <Link to="/products" className="hover:text-blueprint transition-colors">
+            Products
+          </Link>
+          <Link to="/wholesale" className="hover:text-blueprint transition-colors">
+            Wholesale
+          </Link>
+          <Link to="/about" className="hover:text-blueprint transition-colors">
+            About
+          </Link>
+          <Link to="/contact" className="hover:text-blueprint transition-colors">
+            Contact
+          </Link>
         </nav>
 
-        <Link
-          to="/wholesale"
-          className="bg-blue-700 text-white px-5 py-2 rounded-lg hover:bg-blue-800 transition"
-        >
-          Get Wholesale Quote
-        </Link>
+        <div className="flex items-center gap-3">
+          <a
+            href="https://wa.me/92XXXXXXXXXX"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden sm:flex items-center gap-2 text-sm font-mono text-slate hover:text-blueprint transition-colors"
+          >
+            <FaWhatsapp />
+            +92-XXX-XXXXXXX
+          </a>
+
+          <Link
+            to="/wholesale"
+            className="bg-ink text-paper text-sm font-medium px-5 py-2.5 rounded-md hover:bg-blueprint transition-colors"
+          >
+            Get Quote
+          </Link>
+        </div>
       </div>
     </header>
   )
