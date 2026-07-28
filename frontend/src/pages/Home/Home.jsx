@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import Hero from '../../components/home/Hero'
 import Reveal from '../../components/common/Reveal'
+import BrandMarquee from '../../components/home/BrandMarquee'
 import {
   FaCogs, FaCarSide, FaBolt, FaCar,
   FaCompactDisc, FaFilter, FaLightbulb, FaTools, FaCheckCircle,
@@ -10,6 +11,15 @@ function Home() {
   return (
     <div>
       <Hero />
+<BrandMarquee />
+<div><br /></div>
+ {/* Center blueprint transition pill */}
+        <div className="flex justify-center -translate-y-1/2">
+          <div className="bg-steel/90 backdrop-blur-sm border border-ink/10 px-4 py-1 rounded-full flex items-center gap-2 text-[10px] font-mono text-slate tracking-widest uppercase shadow-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-blueprint animate-pulse" />
+            <span>EXPLORE CATEGORIES</span>
+          </div>
+        </div>
 {/* Categories */}
       <section className="relative bg-steel py-20 overflow-hidden">
         <div

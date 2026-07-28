@@ -501,13 +501,7 @@ function Hero() {
         {/* Soft gradient divider line */}
         <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-blueprint/35 to-transparent" />
 
-        {/* Center blueprint transition pill */}
-        <div className="flex justify-center -translate-y-1/2">
-          <div className="bg-steel/90 backdrop-blur-sm border border-ink/10 px-4 py-1 rounded-full flex items-center gap-2 text-[10px] font-mono text-slate tracking-widest uppercase shadow-sm">
-            <span className="w-1.5 h-1.5 rounded-full bg-blueprint animate-pulse" />
-            <span>EXPLORE CATEGORIES</span>
-          </div>
-        </div>
+       
       </div>
     </section>
   )
