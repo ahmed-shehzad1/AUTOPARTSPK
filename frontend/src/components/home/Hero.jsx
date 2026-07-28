@@ -49,72 +49,168 @@ function Hero() {
           </Link>
         </div>
 
-        {/* Blueprint car — draws itself in once on load */}
-        <div className="mt-16 md:mt-6 md:absolute md:right-0 md:top-1/2 md:-translate-y-1/2 md:w-[46%] w-full">
-          <svg
-            viewBox="0 0 800 300"
-            className="w-full h-auto"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            {/* Car body */}
-            <path
-              d="M50,180 L50,150 C50,140 60,130 75,128 L150,110 C180,80 220,58 260,58 L420,58 C460,58 490,80 510,110 L580,128 C610,130 640,140 650,150 L720,155 C740,155 750,165 750,180 L750,190 L50,190 Z"
-              stroke="var(--color-blueprint)"
-              strokeWidth="2.5"
-              strokeDasharray="3200"
-              strokeDashoffset={drawn ? 0 : 3200}
-              style={{ transition: 'stroke-dashoffset 2.4s ease' }}
+      {/* Blueprint car — draws itself in once on load */}
+<div className="mt-16 md:mt-6 md:absolute md:right-0 md:top-1/2 md:-translate-y-1/2 md:w-[46%] w-full">
+  <svg
+    viewBox="0 0 800 300"
+    className="w-full h-auto"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    {/* Ground shadow */}
+    <ellipse
+      cx="400" cy="232" rx="330" ry="10"
+      fill="var(--color-ink)"
+      opacity={drawn ? 0.08 : 0}
+      style={{ transition: 'opacity 0.8s ease 2.6s' }}
+    />
+
+    {/* Speed lines */}
+    {[142, 152, 162].map((y, i) => (
+      <line
+        key={y}
+        x1="10" y1={y} x2="42" y2={y}
+        stroke="var(--color-blueprint-light)"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        className={drawn ? 'speed-line' : ''}
+        style={{ animationDelay: `${3.2 + i * 0.25}s`, opacity: 0 }}
+      />
+    ))}
+
+    {/* Body */}
+    <path
+      d="M50,180 L50,150 C50,140 60,130 75,128 L150,110 C180,80 220,58 260,58 L420,58 C460,58 490,80 510,110 L580,128 C610,130 640,140 650,150 L720,155 C740,155 750,165 750,180 L750,190 L50,190 Z"
+      stroke="var(--color-blueprint)"
+      strokeWidth="2.5"
+      strokeDasharray="3200"
+      strokeDashoffset={drawn ? 0 : 3200}
+      style={{ transition: 'stroke-dashoffset 2.2s ease' }}
+    />
+
+    {/* Window / cabin glass */}
+    <path
+      d="M170,108 C196,86 226,66 260,64 L420,64 C456,66 486,86 508,108 Z"
+      fill="var(--color-blueprint-light)"
+      fillOpacity={drawn ? 0.16 : 0}
+      stroke="var(--color-blueprint)"
+      strokeWidth="1.5"
+      strokeDasharray="500"
+      strokeDashoffset={drawn ? 0 : 500}
+      style={{ transition: 'stroke-dashoffset 1s ease 1.5s, fill-opacity 1s ease 2s' }}
+    />
+    {/* B-pillar / door seam */}
+    <line
+      x1="340" y1="66" x2="340" y2="180"
+      stroke="var(--color-blueprint)"
+      strokeWidth="1.5"
+      opacity={drawn ? 0.8 : 0}
+      style={{ transition: 'opacity 0.6s ease 1.9s' }}
+    />
+    {/* Door handle */}
+    <line
+      x1="290" y1="140" x2="312" y2="140"
+      stroke="var(--color-blueprint)"
+      strokeWidth="2"
+      opacity={drawn ? 0.8 : 0}
+      style={{ transition: 'opacity 0.5s ease 2.1s' }}
+    />
+    {/* Side mirror */}
+    <path
+      d="M165,102 L152,98 L155,110 Z"
+      fill="var(--color-blueprint)"
+      opacity={drawn ? 0.9 : 0}
+      style={{ transition: 'opacity 0.5s ease 2s' }}
+    />
+    {/* Grille lines */}
+    {[160, 168, 176].map((y) => (
+      <line
+        key={y}
+        x1="55" y1={y} x2="72" y2={y}
+        stroke="var(--color-blueprint)"
+        strokeWidth="1.5"
+        opacity={drawn ? 0.7 : 0}
+        style={{ transition: `opacity 0.5s ease ${2.1 + (y - 160) / 40}s` }}
+      />
+    ))}
+
+    {/* Headlight */}
+    <ellipse
+      cx="70" cy="150" rx="8" ry="5"
+      fill="var(--color-blueprint-light)"
+      className={drawn ? 'headlight-pulse' : ''}
+      opacity={drawn ? undefined : 0}
+      style={{ transition: 'opacity 0.4s ease 2.3s' }}
+    />
+    {/* Taillight */}
+    <ellipse
+      cx="735" cy="150" rx="8" ry="5"
+      fill="var(--color-ignition)"
+      opacity={drawn ? 0.9 : 0}
+      style={{ transition: 'opacity 0.4s ease 2.3s' }}
+    />
+
+    {/* Wheels */}
+    {[150, 600].map((cx, i) => (
+      <g key={cx}>
+        <circle
+          cx={cx} cy="190" r="35"
+          stroke="var(--color-blueprint)"
+          strokeWidth="2.5"
+          strokeDasharray="220"
+          strokeDashoffset={drawn ? 0 : 220}
+          style={{ transition: `stroke-dashoffset 1.2s ease ${1.6 + i * 0.2}s` }}
+        />
+        <circle
+          cx={cx} cy="190" r="16"
+          stroke="var(--color-blueprint-light)"
+          strokeWidth="1.5"
+          opacity={drawn ? 1 : 0}
+          style={{ transition: `opacity 0.6s ease ${2.4 + i * 0.2}s` }}
+        />
+        {/* Spokes */}
+        <g
+          className={drawn ? 'spoke-spin' : ''}
+          style={{ transformBox: 'fill-box', opacity: drawn ? 0.8 : 0, transition: `opacity 0.6s ease ${2.6 + i * 0.2}s` }}
+        >
+          {[0, 72, 144, 216, 288].map((angle) => (
+            <line
+              key={angle}
+              x1={cx} y1="190"
+              x2={cx + 15 * Math.cos((angle * Math.PI) / 180)}
+              y2={190 + 15 * Math.sin((angle * Math.PI) / 180)}
+              stroke="var(--color-blueprint-light)"
+              strokeWidth="1.5"
             />
-            {/* Wheels */}
-            {[150, 600].map((cx, i) => (
-              <g key={cx}>
-                <circle
-                  cx={cx}
-                  cy="190"
-                  r="35"
-                  stroke="var(--color-blueprint)"
-                  strokeWidth="2.5"
-                  strokeDasharray="220"
-                  strokeDashoffset={drawn ? 0 : 220}
-                  style={{ transition: `stroke-dashoffset 1.2s ease ${1.6 + i * 0.2}s` }}
-                />
-                <circle
-                  cx={cx}
-                  cy="190"
-                  r="16"
-                  stroke="var(--color-blueprint-light)"
-                  strokeWidth="1.5"
-                  opacity={drawn ? 1 : 0}
-                  style={{ transition: `opacity 0.6s ease ${2.4 + i * 0.2}s` }}
-                />
-              </g>
-            ))}
-            {/* Measurement ticks — engineering-drawing detail */}
-            <g
-              stroke="var(--color-slate)"
-              strokeWidth="1"
-              opacity={drawn ? 0.6 : 0}
-              style={{ transition: 'opacity 0.8s ease 2.8s' }}
-            >
-              <line x1="50" y1="230" x2="750" y2="230" strokeDasharray="4 4" />
-              <line x1="50" y1="220" x2="50" y2="240" />
-              <line x1="750" y1="220" x2="750" y2="240" />
-            </g>
-            <text
-              x="400"
-              y="255"
-              textAnchor="middle"
-              fill="var(--color-slate)"
-              fontFamily="var(--font-mono)"
-              fontSize="13"
-              opacity={drawn ? 0.7 : 0}
-              style={{ transition: 'opacity 0.8s ease 3s' }}
-            >
-              FIG. 01 — CHASSIS REFERENCE
-            </text>
-          </svg>
-        </div>
+          ))}
+        </g>
+      </g>
+    ))}
+
+    {/* Measurement ticks */}
+    <g
+      stroke="var(--color-slate)"
+      strokeWidth="1"
+      opacity={drawn ? 0.6 : 0}
+      style={{ transition: 'opacity 0.8s ease 2.8s' }}
+    >
+      <line x1="50" y1="230" x2="750" y2="230" strokeDasharray="4 4" />
+      <line x1="50" y1="220" x2="50" y2="240" />
+      <line x1="750" y1="220" x2="750" y2="240" />
+    </g>
+    <text
+      x="400" y="255"
+      textAnchor="middle"
+      fill="var(--color-slate)"
+      fontFamily="var(--font-mono)"
+      fontSize="13"
+      opacity={drawn ? 0.7 : 0}
+      style={{ transition: 'opacity 0.8s ease 3s' }}
+    >
+      FIG. 01 — CHASSIS REFERENCE
+    </text>
+  </svg>
+</div>
       </div>
     </section>
   )

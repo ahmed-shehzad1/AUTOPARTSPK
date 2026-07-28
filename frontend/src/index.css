@@ -28,3 +28,29 @@ body {
 .animate-grid-pan {
   animation: grid-pan 6s linear infinite;
 }
+
+@keyframes spoke-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.spoke-spin {
+  animation: spoke-spin 4s linear infinite;
+  transform-origin: center;
+}
+
+@keyframes headlight-pulse {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+.headlight-pulse {
+  animation: headlight-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes speed-drift {
+  0% { opacity: 0; transform: translateX(14px); }
+  40% { opacity: 0.7; }
+  100% { opacity: 0; transform: translateX(-10px); }
+}
+.speed-line {
+  animation: speed-drift 1.8s ease-in-out infinite;
+}
