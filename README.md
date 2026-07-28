@@ -1,54 +1,53 @@
 <div align="center">
-  <!-- Replace the src below with a high-quality screen recording (GIF/WebP) of your animated hero -->
-  <a href="https://autopartspk.vercel.app/">
-    <img src="https://via.placeholder.com/1200x600/0f172a/38bdf8?text=[Insert+High-Res+Animation+GIF+Here]" alt="Hero Interface Live Preview" width="100%" />
-  </a>
-</div>
 
-<br />
+  <!-- Animated Live-Typing SVG Banner -->
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=22&pause=1000&color=38BDF8&center=true&vCenter=true&width=600&lines=Auto+Parts+E-Commerce+%26+Wholesale;Interactive+SVG+Blueprint+Engine;Retail+%2B+B2B+Trade+Platform" alt="Typing Banner" />
 
-<div align="center">
-  <h1>Wholesale Auto Parts — Hero Interface</h1>
+  <h1>Auto Parts E-Commerce & Wholesale Platform</h1>
+
   <p>
-    <b>A high-performance, SVG-driven React component featuring mathematically synchronized path morphing and orchestrated rendering.</b>
+    <b>A unified digital distribution platform engineered for retail auto parts buyers and B2B wholesale trade.</b>
   </p>
-  
+
+  <!-- Visual Shields & Tech Stack Badges -->
   <p>
-    <a href="#architecture">Architecture</a> • 
-    <a href="#features">Features</a> • 
-    <a href="#deployment">Deployment</a>
+    <img src="https://img.shields.io/badge/Status-Work_In_Progress-38bdf8?style=for-the-badge&labelColor=0f172a" alt="Status: WIP" />
+    <img src="https://img.shields.io/badge/Frontend-React_18_%7C_Vite-0f172a?style=for-the-badge&logo=react&logoColor=38bdf8" alt="Frontend" />
+    <img src="https://img.shields.io/badge/Styling-Tailwind_CSS-0f172a?style=for-the-badge&logo=tailwindcss&logoColor=38bdf8" alt="Tailwind CSS" />
+    <img src="https://img.shields.io/badge/Backend-Node.js-0f172a?style=for-the-badge&logo=nodedotjs&logoColor=38bdf8" alt="Backend" />
   </p>
+
 </div>
 
 ⸻
 
-### ◈ Overview
+### ◈ What Is This Platform?
 
-This component serves as the landing interface for a nationwide auto parts distributor. Instead of relying on heavy JavaScript animation libraries (like GSAP or Framer Motion), the chassis morphing relies entirely on native CSS transitions applied directly to SVG paths. 
+This application is a full-stack e-commerce and inventory ecosystem built specifically for automotive spare parts distribution. It bridges the gap between individual B2C retail customers and high-volume B2B wholesale buyers (mechanics, workshops, and trade dealers).
 
-This requires strict normalization of SVG coordinates—ensuring an identical number of vector nodes across the Sedan, Supercar, and Executive specifications—resulting in a perfectly fluid, 60fps hardware-accelerated morph.
-
-### ⬡ Technical Features
-
-* **Synchronized Path Morphing:** CSS `transition: d` handles the complex vector interpolation between vehicle classes.
-* **Orchestrated Render Sequence:** Utilizes delayed `stroke-dashoffset` and `opacity` properties to simulate a live "drawing" blueprint effect upon initial mount.
-* **Independent Telemetry Tracking:** Callouts and rotating wheel groups maintain their own transform origins and transitions without breaking the primary chassis morph.
-* **Responsive Layout:** Built with Tailwind CSS grids to maintain proper scaling and aspect ratios across desktop and mobile viewports.
+Instead of relying on standard static product landing pages, the platform features a **custom hardware-accelerated SVG blueprint engine** on the hero section that dynamically renders and morphs vehicle chassis geometries using native CSS path vector interpolation.
 
 ⸻
 
-### ◈ Component Architecture
+### ⬡ Key System Capabilities
 
-The interface is broken down into two primary visual columns: the typographical content and the live SVG canvas.
+* **Dual-Market Pricing Engine:** Automatically switches product pricing based on account status—offering standard retail rates or verified wholesale trade discounts.
+* **Interactive Blueprint Engine:** Native vector SVG morphing (`transition: d`) that dynamically transitions chassis geometries across vehicle classes (Sedan, Supercar, Executive).
+* **Search & Categorization:** Deep filtering across engine, suspension, electrical, and body components by vehicle make, model, year, and OEM part numbers.
+* **Triple-Layer Monorepo Architecture:** Clean code separation across client storefront (`frontend`), REST API backend (`backend`), and administrative panel (`admin`).
 
-```javascript
-// Example of the normalized vector data structure
-const CARS = [
-  {
-    id: 'supercar',
-    figBadge: 'FIG. 02 — PERFORMANCE SPECIFICATION',
-    bodyPath: 'M 120,322 L 115,302 C 120,288 ... Z', // Normalized to exactly match other vehicle arrays
-    wheels: [250, 688]
-  }
-  // ...
-]
+⸻
+
+### ◈ Project Directory Structure
+
+```text
+├── admin/                  # Dedicated management portal for inventory & orders
+├── backend/                # Node.js API server & database services
+└── frontend/               # Client-facing web application
+    ├── public/             # Static vectors & iconography
+    └── src/
+        ├── components/     # UI modules (Hero blueprint, Cart, Common, Layout)
+        ├── context/        # Global state management (Cart, Auth)
+        ├── pages/          # Route views (Home, Products, Wholesale, Detail)
+        ├── routes/         # Centralized application routing
+        └── styles/         # Global Tailwind directives & SVG animations
