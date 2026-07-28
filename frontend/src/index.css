@@ -55,3 +55,7 @@ body {
   animation: speed-drift 1.8s ease-in-out infinite;
 }
 
+@keyframes card-underline {
+  from { width: 0%; }
+  to { width: 100%; }
+}
