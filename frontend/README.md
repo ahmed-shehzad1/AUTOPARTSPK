@@ -1,6 +1,6 @@
 <div align="center">
   <!-- Replace the src below with a high-quality screen recording (GIF/WebP) of your animated hero -->
-  <a href="">
+  <a href="https://autopartspk.vercel.app/">
     <img src="https://via.placeholder.com/1200x600/0f172a/38bdf8?text=[Insert+High-Res+Animation+GIF+Here]" alt="Hero Interface Live Preview" width="100%" />
   </a>
 </div>
