@@ -67,3 +67,11 @@ body {
 .brand-marquee-track {
   animation: brand-scroll 28s linear infinite;
 }
+
+@keyframes icon-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+.icon-float {
+  animation: icon-float 3.5s ease-in-out infinite;
+}

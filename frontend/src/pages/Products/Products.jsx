@@ -1,5 +1,6 @@
 ﻿import { useEffect, useMemo, useState } from 'react'
 import { FaSearch, FaChevronLeft, FaChevronRight } from 'react-icons/fa'
+import { Link, useSearchParams } from 'react-router-dom'
 import Reveal from '../../components/common/Reveal'
 import { PRODUCTS, CATEGORIES, MAKES_MODELS } from '../../data/products'
 
@@ -18,11 +19,18 @@ const CONDITION_STRIPE = {
 }
 
 function Products() {
-  const [activeCategory, setActiveCategory] = useState('All')
+  const [searchParams] = useSearchParams()
+  const initialCategory = searchParams.get('category') || 'All'
+  const [activeCategory, setActiveCategory] = useState(initialCategory)
   const [activeMake, setActiveMake] = useState('All')
   const [activeModel, setActiveModel] = useState('All')
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
+
+  // Synchronize category state whenever URL search parameters change
+  useEffect(() => {
+    setActiveCategory(searchParams.get('category') || 'All')
+  }, [searchParams])
 
   const modelOptions = activeMake === 'All' ? [] : MAKES_MODELS[activeMake]
 
@@ -106,11 +114,16 @@ function Products() {
             <label className="text-xs font-body text-slate block mb-1">Make</label>
             <select
               value={activeMake}
-              onChange={(e) => { setActiveMake(e.target.value); setActiveModel('All') }}
+              onChange={(e) => {
+                setActiveMake(e.target.value)
+                setActiveModel('All')
+              }}
               className="w-full bg-steel border border-ink/10 rounded-md px-3 py-2 text-sm font-body text-ink mb-3 focus:outline-none focus:border-blueprint"
             >
               <option>All</option>
-              {Object.keys(MAKES_MODELS).map((m) => <option key={m}>{m}</option>)}
+              {Object.keys(MAKES_MODELS).map((m) => (
+                <option key={m}>{m}</option>
+              ))}
             </select>
 
             <label className="text-xs font-body text-slate block mb-1">Model</label>
@@ -121,7 +134,9 @@ function Products() {
               className="w-full bg-steel border border-ink/10 rounded-md px-3 py-2 text-sm font-body text-ink disabled:opacity-40 focus:outline-none focus:border-blueprint"
             >
               <option>All</option>
-              {modelOptions.map((m) => <option key={m}>{m}</option>)}
+              {modelOptions.map((m) => (
+                <option key={m}>{m}</option>
+              ))}
             </select>
           </div>
         </aside>
@@ -133,7 +148,9 @@ function Products() {
               {filtered.length.toLocaleString()} {filtered.length === 1 ? 'result' : 'results'}
             </span>
             {filtered.length > 0 && (
-              <span className="font-mono text-xs text-slate/40">Page {page} of {totalPages}</span>
+              <span className="font-mono text-xs text-slate/40">
+                Page {page} of {totalPages}
+              </span>
             )}
           </div>
 
@@ -146,20 +163,25 @@ function Products() {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {pageItems.map((p, i) => (
                   <Reveal key={p.id} delay={(i % 6) * 0.05}>
-                    <div className="group relative bg-paper border border-ink/10 rounded-lg overflow-hidden hover:border-blueprint hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 h-full flex flex-col">
-                      {/* Condition-coded accent stripe */}
+                    <Link
+                      to={`/products/${p.id}`}
+                      className="group relative block bg-paper border border-ink/10 rounded-lg overflow-hidden hover:border-blueprint hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 h-full flex flex-col"
+                    >
                       <span className={`absolute top-0 left-0 right-0 h-[3px] ${CONDITION_STRIPE[p.condition]}`} />
 
                       {[
                         'top-3 left-2 border-t border-l',
                         'top-3 right-2 border-t border-r',
                       ].map((pos) => (
-                        <span key={pos} className={`absolute ${pos} w-3 h-3 border-blueprint opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10`} />
+                        <span
+                          key={pos}
+                          className={`absolute ${pos} w-3 h-3 border-blueprint opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10`}
+                        />
                       ))}
 
-                      {p.imageUrl && (
+                      {p.images && p.images.length > 0 && (
                         <div className="h-36 bg-steel border-b border-ink/10">
-                          <img src={p.imageUrl} alt={p.name} className="w-full h-full object-cover" />
+                          <img src={p.images[0]} alt={p.name} className="w-full h-full object-cover" />
                         </div>
                       )}
 
@@ -197,7 +219,7 @@ function Products() {
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </Link>
                   </Reveal>
                 ))}
               </div>
@@ -211,7 +233,9 @@ function Products() {
                   >
                     <FaChevronLeft size={12} />
                   </button>
-                  <span className="font-mono text-xs text-slate/60 px-4">{page} / {totalPages}</span>
+                  <span className="font-mono text-xs text-slate/60 px-4">
+                    {page} / {totalPages}
+                  </span>
                   <button
                     onClick={() => setPage((v) => Math.min(totalPages, v + 1))}
                     disabled={page === totalPages}

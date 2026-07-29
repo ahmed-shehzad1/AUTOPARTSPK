@@ -59,29 +59,53 @@ function Home() {
               { name: 'Accessories', code: 'CAT-ACC', icon: FaTools },
             ].map(({ name, code, icon: Icon }, i) => (
               <Reveal key={name} delay={i * 0.06}>
-                <div className="group relative bg-paper border border-ink/10 rounded-lg p-6 text-center hover:-translate-y-1 hover:shadow-lg transition-all duration-300 cursor-pointer h-full overflow-hidden">
-                  {/* Corner registration brackets, appear on hover */}
-                  {[
-                    'top-2 left-2 border-t border-l',
-                    'top-2 right-2 border-t border-r',
-                    'bottom-2 left-2 border-b border-l',
-                    'bottom-2 right-2 border-b border-r',
-                  ].map((pos) => (
-                    <span
-                      key={pos}
-                      className={`absolute ${pos} w-3 h-3 border-blueprint opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
-                    />
-                  ))}
+  <Link
+    to={`/products?category=${encodeURIComponent(name)}`}
+    onMouseMove={(e) => {
+      const rect = e.currentTarget.getBoundingClientRect()
+      const x = ((e.clientX - rect.left) / rect.width - 0.5) * 14
+      const y = ((e.clientY - rect.top) / rect.height - 0.5) * 14
+      e.currentTarget.style.setProperty('--px', `${x}px`)
+      e.currentTarget.style.setProperty('--py', `${y}px`)
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.setProperty('--px', '0px')
+      e.currentTarget.style.setProperty('--py', '0px')
+    }}
+    className="group relative block bg-paper border border-ink/10 rounded-lg p-6 text-center hover:-translate-y-1 hover:shadow-lg transition-all duration-300 cursor-pointer h-full overflow-hidden"
+  >
+    {/* Corner registration brackets */}
+    {[
+      'top-2 left-2 border-t border-l',
+      'top-2 right-2 border-t border-r',
+      'bottom-2 left-2 border-b border-l',
+      'bottom-2 right-2 border-b border-r',
+    ].map((pos) => (
+      <span
+        key={pos}
+        className={`absolute ${pos} w-3 h-3 border-blueprint opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
+      />
+    ))}
 
-                  <div className="h-14 w-14 mx-auto flex items-center justify-center rounded-full border border-dashed border-blueprint-light/40 group-hover:border-blueprint group-hover:bg-blueprint transition-colors duration-300 mb-4">
-                    <Icon className="text-blueprint group-hover:text-paper transition-colors duration-300 text-xl" />
-                  </div>
-                  <p className="font-body font-medium text-ink text-sm mb-1">{name}</p>
-                  <p className="font-mono text-[10px] tracking-widest text-slate/60 uppercase">{code}</p>
+    {/* Oversized background icon — idle float + hover parallax drift */}
+    <Icon
+      className="icon-float absolute -bottom-3 -right-3 text-blueprint-light/10 group-hover:text-blueprint-light/20 transition-colors duration-300 pointer-events-none"
+      style={{
+        fontSize: '84px',
+        transform: 'translate(var(--px, 0px), var(--py, 0px))',
+        transition: 'transform 0.15s ease-out, color 0.3s ease',
+      }}
+    />
 
-                  <span className="absolute bottom-0 left-0 h-[2px] bg-blueprint w-0 group-hover:w-full transition-all duration-500" />
-                </div>
-              </Reveal>
+    <div className="relative h-14 w-14 mx-auto flex items-center justify-center rounded-full border border-dashed border-blueprint-light/40 group-hover:border-blueprint group-hover:bg-blueprint transition-colors duration-300 mb-4">
+      <Icon className="text-blueprint group-hover:text-paper transition-colors duration-300 text-xl" />
+    </div>
+    <p className="relative font-body font-medium text-ink text-sm mb-1">{name}</p>
+    <p className="relative font-mono text-[10px] tracking-widest text-slate/60 uppercase">{code}</p>
+
+    <span className="absolute bottom-0 left-0 h-[2px] bg-blueprint w-0 group-hover:w-full transition-all duration-500" />
+  </Link>
+</Reveal>
             ))}
           </div>
         </div>

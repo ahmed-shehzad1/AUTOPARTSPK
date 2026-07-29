@@ -4,6 +4,7 @@ import About from '../pages/About/About'
 import Products from '../pages/Products/Products'
 import Wholesale from '../pages/Wholesale/Wholesale'
 import Contact from '../pages/Contact/Contact'
+import ProductDetail from '../pages/ProductDetail/ProductDetail'
 
 function AppRoutes() {
   return (
