@@ -8,7 +8,11 @@ export const COMPANY = {
     { label: 'Sales', number: '0333 6466645', tel: '+923336466645', whatsapp: '923336466645' },
     { label: 'Support', number: '0333 6466647', tel: '+923336466647', whatsapp: '923336466647' },
   ],
-  address: null, // set to a string once confirmed — UI shows "Address coming soon" while null
+  address: 'Near Leghari Workshop, DHA Road',
+
+'Off Jampur Road',
+
+'Dera Ghazi Khan', // set to a string once confirmed — UI shows "Address coming soon" while null
   regionWholesale: 'South Punjab',
   regionRetail: 'Nationwide (Pakistan)',
   deliveryNote: 'Delivery charges apply on orders shipped outside South Punjab.',
