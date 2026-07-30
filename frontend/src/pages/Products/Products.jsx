@@ -19,17 +19,19 @@ const CONDITION_STRIPE = {
 }
 
 function Products() {
-  const [searchParams] = useSearchParams()
+    const [searchParams] = useSearchParams()
+  const [activeCategory, setActiveCategory] = useState(searchParams.get('category') || 'All')
+  const [activeMake, setActiveMake] = useState(searchParams.get('make') || 'All')
+  const [activeModel, setActiveModel] = useState(searchParams.get('model') || 'All')
   const initialCategory = searchParams.get('category') || 'All'
-  const [activeCategory, setActiveCategory] = useState(initialCategory)
-  const [activeMake, setActiveMake] = useState('All')
-  const [activeModel, setActiveModel] = useState('All')
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
 
   // Synchronize category state whenever URL search parameters change
-  useEffect(() => {
+   useEffect(() => {
     setActiveCategory(searchParams.get('category') || 'All')
+    setActiveMake(searchParams.get('make') || 'All')
+    setActiveModel(searchParams.get('model') || 'All')
   }, [searchParams])
 
   const modelOptions = activeMake === 'All' ? [] : MAKES_MODELS[activeMake]
