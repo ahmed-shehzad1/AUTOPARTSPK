@@ -16,7 +16,7 @@ function Navbar() {
     <header className="sticky top-0 z-50 bg-paper/90 backdrop-blur-md">
       <div className="max-w-7xl mx-auto flex justify-between items-center px-6 md:px-10 py-4 border-b border-ink/10">
         <Link to="/" className="font-display font-semibold text-xl text-ink" onClick={closeMobile}>
-          AutoParts<span className="text-blueprint">PK</span>
+          Al Madina <span className="text-blueprint">Autos</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-8 font-body text-sm font-medium text-ink/80">

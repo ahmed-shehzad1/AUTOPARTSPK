@@ -34,7 +34,7 @@ function Footer() {
             </span>
 
             <h3 className="font-display font-semibold text-xl text-paper mt-2 mb-3">
-              AutoParts<span className="text-blueprint-light">PK</span>
+              Al Madina <span className="text-blueprint-light">Autos</span>
             </h3>
 
             <p className="font-body text-sm text-steel/50 max-w-xs leading-relaxed">
@@ -108,7 +108,7 @@ function Footer() {
                   className="text-blueprint-light shrink-0"
                   size={12}
                 />
-                info@autopartspk.com
+                info@almadinaautos.com
               </li>
 
               <li className="flex items-center gap-3">
@@ -116,7 +116,7 @@ function Footer() {
                   className="text-blueprint-light shrink-0"
                   size={12}
                 />
-                Lahore, Pakistan
+                DG Khan, Pakistan
               </li>
             </ul>
           </div>
@@ -146,7 +146,7 @@ function Footer() {
         {/* Bottom */}
         <div className="pt-6 flex flex-col md:flex-row justify-between items-center gap-3 text-xs font-mono text-steel/40">
           <span>
-            © {new Date().getFullYear()} AUTOPARTSPK — ALL RIGHTS RESERVED
+            © {new Date().getFullYear()} Al Madina Autos — ALL RIGHTS RESERVED
           </span>
 
           <span className="text-steel/30">

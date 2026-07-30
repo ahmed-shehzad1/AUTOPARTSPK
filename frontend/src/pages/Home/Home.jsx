@@ -118,7 +118,7 @@ function Home() {
         <div className="max-w-7xl mx-auto px-6 md:px-10">
           <Reveal>
             <span className="font-mono text-xs tracking-widest text-blueprint uppercase">
-              Why AutoPartsPK
+              Why Al Madina Autos
             </span>
             <h2 className="font-display font-semibold text-2xl md:text-3xl text-ink mt-2 mb-12">
               Built for workshops and dealers
