@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FaWhatsapp, FaBars, FaTimes, FaChevronDown } from 'react-icons/fa'
 import { CATEGORY_MENU } from '../../data/categoryMenu'
+import { COMPANY } from '../../data/companyInfo'
 
 function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -29,13 +30,13 @@ function Navbar() {
 
         <div className="flex items-center gap-3">
           <a
-            href="https://wa.me/92XXXXXXXXXX"
+            href={`https://wa.me/${COMPANY.phones[0].whatsapp}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden sm:flex items-center gap-2 text-sm font-mono text-slate hover:text-blueprint transition-colors"
-          >
-            <FaWhatsapp /> +92-XXX-XXXXXXX
-          </a>
+             className="hidden sm:flex items-center gap-2 text-sm font-mono text-slate hover:text-blueprint transition-colors"
+>
+             <FaWhatsapp /> {COMPANY.phones[0].number}
+</a>
           <Link
             to="/wholesale"
             className="hidden sm:inline-block bg-ink text-paper text-sm font-medium px-5 py-2.5 rounded-md hover:bg-blueprint transition-colors"
@@ -94,13 +95,13 @@ function Navbar() {
           <Link to="/contact" onClick={closeMobile} className="py-3 border-b border-ink/5">Contact</Link>
 
           <a
-            href="https://wa.me/92XXXXXXXXXX"
+            href={`https://wa.me/${COMPANY.phones[0].whatsapp}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 py-4 font-mono text-sm text-blueprint"
+            className="flex items-center gap-2 font-mono text-sm text-slate"
           >
-            <FaWhatsapp /> +92-XXX-XXXXXXX
-          </a>
+            <FaWhatsapp className="text-blueprint" /> {COMPANY.phones[0].number}
+</a>
         </nav>
       </div>
     </header>

@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom'
+import { COMPANY } from '../../data/companyInfo'
 import {
   FaFacebook,
   FaInstagram,
   FaWhatsapp,
   FaPhoneAlt,
-  FaEnvelope,
   FaMapMarkerAlt,
 } from 'react-icons/fa'
 
@@ -94,31 +94,20 @@ function Footer() {
               Contact
             </h4>
 
-            <ul className="space-y-3 text-sm font-body">
-              <li className="flex items-center gap-3">
-                <FaPhoneAlt
-                  className="text-blueprint-light shrink-0"
-                  size={12}
-                />
-                +92-XXX-XXXXXXX
-              </li>
-
-              <li className="flex items-center gap-3">
-                <FaEnvelope
-                  className="text-blueprint-light shrink-0"
-                  size={12}
-                />
-                info@almadinaautos.com
-              </li>
-
-              <li className="flex items-center gap-3">
-                <FaMapMarkerAlt
-                  className="text-blueprint-light shrink-0"
-                  size={12}
-                />
-                DG Khan, Pakistan
-              </li>
-            </ul>
+          <ul className="space-y-3 text-sm font-body">
+  {COMPANY.phones.map((p) => (
+    <li key={p.number} className="flex items-center gap-3">
+      <FaPhoneAlt className="text-blueprint-light shrink-0" size={12} />
+      <a href={`tel:${p.tel}`} className="hover:text-paper transition-colors">
+        {p.number} <span className="text-steel/40">({p.label})</span>
+      </a>
+    </li>
+  ))}
+  <li className="flex items-center gap-3">
+    <FaMapMarkerAlt className="text-blueprint-light shrink-0" size={12} />
+    {COMPANY.address ?? <span className="italic text-steel/40">Address coming soon</span>}
+  </li>
+</ul>
           </div>
 
           {/* Social */}
