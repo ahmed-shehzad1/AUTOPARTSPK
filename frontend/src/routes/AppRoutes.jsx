@@ -14,6 +14,7 @@ function AppRoutes() {
       <Route path="/products" element={<Products />} />
       <Route path="/wholesale" element={<Wholesale />} />
       <Route path="/contact" element={<Contact />} />
+      <Route path="/products/:id" element={<ProductDetail />} />
     </Routes>
   )
 }
