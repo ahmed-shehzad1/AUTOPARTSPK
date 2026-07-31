@@ -14,13 +14,15 @@ function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-50 bg-paper/90 backdrop-blur-md">
-      <div className="max-w-7xl mx-auto flex justify-between items-center px-6 md:px-10 py-4 border-b border-ink/10">
-        <Link to="/" className="font-display font-semibold text-xl text-ink" onClick={closeMobile}>
-          Al Madina <span className="text-blueprint">Autos</span>
+    <header className="sticky top-0 z-50 bg-paper/80 backdrop-blur-xl border-b border-ink/10 shadow-sm transition-all">
+      <div className="max-w-7xl mx-auto flex justify-between items-center px-6 md:px-10 py-4">
+        {/* Logo */}
+        <Link to="/" className="font-display font-black text-2xl text-ink tracking-tight hover:opacity-80 transition-opacity" onClick={closeMobile}>
+          Al Madina <span className="text-transparent bg-clip-text bg-gradient-to-r from-blueprint to-blue-600">Autos</span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-8 font-body text-sm font-medium text-ink/80">
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center gap-8 font-body text-sm font-semibold text-slate">
           <Link to="/" className="hover:text-blueprint transition-colors">Home</Link>
           <Link to="/products" className="hover:text-blueprint transition-colors">Products</Link>
           <Link to="/wholesale" className="hover:text-blueprint transition-colors">Wholesale</Link>
@@ -28,80 +30,94 @@ function Navbar() {
           <Link to="/contact" className="hover:text-blueprint transition-colors">Contact</Link>
         </nav>
 
-        <div className="flex items-center gap-3">
+        {/* Right Actions */}
+        <div className="flex items-center gap-4">
           <a
             href={`https://wa.me/${COMPANY.phones[0].whatsapp}`}
             target="_blank"
             rel="noopener noreferrer"
-             className="hidden sm:flex items-center gap-2 text-sm font-mono text-slate hover:text-blueprint transition-colors"
->
-             <FaWhatsapp /> {COMPANY.phones[0].number}
-</a>
+            className="hidden sm:flex items-center gap-2 text-sm font-mono text-slate hover:text-emerald-600 transition-colors group font-semibold"
+          >
+            <FaWhatsapp className="text-lg text-emerald-500 group-hover:scale-110 transition-transform" /> 
+            {COMPANY.phones[0].number}
+          </a>
+          
           <Link
             to="/wholesale"
-            className="hidden sm:inline-block bg-ink text-paper text-sm font-medium px-5 py-2.5 rounded-md hover:bg-blueprint transition-colors"
+            className="hidden sm:flex items-center justify-center bg-gradient-to-r from-blueprint to-blue-600 text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:shadow-lg hover:shadow-blueprint/30 hover:-translate-y-0.5 transition-all duration-300"
           >
             Get Quote
           </Link>
 
-          {/* Mobile menu toggle */}
+          {/* Mobile menu toggle button */}
           <button
             onClick={() => setMobileOpen((v) => !v)}
-            className="md:hidden h-10 w-10 flex items-center justify-center rounded-md border border-ink/10 text-ink"
+            className="md:hidden h-10 w-10 flex items-center justify-center rounded-lg bg-steel/50 border border-ink/5 text-ink hover:bg-white hover:text-blueprint hover:shadow-sm transition-all"
             aria-label="Toggle menu"
           >
-            {mobileOpen ? <FaTimes /> : <FaBars />}
+            {mobileOpen ? <FaTimes size={18} /> : <FaBars size={18} />}
           </button>
         </div>
       </div>
 
       {/* Mobile menu panel */}
       <div
-        className={`md:hidden overflow-y-auto bg-paper border-b border-ink/10 transition-all duration-300 ${
-          mobileOpen ? 'max-h-[80vh]' : 'max-h-0'
+        className={`md:hidden overflow-y-auto bg-paper/95 backdrop-blur-xl border-b border-ink/10 transition-all duration-300 ease-in-out ${
+          mobileOpen ? 'max-h-[80vh] opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
-        <nav className="px-6 py-4 flex flex-col font-body text-sm text-ink/80">
-          <Link to="/" onClick={closeMobile} className="py-3 border-b border-ink/5">Home</Link>
-          <Link to="/products" onClick={closeMobile} className="py-3 border-b border-ink/5">Products</Link>
+        <nav className="px-6 py-4 flex flex-col font-body text-base font-medium text-ink">
+          <Link to="/" onClick={closeMobile} className="py-3.5 border-b border-ink/5 hover:text-blueprint transition-colors">Home</Link>
+          <Link to="/products" onClick={closeMobile} className="py-3.5 border-b border-ink/5 hover:text-blueprint transition-colors">Products</Link>
 
           {/* Shop by Category accordion */}
           <button
             onClick={() => setCatOpen((v) => !v)}
-            className="py-3 border-b border-ink/5 flex items-center justify-between text-left"
+            className="py-3.5 border-b border-ink/5 flex items-center justify-between text-left group hover:text-blueprint transition-colors"
           >
-            <span className="font-mono text-xs tracking-widest uppercase text-slate">
+            <span className="font-mono text-xs font-bold tracking-widest uppercase">
               Shop by Category
             </span>
-            <FaChevronDown size={10} className={`transition-transform ${catOpen ? 'rotate-180' : ''}`} />
+            <FaChevronDown size={12} className={`text-slate transition-transform duration-300 ${catOpen ? 'rotate-180 text-blueprint' : ''}`} />
           </button>
-          <div className={`overflow-hidden transition-all duration-300 ${catOpen ? 'max-h-96' : 'max-h-0'}`}>
-            <div className="flex flex-col pl-3">
+          
+          <div className={`overflow-hidden transition-all duration-300 ease-in-out bg-steel/20 rounded-b-lg ${catOpen ? 'max-h-[500px] mb-2' : 'max-h-0'}`}>
+            <div className="flex flex-col px-4 py-2">
               {CATEGORY_MENU.map((cat) => (
                 <Link
                   key={cat.name}
                   to={`/products?category=${encodeURIComponent(cat.name)}`}
                   onClick={closeMobile}
-                  className="py-2.5 font-mono text-xs text-slate hover:text-blueprint transition-colors"
+                  className="py-2.5 font-mono text-xs font-semibold text-slate hover:text-blueprint transition-colors"
                 >
-                  {cat.name}
+                  — {cat.name}
                 </Link>
               ))}
             </div>
           </div>
 
-          <Link to="/wholesale" onClick={closeMobile} className="py-3 border-b border-ink/5">Wholesale</Link>
-          <Link to="/about" onClick={closeMobile} className="py-3 border-b border-ink/5">About</Link>
-          <Link to="/contact" onClick={closeMobile} className="py-3 border-b border-ink/5">Contact</Link>
+          <Link to="/wholesale" onClick={closeMobile} className="py-3.5 border-b border-ink/5 hover:text-blueprint transition-colors">Wholesale</Link>
+          <Link to="/about" onClick={closeMobile} className="py-3.5 border-b border-ink/5 hover:text-blueprint transition-colors">About</Link>
+          <Link to="/contact" onClick={closeMobile} className="py-3.5 border-b border-ink/5 hover:text-blueprint transition-colors">Contact</Link>
 
-          <a
-            href={`https://wa.me/${COMPANY.phones[0].whatsapp}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 font-mono text-sm text-slate"
-          >
-            <FaWhatsapp className="text-blueprint" /> {COMPANY.phones[0].number}
-</a>
+          <div className="pt-6 pb-2 flex flex-col gap-4">
+            <a
+              href={`https://wa.me/${COMPANY.phones[0].whatsapp}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 font-mono font-bold text-sm text-ink bg-steel/50 py-3 rounded-lg hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
+            >
+              <FaWhatsapp className="text-emerald-500 text-lg" /> Chat on WhatsApp
+            </a>
+            
+            <Link 
+              to="/wholesale" 
+              onClick={closeMobile}
+              className="flex items-center justify-center bg-gradient-to-r from-blueprint to-blue-600 text-white font-semibold py-3 rounded-lg shadow-md shadow-blueprint/20"
+            >
+              Get a Quote
+            </Link>
+          </div>
         </nav>
       </div>
     </header>

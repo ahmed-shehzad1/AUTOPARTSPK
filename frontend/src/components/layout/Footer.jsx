@@ -12,11 +12,12 @@ function Footer() {
   return (
     <footer className="relative overflow-hidden bg-ink text-steel/80">
       {/* Fading top hairline */}
-      <div className="h-px w-full bg-gradient-to-r from-transparent via-blueprint-light/50 to-transparent" />
+      <div className="h-px w-full bg-gradient-to-r from-transparent via-blueprint/50 to-transparent" />
 
-      {/* Blueprint grid */}
+      {/* Background glow & Grid */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-blueprint/10 blur-[120px] pointer-events-none" />
       <div
-        className="absolute inset-0 opacity-[0.05]"
+        className="absolute inset-0 opacity-[0.03]"
         style={{
           backgroundImage:
             'linear-gradient(var(--color-blueprint-light) 1px, transparent 1px), linear-gradient(90deg, var(--color-blueprint-light) 1px, transparent 1px)',
@@ -24,20 +25,20 @@ function Footer() {
         }}
       />
 
-      <div className="relative max-w-7xl mx-auto px-6 md:px-10 pt-16 pb-10">
-        <div className="grid grid-cols-1 md:grid-cols-[1.3fr_1fr_1fr_1fr] gap-10 pb-12 border-b border-paper/10">
+      <div className="relative max-w-7xl mx-auto px-6 md:px-10 pt-20 pb-10">
+        <div className="grid grid-cols-1 md:grid-cols-[1.3fr_1fr_1fr_1fr] gap-12 pb-16 border-b border-white/5">
 
           {/* Brand */}
           <div>
-            <span className="font-mono text-xs tracking-widest text-blueprint-light uppercase">
+            <span className="font-mono text-[10px] font-bold tracking-widest text-blueprint uppercase bg-blueprint/10 px-2 py-1 rounded-md">
               Fig. 02 — Directory
             </span>
 
-            <h3 className="font-display font-semibold text-xl text-paper mt-2 mb-3">
-              Al Madina <span className="text-blueprint-light">Autos</span>
+            <h3 className="font-display font-black text-2xl text-white mt-5 mb-4 tracking-tight">
+              Al Madina <span className="text-transparent bg-clip-text bg-gradient-to-r from-blueprint to-blue-500">Autos</span>
             </h3>
 
-            <p className="font-body text-sm text-steel/50 max-w-xs leading-relaxed">
+            <p className="font-body text-sm text-steel/60 max-w-xs leading-relaxed">
               Genuine and aftermarket auto parts supplied at retail and wholesale
               scale across Pakistan.
             </p>
@@ -45,74 +46,59 @@ function Footer() {
 
           {/* Navigation */}
           <div>
-            <h4 className="font-mono text-xs tracking-widest uppercase text-steel/40 mb-4">
+            <h4 className="font-mono text-xs font-bold tracking-widest uppercase text-white/40 mb-6">
               Navigate
             </h4>
 
-            <ul className="space-y-3 text-sm font-body">
-              <li>
-                <Link
-                  to="/products"
-                  className="hover:text-blueprint-light transition-colors"
-                >
-                  Products
-                </Link>
-              </li>
-
-              <li>
-                <Link
-                  to="/wholesale"
-                  className="hover:text-blueprint-light transition-colors"
-                >
-                  Wholesale
-                </Link>
-              </li>
-
-              <li>
-                <Link
-                  to="/about"
-                  className="hover:text-blueprint-light transition-colors"
-                >
-                  About Us
-                </Link>
-              </li>
-
-              <li>
-                <Link
-                  to="/contact"
-                  className="hover:text-blueprint-light transition-colors"
-                >
-                  Contact
-                </Link>
-              </li>
+            <ul className="space-y-4 text-sm font-body font-medium">
+              {[
+                { name: 'Products', path: '/products' },
+                { name: 'Wholesale', path: '/wholesale' },
+                { name: 'About Us', path: '/about' },
+                { name: 'Contact', path: '/contact' }
+              ].map((link) => (
+                <li key={link.name}>
+                  <Link
+                    to={link.path}
+                    className="group flex items-center text-steel/70 hover:text-white transition-colors duration-300 inline-block"
+                  >
+                    <span className="w-0 h-[1px] bg-blueprint mr-0 group-hover:w-3 group-hover:mr-2 transition-all duration-300 ease-out" />
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Contact */}
           <div>
-            <h4 className="font-mono text-xs tracking-widest uppercase text-steel/40 mb-4">
+            <h4 className="font-mono text-xs font-bold tracking-widest uppercase text-white/40 mb-6">
               Contact
             </h4>
 
-          <ul className="space-y-3 text-sm font-body">
-  {COMPANY.phones.map((p) => (
-    <li key={p.number} className="flex items-center gap-3">
-      <FaPhoneAlt className="text-blueprint-light shrink-0" size={12} />
-      <a href={`tel:${p.tel}`} className="hover:text-paper transition-colors">
-        {p.number} <span className="text-steel/40">({p.label})</span>
-      </a>
-    </li>
-  ))}
-  <li className="flex items-center gap-3">
-    <FaMapMarkerAlt className="text-blueprint-light shrink-0" size={12} />
-    {COMPANY.address ?? <span className="italic text-steel/40">Address coming soon</span>}
-  </li>
-</ul>
+            <ul className="space-y-4 text-sm font-body font-medium text-steel/70">
+              {COMPANY.phones.map((p) => (
+                <li key={p.number}>
+                  <a href={`tel:${p.tel}`} className="group flex items-start gap-3 hover:text-white transition-colors duration-300">
+                    <FaPhoneAlt className="text-blueprint mt-1 shrink-0 group-hover:scale-110 transition-transform" size={12} />
+                    <span>
+                      {p.number} <span className="text-steel/40 block text-xs mt-0.5 uppercase tracking-wider">{p.label}</span>
+                    </span>
+                  </a>
+                </li>
+              ))}
+              <li className="flex items-start gap-3 pt-2">
+                <FaMapMarkerAlt className="text-blueprint mt-1 shrink-0" size={12} />
+                <span className="leading-relaxed">
+                  {COMPANY.address ?? <span className="italic text-steel/40">Address coming soon</span>}
+                </span>
+              </li>
+            </ul>
           </div>
 
           {/* Social */}
           <div>
-            <h4 className="font-mono text-xs tracking-widest uppercase text-steel/40 mb-4">
+            <h4 className="font-mono text-xs font-bold tracking-widest uppercase text-white/40 mb-6">
               Follow
             </h4>
 
@@ -123,9 +109,9 @@ function Footer() {
                   href="#"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="h-10 w-10 flex items-center justify-center rounded-md bg-paper/5 border border-paper/10 text-steel/60 hover:bg-blueprint-light hover:text-ink hover:border-blueprint-light transition-colors duration-300"
+                  className="h-11 w-11 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 text-steel/60 hover:bg-gradient-to-br hover:from-blueprint hover:to-blue-600 hover:text-white hover:border-transparent hover:shadow-lg hover:shadow-blueprint/20 hover:-translate-y-1 transition-all duration-300"
                 >
-                  <Icon size={15} />
+                  <Icon size={16} />
                 </a>
               ))}
             </div>
@@ -133,13 +119,14 @@ function Footer() {
         </div>
 
         {/* Bottom */}
-        <div className="pt-6 flex flex-col md:flex-row justify-between items-center gap-3 text-xs font-mono text-steel/40">
-          <span>
-            © {new Date().getFullYear()} Al Madina Autos — ALL RIGHTS RESERVED
+        <div className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-mono font-semibold">
+          <span className="text-steel/50">
+            © {new Date().getFullYear()} <span className="text-white/80">Al Madina Autos</span> — ALL RIGHTS RESERVED
           </span>
 
-          <span className="text-steel/30">
-            CATALOG REF: PAK-2026 · WHOLESALE &amp; RETAIL
+          <span className="flex items-center gap-2 text-steel/40 bg-white/5 px-3 py-1.5 rounded-full border border-white/5">
+            <span className="w-1.5 h-1.5 rounded-full bg-blueprint" />
+            CATALOG REF: PAK-2026
           </span>
         </div>
       </div>
