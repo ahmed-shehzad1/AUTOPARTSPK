@@ -1,5 +1,4 @@
 @import "tailwindcss";
-
 @theme {
   --color-steel: #EDF0F2;
   --color-paper: #FFFFFF;
@@ -8,12 +7,13 @@
   --color-blueprint: #1E5EA8;
   --color-blueprint-light: #4A8BC2;
   --color-ignition: #FF5A1F;
-
+  --color-volt: #0FBFA8;
+  --color-gold: #C9962B;
+  /* ...fonts unchanged... */
   --font-display: "Space Grotesk", sans-serif;
   --font-body: "Inter", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
 }
-
 body {
   background-color: var(--color-steel);
   color: var(--color-ink);
@@ -75,3 +75,14 @@ body {
 .icon-float {
   animation: icon-float 3.5s ease-in-out infinite;
 }
+
+@keyframes glow-drift {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(24px, 10px); }
+}
+@keyframes glow-drift-rev {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-28px, -8px); }
+}
+.animate-glow-drift { animation: glow-drift 15s ease-in-out infinite; }
+.animate-glow-drift-rev { animation: glow-drift-rev 18s ease-in-out infinite; }
