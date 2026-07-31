@@ -9,6 +9,10 @@ import {
   FaCogs, FaCarSide, FaBolt, FaCar, FaCompactDisc, FaFilter, FaLightbulb, FaTools,
   FaCheckCircle, FaSearch, FaArrowRight, FaShieldAlt, FaShippingFast,
 } from 'react-icons/fa'
+import HowItWorks from '../../components/home/HowItWorks'
+import AudienceTabs from '../../components/home/AudienceTabs'
+import Testimonials from '../../components/home/Testimonials'
+import AnimatedCounter from '../../components/common/AnimatedCounter'
 
 const CATEGORY_ICONS = {
   'Engine Parts': FaCogs,
@@ -164,6 +168,7 @@ function Home() {
           </div>
         </div>
       </section>
+    
 
       {/* Featured Products — same card language as the real Products page */}
       <section className="bg-paper py-20 border-y border-ink/10">
@@ -228,15 +233,18 @@ function Home() {
         </div>
       </section>
 
+        <HowItWorks />
+<AudienceTabs />
+
       {/* Stats strip */}
       <section className="bg-ink text-paper py-12">
         <div className="max-w-7xl mx-auto px-6 md:px-10 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           {SITE_STATS.map((stat, i) => (
             <Reveal key={stat.id} delay={i * 0.05}>
               <div>
-                <span className="font-display font-bold text-2xl md:text-3xl text-blueprint-light block mb-1">
-                  {stat.value}
-                </span>
+              <span className="font-display font-bold text-2xl md:text-3xl text-blueprint-light block mb-1">
+  <AnimatedCounter value={stat.value} />
+</span>
                 <span className="font-mono text-[11px] text-steel/70 uppercase tracking-wider">
                   {stat.label}
                 </span>
@@ -245,6 +253,8 @@ function Home() {
           ))}
         </div>
       </section>
+
+      <Testimonials />
 
       {/* Why choose us */}
       <section className="relative bg-paper py-20">
