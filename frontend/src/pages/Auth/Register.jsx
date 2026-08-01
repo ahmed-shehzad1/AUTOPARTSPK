@@ -4,7 +4,7 @@ import { toast } from 'sonner'
 import { GoogleLogin } from '@react-oauth/google'
 import { jwtDecode } from 'jwt-decode'
 import { FaEye, FaEyeSlash, FaWarehouse, FaUser } from 'react-icons/fa'
-import AuthVisual from '../../components/auth/AuthVisual'
+import AuthModalLeftPanel from '../../components/auth/AuthModalLeftPanel'
 import { useAuth } from '../../context/AuthContext'
 import { getRecaptchaToken } from '../../utils/recaptcha'
 import AuthModalLayout from '../../components/auth/AuthModalLayout'
@@ -56,7 +56,7 @@ function Register() {
   }
 
 return (
-  <AuthModalLayout visual={<AuthVisual />}>
+<AuthModalLayout visual={<AuthModalLeftPanel />}>
     <div className="w-full max-w-md mx-auto">
           <span className="font-mono text-xs tracking-widest text-blueprint uppercase">Create Account</span>
           <h1 className="font-display font-semibold text-2xl text-ink mt-2 mb-8">Join AutoPartsPK</h1>
