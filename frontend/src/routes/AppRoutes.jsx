@@ -17,6 +17,8 @@ function AppRoutes() {
       <Route path="/wholesale" element={<Wholesale />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/products/:id" element={<ProductDetail />} />
+      <Route path="/cart" element={<Cart />} />
+      <Route path="/checkout" element={<Checkout />} />
     </Routes>
   )
 }
