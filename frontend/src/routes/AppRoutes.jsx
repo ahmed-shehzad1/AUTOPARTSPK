@@ -5,6 +5,8 @@ import Products from '../pages/Products/Products'
 import Wholesale from '../pages/Wholesale/Wholesale'
 import Contact from '../pages/Contact/Contact'
 import ProductDetail from '../pages/ProductDetail/ProductDetail'
+import Cart from '../pages/Cart/Cart'
+import Checkout from '../pages/Checkout/Checkout'
 
 function AppRoutes() {
   return (
