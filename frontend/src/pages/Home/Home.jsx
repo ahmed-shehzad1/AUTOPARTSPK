@@ -4,7 +4,7 @@ import Hero from '../../components/home/Hero'
 import Reveal from '../../components/common/Reveal'
 import ParallaxLayer from '../../components/common/ParallaxLayer'
 import BrandMarquee from '../../components/home/BrandMarquee'
-import CategoryIndex from '../../components/home/CategoryIndex'
+import CategorySelector from '../../components/home/CategorySelector'
 import HowItWorks from '../../components/home/HowItWorks'
 import AudienceTabs from '../../components/home/AudienceTabs'
 import Testimonials from '../../components/home/Testimonials'
@@ -120,29 +120,30 @@ function Home() {
           </Reveal>
         </div>
       </section>
-
-      {/* Categories — index/directory layout */}
-      <section className="bg-paper py-20">
-        <div className="max-w-7xl mx-auto px-6 md:px-10">
-          <Reveal>
-            <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
-              <div>
-                <span className="font-mono text-xs tracking-widest text-blueprint uppercase block mb-2">
-                  Full Catalog
-                </span>
-                <h2 className="font-display font-semibold text-2xl md:text-3xl text-ink">
-                  Shop by Category
-                </h2>
-              </div>
-              <Link to="/products" className="font-mono text-xs tracking-widest text-blueprint hover:text-ink transition-colors uppercase flex items-center gap-2">
-                View All <FaArrowRight size={10} />
-              </Link>
-            </div>
-          </Reveal>
-
-          <CategoryIndex categories={CATEGORIES} iconMap={CATEGORY_ICONS} fallbackIcon={FaCogs} />
+{/* Categories — dark interactive selector */}
+<section className="bg-ink py-20">
+  <div className="max-w-7xl mx-auto px-6 md:px-10">
+    <Reveal>
+      <div className="flex items-end justify-between mb-12 flex-wrap gap-4">
+        <div>
+          <span className="font-mono text-xs tracking-widest text-blueprint-light uppercase block mb-2">
+            Full Catalog
+          </span>
+          <h2 className="font-display font-semibold text-2xl md:text-3xl text-paper">
+            Shop by Category
+          </h2>
         </div>
-      </section>
+        <Link to="/products" className="font-mono text-xs tracking-widest text-blueprint-light hover:text-paper transition-colors uppercase flex items-center gap-2">
+          View All <FaArrowRight size={10} />
+        </Link>
+      </div>
+    </Reveal>
+
+    <Reveal delay={0.1}>
+      <CategorySelector iconMap={CATEGORY_ICONS} fallbackIcon={FaCogs} />
+    </Reveal>
+  </div>
+</section>
 
       {/* Featured Products — parallax warehouse image behind the grid */}
       <section className="relative py-24 overflow-hidden border-y border-ink/10">
