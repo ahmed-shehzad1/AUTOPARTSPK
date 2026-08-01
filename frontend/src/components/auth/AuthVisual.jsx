@@ -9,7 +9,7 @@ function AuthVisual() {
   }, [])
 
   return (
-    <div className="hidden lg:flex relative bg-ink overflow-hidden items-center justify-center p-12">
+    <div className="relative bg-ink h-full overflow-hidden flex items-center justify-center p-10">
       <div
         className="absolute inset-0 opacity-[0.08]"
         style={{

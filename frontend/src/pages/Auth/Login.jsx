@@ -6,6 +6,7 @@ import { jwtDecode } from 'jwt-decode'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import AuthVisual from '../../components/auth/AuthVisual'
 import { useAuth } from '../../context/AuthContext'
+import AuthModalLayout from '../../components/auth/AuthModalLayout'
 
 const GOOGLE_CONFIGURED = !!import.meta.env.VITE_GOOGLE_CLIENT_ID
 
@@ -33,12 +34,9 @@ function Login() {
     navigate('/profile')
   }
 
-  return (
-    <div className="grid lg:grid-cols-2 min-h-[calc(100vh-176px)]">
-      <AuthVisual />
-
-      <div className="flex items-center justify-center px-6 py-12 bg-steel">
-        <div className="w-full max-w-md">
+ return (
+  <AuthModalLayout visual={<AuthVisual />}>
+    <div className="w-full max-w-md mx-auto">
           <span className="font-mono text-xs tracking-widest text-blueprint uppercase">Welcome Back</span>
           <h1 className="font-display font-semibold text-2xl text-ink mt-2 mb-8">Log In</h1>
 
@@ -84,10 +82,9 @@ function Login() {
             Don't have an account?{' '}
             <Link to="/register" className="text-blueprint hover:underline">Create one</Link>
           </p>
-        </div>
-      </div>
-    </div>
-  )
+</div>
+  </AuthModalLayout>
+)
 }
 
 export default Login
