@@ -7,6 +7,10 @@ import Contact from '../pages/Contact/Contact'
 import ProductDetail from '../pages/ProductDetail/ProductDetail'
 import Cart from '../pages/Cart/Cart'
 import Checkout from '../pages/Checkout/Checkout'
+import Login from '../pages/Auth/Login'
+import Register from '../pages/Auth/Register'
+import ProfileSetup from '../pages/Auth/ProfileSetup'
+import Profile from '../pages/Auth/Profile'
 
 function AppRoutes() {
   return (
@@ -19,6 +23,10 @@ function AppRoutes() {
       <Route path="/products/:id" element={<ProductDetail />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/checkout" element={<Checkout />} />
+      <Route path="/login" element={<Login />} />
+<Route path="/register" element={<Register />} />
+<Route path="/profile/setup" element={<ProfileSetup />} />
+<Route path="/profile" element={<Profile />} />
     </Routes>
   )
 }
