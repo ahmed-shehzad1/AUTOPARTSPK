@@ -34,15 +34,17 @@ export function AuthProvider({ children }) {
   }
   const saveUsers = (users) => localStorage.setItem(USERS_KEY, JSON.stringify(users))
 
-  const register = ({ name, email, phone, password, accountType, businessName }) => {
-    const users = getUsers()
-    if (users.some((u) => u.email === email)) {
+const register = ({ name, email, phone, password, accountType, businessName }) => {
+  const normalizedEmail = email.trim().toLowerCase()
+  const users = getUsers()
+  if (users.some((u) => u.email === normalizedEmail)) {
       return { success: false, error: 'An account with this email already exists.' }
     }
-    const newUser = {
+  const newUser = {
       id: `u${Date.now()}`,
       name,
-      email,
+      email: normalizedEmail,
+      createdAt: Date.now(),
       phone,
       password,
       accountType, // 'individual' | 'business'
@@ -63,10 +65,11 @@ export function AuthProvider({ children }) {
     const users = getUsers()
     let existing = users.find((u) => u.email === email)
     if (!existing) {
-      existing = {
-        id: `u${Date.now()}`,
-        name,
-        email,
+existing = {
+  id: `u${Date.now()}`,
+  name,
+  email: email.trim().toLowerCase(),
+  createdAt: Date.now(),
         phone: '',
         password: null,
         accountType: 'individual',
@@ -84,12 +87,18 @@ export function AuthProvider({ children }) {
     return { success: true }
   }
 
-  const login = ({ email, password }) => {
-    const users = getUsers()
-    const match = users.find((u) => u.email === email && u.password === password)
-    if (!match) {
-      return { success: false, error: 'Incorrect email or password.' }
-    }
+const login = ({ email, password }) => {
+  const normalizedEmail = email.trim().toLowerCase()
+  const users = getUsers()
+  const userExists = users.some((u) => u.email === normalizedEmail)
+  const match = users.find((u) => u.email === normalizedEmail && u.password === password)
+
+  if (!userExists) {
+    return { success: false, error: 'No account found with this email. Try registering instead.' }
+  }
+  if (!match) {
+    return { success: false, error: 'Incorrect password.' }
+  }
     const { password: _pw, ...safeUser } = match
     setUser(safeUser)
     return { success: true }

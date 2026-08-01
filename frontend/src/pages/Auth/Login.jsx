@@ -14,18 +14,21 @@ function Login() {
   const { login, registerWithGoogle } = useAuth()
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
-  const [form, setForm] = useState({ email: '', password: '' })
+const [form, setForm] = useState({ email: '', password: '' })
+const [error, setError] = useState('')
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    const result = login(form)
-    if (!result.success) {
-      toast.error(result.error)
-      return
-    }
-    toast.success('Welcome back!')
-    navigate('/profile')
+const handleSubmit = (e) => {
+  e.preventDefault()
+  setError('')
+  const result = login(form)
+  if (!result.success) {
+    setError(result.error)
+    toast.error(result.error)
+    return
   }
+  toast.success('Welcome back!')
+  navigate('/profile')
+}
 
   const handleGoogleSuccess = (credentialResponse) => {
     const decoded = jwtDecode(credentialResponse.credential)
@@ -60,6 +63,9 @@ function Login() {
             <button type="submit" className="w-full bg-ink text-paper font-medium py-3 rounded-md hover:bg-blueprint transition-colors">
               Log In
             </button>
+            {error && (
+  <p className="font-mono text-xs text-ignition -mt-1">{error}</p>
+)}
           </form>
 
           <div className="flex items-center gap-3 my-6">

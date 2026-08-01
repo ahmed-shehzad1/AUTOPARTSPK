@@ -7,9 +7,9 @@ import { useAuth } from '../../context/AuthContext'
 function ProfileSetup() {
   const { user, updateProfile } = useAuth()
   const navigate = useNavigate()
-  const [avatarPreview, setAvatarPreview] = useState(user?.avatar || null)
-  const [address, setAddress] = useState('')
-  const [bio, setBio] = useState('')
+const [avatarPreview, setAvatarPreview] = useState(user?.avatar || null)
+const [address, setAddress] = useState(user?.address || '')
+const [bio, setBio] = useState(user?.bio || '')
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0]
