@@ -3,10 +3,13 @@ import { Link } from 'react-router-dom'
 import { FaWhatsapp, FaBars, FaTimes, FaChevronDown } from 'react-icons/fa'
 import { CATEGORY_MENU } from '../../data/categoryMenu'
 import { COMPANY } from '../../data/companyInfo'
+import { FaShoppingCart } from 'react-icons/fa'
+import { useCart } from '../../context/CartContext'
 
 function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [catOpen, setCatOpen] = useState(false)
+  const { itemCount } = useCart()
 
   const closeMobile = () => {
     setMobileOpen(false)
@@ -42,12 +45,14 @@ function Navbar() {
             {COMPANY.phones[0].number}
           </a>
           
-          <Link
-            to="/wholesale"
-            className="hidden sm:flex items-center justify-center bg-gradient-to-r from-blueprint to-blue-600 text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:shadow-lg hover:shadow-blueprint/30 hover:-translate-y-0.5 transition-all duration-300"
-          >
-            Get Quote
-          </Link>
+       <Link to="/cart" className="relative h-10 w-10 flex items-center justify-center rounded-md border border-ink/10 text-ink hover:border-blueprint hover:text-blueprint transition-colors">
+  <FaShoppingCart size={15} />
+  {itemCount > 0 && (
+    <span className="absolute -top-1.5 -right-1.5 h-4.5 w-4.5 min-w-[18px] px-1 rounded-full bg-ignition text-paper text-[10px] font-mono flex items-center justify-center">
+      {itemCount}
+    </span>
+  )}
+</Link>
 
           {/* Mobile menu toggle button */}
           <button

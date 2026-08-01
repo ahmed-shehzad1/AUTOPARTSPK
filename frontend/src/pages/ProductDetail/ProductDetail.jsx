@@ -2,6 +2,8 @@ import { useMemo, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { FaCheckCircle, FaTag } from 'react-icons/fa'
 import { PRODUCTS } from '../../data/products'
+import { useNavigate } from 'react-router-dom'
+import { useCart } from '../../context/CartContext'
 
 const STOCK_DOT = {
   'In Stock': 'bg-blueprint',
@@ -32,6 +34,22 @@ function ProductDetail() {
       </div>
     )
   }
+
+  const navigate = useNavigate()
+const { addToCart } = useCart()
+const [added, setAdded] = useState(false)
+
+const handleAddToCart = () => {
+  addToCart(product, qty)
+  setAdded(true)
+  setTimeout(() => setAdded(false), 2000)
+}
+
+const handleRequestQuote = () => {
+  navigate('/wholesale', {
+    state: { prefill: `Requesting a quote for ${product.name} (Part No. ${product.partNo}) — Quantity: ${qty} ${product.unit}` },
+  })
+}
 
   const isWholesale = qty >= product.wholesaleMinQty
   const isRFQ = qty >= product.rfqThreshold
@@ -174,15 +192,16 @@ function ProductDetail() {
               </span>
             </div>
 
-            {isRFQ ? (
-              <button className="w-full bg-blueprint text-paper font-medium py-3 rounded-md hover:brightness-95 transition">
-                Request a Quote for This Quantity
-              </button>
-            ) : (
-              <button className="w-full bg-ink text-paper font-medium py-3 rounded-md hover:bg-blueprint transition-colors">
-                Add to Cart
-              </button>
-            )}
+           {isRFQ ? (
+  <button onClick={handleRequestQuote} className="w-full bg-blueprint text-paper font-medium py-3 rounded-md hover:brightness-95 transition">
+    Request a Quote for This Quantity
+  </button>
+) : (
+  <button onClick={handleAddToCart} className="w-full bg-ink text-paper font-medium py-3 rounded-md hover:bg-blueprint transition-colors">
+    {added ? 'Added ✓' : 'Add to Cart'}
+  </button>
+)}
+
             {isRFQ && (
               <p className="font-mono text-[10px] text-slate/50 uppercase mt-3 text-center">
                 Large orders are confirmed manually for pricing &amp; availability

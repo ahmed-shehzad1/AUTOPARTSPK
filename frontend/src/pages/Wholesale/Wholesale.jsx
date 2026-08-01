@@ -2,6 +2,7 @@
 import { FaCheckCircle, FaTruck, FaHeadset, FaTags, FaMoneyBillWave } from 'react-icons/fa'
 import Reveal from '../../components/common/Reveal'
 import { CATEGORIES } from '../../data/products'
+import { useLocation } from 'react-router-dom'
 
 const VOLUME_OPTIONS = [
   'Under PKR 50,000 / month',
@@ -11,16 +12,17 @@ const VOLUME_OPTIONS = [
 ]
 
 function Wholesale() {
-  const [form, setForm] = useState({
-    businessName: '',
-    contactName: '',
-    phone: '',
-    email: '',
-    city: '',
-    volume: '',
-    categories: [],
-    message: '',
-  })
+ const [form, setForm] = useState({
+  businessName: '',
+  contactName: '',
+  phone: '',
+  email: '',
+  city: '',
+  volume: '',
+  categories: [],
+  message: location.state?.prefill || '',
+})
+  const location = useLocation()
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
 
