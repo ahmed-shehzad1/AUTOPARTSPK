@@ -5,11 +5,14 @@ import { CATEGORY_MENU } from '../../data/categoryMenu'
 import { COMPANY } from '../../data/companyInfo'
 import { FaShoppingCart } from 'react-icons/fa'
 import { useCart } from '../../context/CartContext'
+import { FaUserCircle } from 'react-icons/fa'
+import { useAuth } from '../../context/AuthContext'
 
 function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [catOpen, setCatOpen] = useState(false)
   const { itemCount } = useCart()
+  const { user } = useAuth()
 
   const closeMobile = () => {
     setMobileOpen(false)
@@ -51,6 +54,13 @@ function Navbar() {
     <span className="absolute -top-1.5 -right-1.5 h-4.5 w-4.5 min-w-[18px] px-1 rounded-full bg-ignition text-paper text-[10px] font-mono flex items-center justify-center">
       {itemCount}
     </span>
+  )}
+</Link>
+<Link to={user ? '/profile' : '/login'} className="h-10 w-10 flex items-center justify-center rounded-md border border-ink/10 text-ink hover:border-blueprint hover:text-blueprint transition-colors overflow-hidden">
+  {user?.avatar ? (
+    <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+  ) : (
+    <FaUserCircle size={18} />
   )}
 </Link>
 
