@@ -12,17 +12,17 @@ const VOLUME_OPTIONS = [
 ]
 
 function Wholesale() {
- const [form, setForm] = useState({
-  businessName: '',
-  contactName: '',
-  phone: '',
-  email: '',
-  city: '',
-  volume: '',
-  categories: [],
-  message: location.state?.prefill || '',
-})
   const location = useLocation()
+  const [form, setForm] = useState({
+    businessName: '',
+    contactName: '',
+    phone: '',
+    email: '',
+    city: '',
+    volume: '',
+    categories: [],
+    message: location.state?.prefill || '',
+  })
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
 
