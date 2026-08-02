@@ -26,9 +26,11 @@ function AppRoutes() {
       <Route path="/cart" element={<Cart />} />
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/login" element={<Login />} />
-<Route path="/register" element={<Register />} />
-<Route path="/profile/setup" element={<ProfileSetup />} />
-<Route path="/profile" element={<Profile />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/profile/setup" element={<ProfileSetup />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/blog" element={<Blog />} />
+      <Route path="/blog/:slug" element={<BlogDetail />} />
     </Routes>
   )
 }
