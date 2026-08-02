@@ -32,5 +32,10 @@
     "eslint-plugin-react-refresh": "^0.5.3",
     "globals": "^17.7.0",
     "vite": "^8.1.1"
-  }
+  },
+  "description": "<div align=\"center\">   <!-- Replace the src below with a high-quality screen recording (GIF/WebP) of your animated hero -->   <a href=\"https://autopartspk.vercel.app/\">     <img src=\"https://via.placeholder.com/1200x600/0f172a/38bdf8?text=[Insert+High-Res+Animation+GIF+Here]\" alt=\"Hero Interface Live Preview\" width=\"100%\" />   </a> </div>",
+  "main": "eslint.config.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

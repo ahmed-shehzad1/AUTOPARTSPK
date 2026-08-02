@@ -33,6 +33,7 @@ function Navbar() {
           <Link to="/products" className="hover:text-blueprint transition-colors">Products</Link>
           <Link to="/wholesale" className="hover:text-blueprint transition-colors">Wholesale</Link>
           <Link to="/about" className="hover:text-blueprint transition-colors">About</Link>
+          <Link to="/blog" className="hover:text-blueprint transition-colors">Blog</Link>
           <Link to="/contact" className="hover:text-blueprint transition-colors">Contact</Link>
         </nav>
 
