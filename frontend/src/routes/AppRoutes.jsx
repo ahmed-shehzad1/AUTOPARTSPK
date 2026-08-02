@@ -11,6 +11,8 @@ import Login from '../pages/Auth/Login'
 import Register from '../pages/Auth/Register'
 import ProfileSetup from '../pages/Auth/ProfileSetup'
 import Profile from '../pages/Auth/Profile'
+import Blog from '../pages/Blog/Blog'
+import BlogDetail from '../pages/BlogDetail/BlogDetail'
 
 function AppRoutes() {
   return (
