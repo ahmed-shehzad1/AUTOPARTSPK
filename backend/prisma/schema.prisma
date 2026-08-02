@@ -1,0 +1,141 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  createdAt DateTime  @default(now())
+  products  Product[]
+}
+
+model Make {
+  id     String  @id @default(cuid())
+  name   String  @unique
+  models Model[]
+}
+
+model Model {
+  id       String     @id @default(cuid())
+  name     String
+  makeId   String
+  make     Make       @relation(fields: [makeId], references: [id])
+  fitments Fitment[]
+
+  @@unique([makeId, name])
+}
+
+model Product {
+  id                String    @id @default(cuid())
+  partNo            String    @unique
+  name              String
+  description       String
+  partBrand         String
+  condition         String    // "New" | "Used" | "Refurbished"
+  stock             String    // "In Stock" | "Limited Stock" | "Backorder"
+  price             Int
+  wholesalePrice    Int
+  wholesaleMinQty   Int
+  moq               Int
+  unit              String
+  rfqThreshold      Int
+  categoryId        String
+  category          Category  @relation(fields: [categoryId], references: [id])
+  images            ProductImage[]
+  crossReferences   CrossReference[]
+  fitments          Fitment[]
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+model ProductImage {
+  id        String  @id @default(cuid())
+  url       String
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model CrossReference {
+  id        String  @id @default(cuid())
+  code      String
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model Fitment {
+  id        String  @id @default(cuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  modelId   String
+  model     Model   @relation(fields: [modelId], references: [id])
+  yearFrom  Int
+  yearTo    Int
+}
+
+model Order {
+  id            String      @id @default(cuid())
+  orderNumber   String      @unique
+  customerName  String
+  phone         String
+  address       String
+  city          String
+  paymentMethod String      // "cod" | "bank" | "wallet"
+  status        String      @default("pending")
+  subtotal      Int
+  items         OrderItem[]
+  createdAt     DateTime    @default(now())
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  name      String
+  partNo    String
+  qty       Int
+  unitPrice Int
+}
+
+model WholesaleInquiry {
+  id           String   @id @default(cuid())
+  businessName String
+  contactName  String
+  phone        String
+  email        String?
+  city         String?
+  volume       String?
+  categories   String   // comma-separated for now
+  message      String?
+  status       String   @default("new")
+  createdAt    DateTime @default(now())
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String
+  email     String?
+  subject   String?
+  message   String
+  status    String   @default("new")
+  createdAt DateTime @default(now())
+}
+
+model AdminUser {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String   // hashed — set up properly when we build admin auth
+  role      String   @default("staff") // "admin" | "staff"
+  createdAt DateTime @default(now())
+}
