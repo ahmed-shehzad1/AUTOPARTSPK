@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FaWhatsapp, FaBars, FaTimes, FaChevronDown } from 'react-icons/fa'
 import { CATEGORY_MENU } from '../../data/categoryMenu'
@@ -8,11 +8,17 @@ import { useCart } from '../../context/CartContext'
 import { FaUserCircle } from 'react-icons/fa'
 import { useAuth } from '../../context/AuthContext'
 
+const API_BASE = 'http://localhost:4000/api'
 function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [catOpen, setCatOpen] = useState(false)
   const { itemCount } = useCart()
   const { user } = useAuth()
+  const [categories, setCategories] = useState([])
+
+useEffect(() => {
+  fetch(`${API_BASE}/categories`).then((r) => r.json()).then(setCategories).catch(() => {})
+}, [])
 
   const closeMobile = () => {
     setMobileOpen(false)
@@ -86,31 +92,22 @@ function Navbar() {
           <Link to="/" onClick={closeMobile} className="py-3.5 border-b border-ink/5 hover:text-blueprint transition-colors">Home</Link>
           <Link to="/products" onClick={closeMobile} className="py-3.5 border-b border-ink/5 hover:text-blueprint transition-colors">Products</Link>
 
-          {/* Shop by Category accordion */}
-          <button
-            onClick={() => setCatOpen((v) => !v)}
-            className="py-3.5 border-b border-ink/5 flex items-center justify-between text-left group hover:text-blueprint transition-colors"
-          >
-            <span className="font-mono text-xs font-bold tracking-widest uppercase">
-              Shop by Category
-            </span>
-            <FaChevronDown size={12} className={`text-slate transition-transform duration-300 ${catOpen ? 'rotate-180 text-blueprint' : ''}`} />
-          </button>
-          
-          <div className={`overflow-hidden transition-all duration-300 ease-in-out bg-steel/20 rounded-b-lg ${catOpen ? 'max-h-[500px] mb-2' : 'max-h-0'}`}>
-            <div className="flex flex-col px-4 py-2">
-              {CATEGORY_MENU.map((cat) => (
-                <Link
-                  key={cat.name}
-                  to={`/products?category=${encodeURIComponent(cat.name)}`}
-                  onClick={closeMobile}
-                  className="py-2.5 font-mono text-xs font-semibold text-slate hover:text-blueprint transition-colors"
-                >
-                  — {cat.name}
-                </Link>
-              ))}
-            </div>
-          </div>
+          {/* Categories */}
+<div className="pt-4">
+  <span className="font-mono text-[10px] tracking-widest text-slate/60 uppercase block mb-2">
+    Shop by Category
+  </span>
+  {categories.map((cat) => (
+    <Link
+      key={cat.id}
+      to={`/products?category=${encodeURIComponent(cat.name)}`}
+      onClick={closeAll}
+      className="block font-body text-sm text-ink py-2.5 border-b border-ink/5"
+    >
+      {cat.name}
+    </Link>
+  ))}
+</div>
 
           <Link to="/wholesale" onClick={closeMobile} className="py-3.5 border-b border-ink/5 hover:text-blueprint transition-colors">Wholesale</Link>
           <Link to="/about" onClick={closeMobile} className="py-3.5 border-b border-ink/5 hover:text-blueprint transition-colors">About</Link>
