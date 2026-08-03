@@ -5,6 +5,7 @@ import ProductForm from './pages/Products/ProductForm'
 import CategoryList from './pages/Categories/CategoryList'
 import VehicleList from './pages/Vehicles/VehicleList'
 import BulkAddProducts from './pages/Products/BulkAddProducts'
+import OrderList from './pages/Orders/OrderList'
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/categories" element={<CategoryList />} />
           <Route path="/vehicles" element={<VehicleList />} />
           <Route path="/products/bulk-add" element={<BulkAddProducts />} />
+          <Route path="/orders" element={<OrderList />} />
         </Route>
       </Routes>
     </BrowserRouter>
