@@ -2,19 +2,22 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { FaArrowRight } from 'react-icons/fa'
-import { CATEGORY_MENU } from '../../data/categoryMenu'
 
-function CategorySelector({ iconMap, fallbackIcon: Fallback }) {
+function CategorySelector({ categories, iconMap, fallbackIcon: Fallback }) {
   const [activeIdx, setActiveIdx] = useState(0)
-  const active = CATEGORY_MENU[activeIdx]
+
+  if (!categories || categories.length === 0) {
+    return <p className="font-body text-steel/50 text-sm">No categories yet.</p>
+  }
+
+  const active = categories[activeIdx]
   const ActiveIcon = iconMap[active.name] || Fallback
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-[1fr_1.2fr] gap-8 md:gap-12">
-      {/* Left — category list */}
       <ul className="space-y-1">
-        {CATEGORY_MENU.map((cat, i) => (
-          <li key={cat.name}>
+        {categories.map((cat, i) => (
+          <li key={cat.id}>
             <button
               onClick={() => setActiveIdx(i)}
               className={`w-full flex items-center justify-between text-left py-3.5 px-4 rounded-md transition-colors ${
@@ -35,11 +38,10 @@ function CategorySelector({ iconMap, fallbackIcon: Fallback }) {
         ))}
       </ul>
 
-      {/* Right — active category detail panel */}
       <div className="bg-paper/5 border border-paper/10 rounded-xl p-7 md:p-9">
         <AnimatePresence mode="wait">
           <motion.div
-            key={active.name}
+            key={active.id}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
@@ -49,20 +51,9 @@ function CategorySelector({ iconMap, fallbackIcon: Fallback }) {
               <ActiveIcon className="text-blueprint-light text-2xl" />
             </div>
 
-            <h3 className="font-display font-semibold text-2xl text-paper mb-4">
+            <h3 className="font-display font-semibold text-2xl text-paper mb-6">
               {active.name}
             </h3>
-
-            <div className="flex flex-wrap gap-2 mb-7">
-              {active.subcategories.map((sub) => (
-                <span
-                  key={sub}
-                  className="font-mono text-[11px] text-steel/70 bg-paper/5 border border-paper/10 rounded-full px-3 py-1.5"
-                >
-                  {sub}
-                </span>
-              ))}
-            </div>
 
             <Link
               to={`/products?category=${encodeURIComponent(active.name)}`}
