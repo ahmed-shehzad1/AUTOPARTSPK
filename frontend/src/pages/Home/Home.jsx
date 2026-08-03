@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Hero from '../../components/home/Hero'
 import Reveal from '../../components/common/Reveal'
@@ -9,13 +9,14 @@ import HowItWorks from '../../components/home/HowItWorks'
 import AudienceTabs from '../../components/home/AudienceTabs'
 import Testimonials from '../../components/home/Testimonials'
 import AnimatedCounter from '../../components/common/AnimatedCounter'
-import { PRODUCTS, CATEGORIES, MAKES_MODELS } from '../../data/products'
 import { COMPANY } from '../../data/companyInfo'
 import warehouseImg from '../../assets/images/parts-warehouse.jpg'
 import {
   FaCogs, FaCarSide, FaBolt, FaCar, FaCompactDisc, FaFilter, FaLightbulb, FaTools,
   FaCheckCircle, FaSearch, FaArrowRight, FaShieldAlt, FaShippingFast, FaEye, FaTag,
 } from 'react-icons/fa'
+
+const API_BASE = 'http://localhost:4000/api'
 
 const CATEGORY_ICONS = {
   'Engine Parts': FaCogs,
@@ -46,7 +47,20 @@ function Home() {
   const [selectedMake, setSelectedMake] = useState('')
   const [selectedModel, setSelectedModel] = useState('')
 
-  const modelOptions = selectedMake && MAKES_MODELS[selectedMake] ? MAKES_MODELS[selectedMake] : []
+  const [categories, setCategories] = useState([])
+  const [makes, setMakes] = useState([])
+  const [featuredProducts, setFeaturedProducts] = useState([])
+
+  useEffect(() => {
+    fetch(`${API_BASE}/categories`).then((r) => r.json()).then(setCategories).catch(() => {})
+    fetch(`${API_BASE}/makes`).then((r) => r.json()).then(setMakes).catch(() => {})
+    fetch(`${API_BASE}/products?page=1&pageSize=4`)
+      .then((r) => r.json())
+      .then((data) => setFeaturedProducts(data.items || []))
+      .catch(() => {})
+  }, [])
+
+  const modelOptions = selectedMake ? makes.find((m) => m.name === selectedMake)?.models || [] : []
 
   const handleVehicleSearch = (e) => {
     e.preventDefault()
@@ -56,8 +70,6 @@ function Home() {
     navigate(`/products?${params.toString()}`)
   }
 
-  const featuredProducts = PRODUCTS.slice(0, 4)
-
   return (
     <div className="bg-steel min-h-screen">
       <Hero />
@@ -66,7 +78,7 @@ function Home() {
         <BrandMarquee />
       </div>
 
-      {/* Vehicle Finder — steel + grid texture instead of flat white */}
+      {/* Vehicle Finder */}
       <section className="relative bg-steel border-b border-ink/10 py-12 overflow-hidden">
         <div
           className="absolute inset-0 opacity-[0.06] pointer-events-none"
@@ -92,7 +104,7 @@ function Home() {
                     className="w-full bg-steel border border-ink/10 rounded-md px-4 py-3 text-sm font-body text-ink focus:outline-none focus:border-blueprint transition-colors"
                   >
                     <option value="">All Makes</option>
-                    {Object.keys(MAKES_MODELS).map((make) => <option key={make} value={make}>{make}</option>)}
+                    {makes.map((m) => <option key={m.id} value={m.name}>{m.name}</option>)}
                   </select>
                 </div>
 
@@ -105,7 +117,7 @@ function Home() {
                     className="w-full bg-steel border border-ink/10 rounded-md px-4 py-3 text-sm font-body text-ink disabled:opacity-40 focus:outline-none focus:border-blueprint transition-colors"
                   >
                     <option value="">All Models</option>
-                    {modelOptions.map((model) => <option key={model} value={model}>{model}</option>)}
+                    {modelOptions.map((m) => <option key={m.id} value={m.name}>{m.name}</option>)}
                   </select>
                 </div>
 
@@ -120,32 +132,33 @@ function Home() {
           </Reveal>
         </div>
       </section>
-{/* Categories — dark interactive selector */}
-<section className="bg-ink py-20">
-  <div className="max-w-7xl mx-auto px-6 md:px-10">
-    <Reveal>
-      <div className="flex items-end justify-between mb-12 flex-wrap gap-4">
-        <div>
-          <span className="font-mono text-xs tracking-widest text-blueprint-light uppercase block mb-2">
-            Full Catalog
-          </span>
-          <h2 className="font-display font-semibold text-2xl md:text-3xl text-paper">
-            Shop by Category
-          </h2>
+
+      {/* Categories — dark interactive selector, live data */}
+      <section className="bg-ink py-20">
+        <div className="max-w-7xl mx-auto px-6 md:px-10">
+          <Reveal>
+            <div className="flex items-end justify-between mb-12 flex-wrap gap-4">
+              <div>
+                <span className="font-mono text-xs tracking-widest text-blueprint-light uppercase block mb-2">
+                  Full Catalog
+                </span>
+                <h2 className="font-display font-semibold text-2xl md:text-3xl text-paper">
+                  Shop by Category
+                </h2>
+              </div>
+              <Link to="/products" className="font-mono text-xs tracking-widest text-blueprint-light hover:text-paper transition-colors uppercase flex items-center gap-2">
+                View All <FaArrowRight size={10} />
+              </Link>
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.1}>
+            <CategorySelector categories={categories} iconMap={CATEGORY_ICONS} fallbackIcon={FaCogs} />
+          </Reveal>
         </div>
-        <Link to="/products" className="font-mono text-xs tracking-widest text-blueprint-light hover:text-paper transition-colors uppercase flex items-center gap-2">
-          View All <FaArrowRight size={10} />
-        </Link>
-      </div>
-    </Reveal>
+      </section>
 
-    <Reveal delay={0.1}>
-      <CategorySelector iconMap={CATEGORY_ICONS} fallbackIcon={FaCogs} />
-    </Reveal>
-  </div>
-</section>
-
-      {/* Featured Products — parallax warehouse image behind the grid */}
+      {/* Featured Products — parallax warehouse image, live data */}
       <section className="relative py-24 overflow-hidden border-y border-ink/10">
         <ParallaxLayer strength={40}>
           <img src={warehouseImg} alt="" className="w-full h-full object-cover scale-110" />
@@ -169,53 +182,61 @@ function Home() {
             </div>
           </Reveal>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featuredProducts.map((p, i) => (
-              <Reveal key={p.id} delay={i * 0.08}>
-                <div className="group relative bg-paper rounded-lg border border-ink/10 hover:border-blueprint hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex flex-col h-full overflow-hidden">
-                  <div className="relative h-40 bg-steel border-b border-ink/10 flex items-center justify-center overflow-hidden">
-                    <span className="absolute top-3 left-3 z-10 font-mono text-[10px] tracking-widest uppercase bg-ink/80 text-paper px-2.5 py-1 rounded">
-                      {p.category}
-                    </span>
-                    <span className="absolute top-3 right-3 z-10 flex items-center gap-1.5 font-mono text-[10px] uppercase text-ink bg-paper/90 px-2 py-1 rounded">
-                      <span className={`w-1.5 h-1.5 rounded-full ${STOCK_DOT[p.stock]}`} /> {p.stock}
-                    </span>
-
-                    {p.images && p.images.length > 0 ? (
-                      <img src={p.images[0]} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                    ) : (
-                      <span className="font-mono text-xs text-slate/40">No image yet</span>
-                    )}
-
-                    <Link
-                      to={`/products/${p.id}`}
-                      className="absolute inset-0 bg-ink/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
-                    >
-                      <span className="bg-paper text-ink font-mono text-xs font-semibold uppercase px-4 py-2 rounded-md flex items-center gap-2">
-                        <FaEye size={12} /> View Details
+          {featuredProducts.length === 0 ? (
+            <p className="font-body text-slate text-sm">No products yet — add some from the admin panel.</p>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {featuredProducts.map((p, i) => (
+                <Reveal key={p.id} delay={i * 0.08}>
+                  <Link
+                    to={`/products/${p.id}`}
+                    className="group relative block bg-paper rounded-lg border border-ink/10 hover:border-blueprint hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex flex-col h-full overflow-hidden"
+                  >
+                    <div className="relative h-40 bg-steel border-b border-ink/10 flex items-center justify-center overflow-hidden">
+                      <span className="absolute top-3 left-3 z-10 font-mono text-[10px] tracking-widest uppercase bg-ink/80 text-paper px-2.5 py-1 rounded">
+                        {p.category?.name}
                       </span>
-                    </Link>
-                  </div>
+                      <span className="absolute top-3 right-3 z-10 flex items-center gap-1.5 font-mono text-[10px] uppercase text-ink bg-paper/90 px-2 py-1 rounded">
+                        <span className={`w-1.5 h-1.5 rounded-full ${STOCK_DOT[p.stock] || 'bg-blueprint'}`} /> {p.stock}
+                      </span>
 
-                  <div className="p-5 flex flex-col flex-grow">
-                    <div className="flex items-center justify-between text-[10px] font-mono text-slate/60 uppercase mb-2">
-                      <span className="text-blueprint">{p.partBrand}</span>
-                      <span>{p.condition}</span>
+                      {p.images && p.images.length > 0 ? (
+                        <img
+                          src={`http://localhost:4000${p.images[0].url}`}
+                          alt={p.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      ) : (
+                        <span className="font-mono text-xs text-slate/40">No image yet</span>
+                      )}
+
+                      <div className="absolute inset-0 bg-ink/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <span className="bg-paper text-ink font-mono text-xs font-semibold uppercase px-4 py-2 rounded-md flex items-center gap-2">
+                          <FaEye size={12} /> View Details
+                        </span>
+                      </div>
                     </div>
-                    <h3 className="font-display font-semibold text-ink text-sm mb-2 group-hover:text-blueprint transition-colors">
-                      <Link to={`/products/${p.id}`}>{p.name}</Link>
-                    </h3>
-                    <div className="flex items-center gap-1.5 font-mono text-[11px] text-slate mb-4">
-                      <FaTag size={9} className="text-blueprint" /> {p.partNo}
+
+                    <div className="p-5 flex flex-col flex-grow">
+                      <div className="flex items-center justify-between text-[10px] font-mono text-slate/60 uppercase mb-2">
+                        <span className="text-blueprint">{p.partBrand}</span>
+                        <span>{p.condition}</span>
+                      </div>
+                      <h3 className="font-display font-semibold text-ink text-sm mb-2 group-hover:text-blueprint transition-colors">
+                        {p.name}
+                      </h3>
+                      <div className="flex items-center gap-1.5 font-mono text-[11px] text-slate mb-4">
+                        <FaTag size={9} className="text-blueprint" /> {p.partNo}
+                      </div>
+                      <div className="mt-auto pt-3 border-t border-ink/5">
+                        <span className="font-display font-semibold text-ink">PKR {p.price?.toLocaleString()}</span>
+                      </div>
                     </div>
-                    <div className="mt-auto pt-3 border-t border-ink/5">
-                      <span className="font-display font-semibold text-ink">PKR {p.price?.toLocaleString()}</span>
-                    </div>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+                  </Link>
+                </Reveal>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
