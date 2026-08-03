@@ -146,4 +146,26 @@ router.delete('/:id', async (req, res) => {
   }
 })
 
+// POST /api/products/:id/images — attach an uploaded image to a product
+router.post('/:id/images', async (req, res) => {
+  try {
+    const image = await prisma.productImage.create({
+      data: { url: req.body.url, productId: req.params.id },
+    })
+    res.status(201).json(image)
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to attach image.' })
+  }
+})
+
+// DELETE /api/products/images/:imageId — remove a single image
+router.delete('/images/:imageId', async (req, res) => {
+  try {
+    await prisma.productImage.delete({ where: { id: req.params.imageId } })
+    res.status(204).send()
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to delete image.' })
+  }
+})
+
 module.exports = router
