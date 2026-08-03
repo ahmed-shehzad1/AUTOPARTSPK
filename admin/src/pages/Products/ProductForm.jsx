@@ -7,7 +7,7 @@ const CONDITIONS = ['New', 'Used', 'Refurbished']
 const STOCK_OPTIONS = ['In Stock', 'Limited Stock', 'Backorder']
 
 const EMPTY_FORM = {
-  partNo: '', name: '', description: '', partBrandId: '',
+  partNo: '', name: '', description: '', partBrand: '',
   condition: 'New', stock: 'In Stock',
   price: '', wholesalePrice: '', wholesaleMinQty: '', moq: 1, unit: 'pcs',
   rfqThreshold: 100, categoryId: '',
@@ -18,8 +18,7 @@ function ProductForm() {
   const isEdit = Boolean(id)
   const navigate = useNavigate()
 
-const [categories, setCategories] = useState([])
-  const [brands, setBrands] = useState([])
+  const [categories, setCategories] = useState([])
   const [form, setForm] = useState(EMPTY_FORM)
   const [images, setImages] = useState([]) // existing images (edit mode)
   const [pendingImages, setPendingImages] = useState([]) // uploaded URLs before product exists (create mode)
@@ -30,16 +29,15 @@ const [categories, setCategories] = useState([])
 
   useEffect(() => {
     api.get('/categories').then((res) => setCategories(res.data))
-    api.get('/brands').then((res) => setBrands(res.data))
   }, [])
 
   useEffect(() => {
     if (!isEdit) return
 api.get(`/products/${id}`).then((res) => {
       const p = res.data
-      setForm({
+        setForm({
         partNo: p.partNo, name: p.name, description: p.description || '',
-        partBrandId: p.partBrandId, condition: p.condition, stock: p.stock,
+        partBrand: p.partBrand, condition: p.condition, stock: p.stock,
         price: p.price, wholesalePrice: p.wholesalePrice, wholesaleMinQty: p.wholesaleMinQty,
         moq: p.moq, unit: p.unit, rfqThreshold: p.rfqThreshold, categoryId: p.categoryId,
       })
@@ -157,11 +155,8 @@ const payload = {
         </Field>
 
        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-          <Field label="Part Brand *">
-            <select value={form.partBrandId} onChange={(e) => update('partBrandId', e.target.value)} className={inputClass}>
-              <option value="">Select brand</option>
-              {brands.map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}
-            </select>
+         <Field label="Part Brand">
+            <input value={form.partBrand} onChange={(e) => update('partBrand', e.target.value)} className={inputClass} />
           </Field>
           <Field label="Condition">
             <select value={form.condition} onChange={(e) => update('condition', e.target.value)} className={inputClass}>
@@ -219,7 +214,7 @@ const payload = {
             <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" disabled={uploading} />
           </label>
         </Field>
-        
+
         {error && <p className="font-mono text-xs text-ignition">{error}</p>}
 
         <div className="flex gap-3 pt-3">
