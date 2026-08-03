@@ -59,6 +59,9 @@ function ProductList() {
         >
           <FaPlus size={12} /> Add Product
         </Link>
+        <Link to="/products/bulk-add" className="flex items-center gap-2 border border-ink/10 hover:border-blueprint text-ink font-medium text-sm px-5 py-2.5 rounded-md transition-colors">
+  Bulk Add (CSV)
+</Link>
       </div>
 
       <form onSubmit={handleSearch} className="flex gap-3 mb-6">

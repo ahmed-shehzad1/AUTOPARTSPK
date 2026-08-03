@@ -4,6 +4,7 @@ import ProductList from './pages/Products/ProductList'
 import ProductForm from './pages/Products/ProductForm'
 import CategoryList from './pages/Categories/CategoryList'
 import VehicleList from './pages/Vehicles/VehicleList'
+import BulkAddProducts from './pages/Products/BulkAddProducts'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/products/:id/edit" element={<ProductForm />} />
           <Route path="/categories" element={<CategoryList />} />
           <Route path="/vehicles" element={<VehicleList />} />
+          <Route path="/products/bulk-add" element={<BulkAddProducts />} />
         </Route>
       </Routes>
     </BrowserRouter>

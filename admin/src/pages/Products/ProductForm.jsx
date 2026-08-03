@@ -7,7 +7,7 @@ const CONDITIONS = ['New', 'Used', 'Refurbished']
 const STOCK_OPTIONS = ['In Stock', 'Limited Stock', 'Backorder']
 
 const EMPTY_FORM = {
-  partNo: '', name: '', description: '', partBrand: '',
+  partNo: '', name: '', description: '', partBrandId: '',
   condition: 'New', stock: 'In Stock',
   price: '', wholesalePrice: '', wholesaleMinQty: '', moq: 1, unit: 'pcs',
   rfqThreshold: 100, categoryId: '',
