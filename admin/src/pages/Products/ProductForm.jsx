@@ -18,31 +18,74 @@ function ProductForm() {
   const isEdit = Boolean(id)
   const navigate = useNavigate()
 
-  const [categories, setCategories] = useState([])
+const [categories, setCategories] = useState([])
+  const [brands, setBrands] = useState([])
   const [form, setForm] = useState(EMPTY_FORM)
+  const [images, setImages] = useState([]) // existing images (edit mode)
+  const [pendingImages, setPendingImages] = useState([]) // uploaded URLs before product exists (create mode)
+  const [uploading, setUploading] = useState(false)
   const [loading, setLoading] = useState(isEdit)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
 
   useEffect(() => {
     api.get('/categories').then((res) => setCategories(res.data))
+    api.get('/brands').then((res) => setBrands(res.data))
   }, [])
 
   useEffect(() => {
     if (!isEdit) return
-    api.get(`/products/${id}`).then((res) => {
+api.get(`/products/${id}`).then((res) => {
       const p = res.data
       setForm({
         partNo: p.partNo, name: p.name, description: p.description || '',
-        partBrand: p.partBrand, condition: p.condition, stock: p.stock,
+        partBrandId: p.partBrandId, condition: p.condition, stock: p.stock,
         price: p.price, wholesalePrice: p.wholesalePrice, wholesaleMinQty: p.wholesaleMinQty,
         moq: p.moq, unit: p.unit, rfqThreshold: p.rfqThreshold, categoryId: p.categoryId,
       })
+      setImages(p.images || [])
       setLoading(false)
     })
   }, [id, isEdit])
 
   const update = (field, value) => setForm((f) => ({ ...f, [field]: value }))
+const handleImageUpload = async (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+    setUploading(true)
+    try {
+      const formData = new FormData()
+      formData.append('image', file)
+      const uploadRes = await api.post('/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
+      const url = uploadRes.data.url
+
+      if (isEdit) {
+        const attachRes = await api.post(`/products/${id}/images`, { url })
+        setImages((prev) => [...prev, attachRes.data])
+      } else {
+        setPendingImages((prev) => [...prev, url])
+      }
+    } catch (err) {
+      alert('Image upload failed.')
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  const handleDeleteExistingImage = async (imageId) => {
+    try {
+      await api.delete(`/products/images/${imageId}`)
+      setImages((prev) => prev.filter((img) => img.id !== imageId))
+    } catch {
+      alert('Failed to delete image.')
+    }
+  }
+
+  const handleRemovePendingImage = (url) => {
+    setPendingImages((prev) => prev.filter((u) => u !== url))
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -53,13 +96,14 @@ function ProductForm() {
       return
     }
 
-    const payload = {
+const payload = {
       ...form,
       price: Number(form.price),
       wholesalePrice: Number(form.wholesalePrice),
       wholesaleMinQty: Number(form.wholesaleMinQty),
       moq: Number(form.moq),
       rfqThreshold: Number(form.rfqThreshold),
+      images: isEdit ? undefined : pendingImages,
     }
 
     setSaving(true)
@@ -89,6 +133,8 @@ function ProductForm() {
         {isEdit ? 'Edit Product' : 'Add Product'}
       </h1>
 
+      
+
       <form onSubmit={handleSubmit} className="bg-paper border border-ink/10 rounded-lg p-7 space-y-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <Field label="Part Number *">
@@ -110,9 +156,12 @@ function ProductForm() {
           <textarea rows={3} value={form.description} onChange={(e) => update('description', e.target.value)} className={`${inputClass} resize-none`} />
         </Field>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-          <Field label="Part Brand">
-            <input value={form.partBrand} onChange={(e) => update('partBrand', e.target.value)} className={inputClass} />
+       <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+          <Field label="Part Brand *">
+            <select value={form.partBrandId} onChange={(e) => update('partBrandId', e.target.value)} className={inputClass}>
+              <option value="">Select brand</option>
+              {brands.map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}
+            </select>
           </Field>
           <Field label="Condition">
             <select value={form.condition} onChange={(e) => update('condition', e.target.value)} className={inputClass}>
@@ -150,6 +199,27 @@ function ProductForm() {
           </Field>
         </div>
 
+        <Field label="Product Images">
+          <div className="flex flex-wrap gap-3 mb-3">
+            {(isEdit ? images : pendingImages.map((url) => ({ url }))).map((img, i) => (
+              <div key={img.id || i} className="relative h-20 w-20 rounded-md overflow-hidden border border-ink/10 group">
+                <img src={`http://localhost:4000${img.url}`} alt="" className="w-full h-full object-cover" />
+                <button
+                  type="button"
+                  onClick={() => (isEdit ? handleDeleteExistingImage(img.id) : handleRemovePendingImage(img.url))}
+                  className="absolute inset-0 bg-ink/60 text-paper text-xs opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+          </div>
+          <label className="inline-block bg-steel border border-ink/10 hover:border-blueprint px-4 py-2 rounded-md font-mono text-xs uppercase text-ink cursor-pointer transition-colors">
+            {uploading ? 'Uploading…' : '+ Upload Image'}
+            <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" disabled={uploading} />
+          </label>
+        </Field>
+        
         {error && <p className="font-mono text-xs text-ignition">{error}</p>}
 
         <div className="flex gap-3 pt-3">
