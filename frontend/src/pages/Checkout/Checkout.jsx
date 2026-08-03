@@ -22,18 +22,43 @@ function Checkout() {
     return null
   }
 
-  const handlePlaceOrder = (e) => {
+  const handlePlaceOrder = async (e) => {
     e.preventDefault()
     if (!form.name || !form.phone || !form.address || !form.city) {
       setError('All fields are required.')
       return
     }
     setError('')
-    // No backend yet — this is where a real order API call goes once one exists.
-    // e.g. await fetch('/api/orders', { method: 'POST', body: JSON.stringify({ items, form, payment, subtotal }) })
-    const orderId = `AMA-${Date.now().toString().slice(-8)}`
-    setOrderPlaced({ orderId, name: form.name })
-    clearCart()
+
+    try {
+      const res = await fetch(`${API_BASE}/orders`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          customerName: form.name,
+          phone: form.phone,
+          address: form.address,
+          city: form.city,
+          paymentMethod: payment,
+          subtotal,
+          items: items.map((i) => ({
+            productId: i.id,
+            name: i.name,
+            partNo: i.partNo,
+            qty: i.qty,
+            unitPrice: i.qty >= i.wholesaleMinQty ? i.wholesalePrice : i.price,
+          })),
+        }),
+      })
+
+      if (!res.ok) throw new Error('Order failed')
+      const order = await res.json()
+
+      setOrderPlaced({ orderId: order.orderNumber, name: form.name })
+      clearCart()
+    } catch (err) {
+      setError('Could not place your order — please check your connection and try again.')
+    }
   }
 
   if (orderPlaced) {
