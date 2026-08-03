@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import AdminLayout from './components/AdminLayout'
 import ProductList from './pages/Products/ProductList'
 import ProductForm from './pages/Products/ProductForm'
+import CategoryList from './pages/Categories/CategoryList'
+import VehicleList from './pages/Vehicles/VehicleList'
 
 function App() {
   return (
