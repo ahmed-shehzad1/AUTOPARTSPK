@@ -8,14 +8,14 @@ import { useCart } from '../../context/CartContext'
 import { FaUserCircle } from 'react-icons/fa'
 import { useAuth } from '../../context/AuthContext'
 
-const API_BASE = 'http://localhost:4000/api'
+
 function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [catOpen, setCatOpen] = useState(false)
   const { itemCount } = useCart()
   const { user } = useAuth()
   const [categories, setCategories] = useState([])
-
+  const API_BASE = 'http://localhost:4000/api'
 useEffect(() => {
   fetch(`${API_BASE}/categories`).then((r) => r.json()).then(setCategories).catch(() => {})
 }, [])
@@ -101,7 +101,7 @@ useEffect(() => {
     <Link
       key={cat.id}
       to={`/products?category=${encodeURIComponent(cat.name)}`}
-      onClick={closeAll}
+      onClick={closeMobile}
       className="block font-body text-sm text-ink py-2.5 border-b border-ink/5"
     >
       {cat.name}
