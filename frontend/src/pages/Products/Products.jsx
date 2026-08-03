@@ -1,17 +1,16 @@
-﻿import { useEffect, useMemo, useState } from 'react'
-import { FaSearch, FaChevronLeft, FaChevronRight } from 'react-icons/fa'
+﻿import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
+import { FaSearch, FaTag, FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import Reveal from '../../components/common/Reveal'
-import { PRODUCTS, CATEGORIES, MAKES_MODELS } from '../../data/products'
 
+const API_BASE = 'http://localhost:4000/api'
 const PAGE_SIZE = 12
 
 const STOCK_DOT = {
   'In Stock': 'bg-blueprint',
   'Limited Stock': 'bg-ignition',
-  'Backorder': 'bg-slate',
+  Backorder: 'bg-slate',
 }
-
 const CONDITION_STRIPE = {
   New: 'bg-blueprint',
   Used: 'bg-slate',
@@ -19,39 +18,75 @@ const CONDITION_STRIPE = {
 }
 
 function Products() {
-    const [searchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
+
+  const [search, setSearch] = useState('')
   const [activeCategory, setActiveCategory] = useState(searchParams.get('category') || 'All')
   const [activeMake, setActiveMake] = useState(searchParams.get('make') || 'All')
   const [activeModel, setActiveModel] = useState(searchParams.get('model') || 'All')
-  const initialCategory = searchParams.get('category') || 'All'
-  const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
 
-  // Synchronize category state whenever URL search parameters change
-   useEffect(() => {
+  const [categories, setCategories] = useState([])
+  const [makes, setMakes] = useState([])
+
+  const [items, setItems] = useState([])
+  const [totalResults, setTotalResults] = useState(0)
+  const [totalPages, setTotalPages] = useState(1)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+
+  // Sync filters whenever the URL changes (e.g. navbar/category links)
+  useEffect(() => {
     setActiveCategory(searchParams.get('category') || 'All')
     setActiveMake(searchParams.get('make') || 'All')
     setActiveModel(searchParams.get('model') || 'All')
   }, [searchParams])
 
-  const modelOptions = activeMake === 'All' ? [] : MAKES_MODELS[activeMake]
+  // Load filter options once
+  useEffect(() => {
+    fetch(`${API_BASE}/categories`).then((r) => r.json()).then(setCategories).catch(() => {})
+    fetch(`${API_BASE}/makes`).then((r) => r.json()).then(setMakes).catch(() => {})
+  }, [])
 
-  const filtered = useMemo(() => {
-    return PRODUCTS.filter((p) => {
-      const matchesCategory = activeCategory === 'All' || p.category === activeCategory
-      const matchesMake = activeMake === 'All' || p.fitment.some((f) => f.make === activeMake)
-      const matchesModel = activeModel === 'All' || p.fitment.some((f) => f.model === activeModel)
-      const matchesSearch =
-        p.name.toLowerCase().includes(search.toLowerCase()) ||
-        p.partNo.toLowerCase().includes(search.toLowerCase())
-      return matchesCategory && matchesMake && matchesModel && matchesSearch
-    })
+  // Reset to page 1 whenever a filter changes
+  useEffect(() => {
+    setPage(1)
   }, [activeCategory, activeMake, activeModel, search])
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
-  const pageItems = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+  // Fetch products whenever any filter or page changes
+  useEffect(() => {
+    setLoading(true)
+    setError('')
 
-  useEffect(() => setPage(1), [activeCategory, activeMake, activeModel, search])
+    const params = new URLSearchParams()
+    params.set('page', page)
+    if (activeCategory !== 'All') params.set('category', activeCategory)
+    if (activeMake !== 'All') params.set('make', activeMake)
+    if (activeModel !== 'All') params.set('model', activeModel)
+    if (search) params.set('search', search)
+
+    fetch(`${API_BASE}/products?${params.toString()}`)
+      .then((res) => {
+        if (!res.ok) throw new Error('Request failed')
+        return res.json()
+      })
+      .then((data) => {
+        setItems(data.items)
+        setTotalResults(data.total)
+        setTotalPages(data.totalPages)
+      })
+      .catch(() => {
+        setItems([])
+        setTotalResults(0)
+        setTotalPages(1)
+        setError('Could not load products — is the backend running?')
+      })
+      .finally(() => setLoading(false))
+  }, [activeCategory, activeMake, activeModel, search, page])
+
+  const modelOptions = activeMake === 'All'
+    ? []
+    : makes.find((m) => m.name === activeMake)?.models || []
 
   return (
     <div className="bg-steel min-h-screen">
@@ -67,7 +102,7 @@ function Products() {
         />
         <div className="relative max-w-7xl mx-auto px-6 md:px-10">
           <span className="font-mono text-xs tracking-widest text-blueprint uppercase">
-            27,000+ SKUs in catalog
+            Full Catalog
           </span>
           <h1 className="font-display font-semibold text-3xl md:text-4xl text-ink mt-2 mb-6">
             Product Catalog
@@ -94,7 +129,7 @@ function Products() {
               Category
             </span>
             <ul className="space-y-1">
-              {['All', ...CATEGORIES].map((cat) => (
+              {['All', ...categories.map((c) => c.name)].map((cat) => (
                 <li key={cat}>
                   <button
                     onClick={() => setActiveCategory(cat)}
@@ -116,16 +151,11 @@ function Products() {
             <label className="text-xs font-body text-slate block mb-1">Make</label>
             <select
               value={activeMake}
-              onChange={(e) => {
-                setActiveMake(e.target.value)
-                setActiveModel('All')
-              }}
+              onChange={(e) => { setActiveMake(e.target.value); setActiveModel('All') }}
               className="w-full bg-steel border border-ink/10 rounded-md px-3 py-2 text-sm font-body text-ink mb-3 focus:outline-none focus:border-blueprint"
             >
               <option>All</option>
-              {Object.keys(MAKES_MODELS).map((m) => (
-                <option key={m}>{m}</option>
-              ))}
+              {makes.map((m) => <option key={m.id} value={m.name}>{m.name}</option>)}
             </select>
 
             <label className="text-xs font-body text-slate block mb-1">Model</label>
@@ -136,9 +166,7 @@ function Products() {
               className="w-full bg-steel border border-ink/10 rounded-md px-3 py-2 text-sm font-body text-ink disabled:opacity-40 focus:outline-none focus:border-blueprint"
             >
               <option>All</option>
-              {modelOptions.map((m) => (
-                <option key={m}>{m}</option>
-              ))}
+              {modelOptions.map((m) => <option key={m.id} value={m.name}>{m.name}</option>)}
             </select>
           </div>
         </aside>
@@ -147,50 +175,52 @@ function Products() {
         <div>
           <div className="flex items-center justify-between mb-6 flex-wrap gap-2">
             <span className="font-mono text-xs text-slate/60">
-              {filtered.length.toLocaleString()} {filtered.length === 1 ? 'result' : 'results'}
+              {loading ? 'Loading…' : `${totalResults.toLocaleString()} ${totalResults === 1 ? 'result' : 'results'}`}
             </span>
-            {filtered.length > 0 && (
-              <span className="font-mono text-xs text-slate/40">
-                Page {page} of {totalPages}
-              </span>
+            {!loading && totalResults > 0 && (
+              <span className="font-mono text-xs text-slate/40">Page {page} of {totalPages}</span>
             )}
           </div>
 
-          {filtered.length === 0 ? (
+          {error && (
+            <div className="bg-ignition/10 border border-ignition/30 text-ignition font-body text-sm px-4 py-3 rounded-md mb-6">
+              {error}
+            </div>
+          )}
+
+          {!loading && items.length === 0 && !error ? (
             <div className="text-center py-20 text-slate font-body">
               No parts match your search — try a different keyword or filter.
             </div>
           ) : (
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {pageItems.map((p, i) => (
+                {items.map((p, i) => (
                   <Reveal key={p.id} delay={(i % 6) * 0.05}>
                     <Link
                       to={`/products/${p.id}`}
                       className="group relative block bg-paper border border-ink/10 rounded-lg overflow-hidden hover:border-blueprint hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 h-full flex flex-col"
                     >
-                      <span className={`absolute top-0 left-0 right-0 h-[3px] ${CONDITION_STRIPE[p.condition]}`} />
+                      <span className={`absolute top-0 left-0 right-0 h-[3px] ${CONDITION_STRIPE[p.condition] || 'bg-blueprint'}`} />
 
-                      {[
-                        'top-3 left-2 border-t border-l',
-                        'top-3 right-2 border-t border-r',
-                      ].map((pos) => (
-                        <span
-                          key={pos}
-                          className={`absolute ${pos} w-3 h-3 border-blueprint opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10`}
-                        />
+                      {['top-3 left-2 border-t border-l', 'top-3 right-2 border-t border-r'].map((pos) => (
+                        <span key={pos} className={`absolute ${pos} w-3 h-3 border-blueprint opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10`} />
                       ))}
 
                       {p.images && p.images.length > 0 && (
                         <div className="h-36 bg-steel border-b border-ink/10">
-                          <img src={p.images[0]} alt={p.name} className="w-full h-full object-cover" />
+                          <img
+                            src={`http://localhost:4000${p.images[0].url}`}
+                            alt={p.name}
+                            className="w-full h-full object-cover"
+                          />
                         </div>
                       )}
 
                       <div className="p-5 flex flex-col flex-grow pt-6">
                         <div className="flex items-center justify-between mb-1">
                           <span className="font-mono text-[10px] tracking-widest text-blueprint uppercase">
-                            {p.category}
+                            {p.category?.name}
                           </span>
                           <span className="font-mono text-[10px] text-slate/50 uppercase">
                             {p.partBrand}
@@ -202,7 +232,7 @@ function Products() {
 
                         <div className="flex items-center gap-3 text-[10px] font-mono uppercase text-slate/60 mb-3">
                           <span className="flex items-center gap-1.5">
-                            <span className={`w-1.5 h-1.5 rounded-full ${STOCK_DOT[p.stock]}`} /> {p.stock}
+                            <span className={`w-1.5 h-1.5 rounded-full ${STOCK_DOT[p.stock] || 'bg-blueprint'}`} /> {p.stock}
                           </span>
                           <span>· {p.condition}</span>
                         </div>
@@ -210,14 +240,14 @@ function Products() {
                         <div className="mt-auto pt-3 border-t border-ink/5 space-y-1.5">
                           <div className="flex items-baseline justify-between">
                             <span className="font-body font-medium text-ink text-sm">
-                              PKR {p.price.toLocaleString()}
+                              PKR {p.price?.toLocaleString()}
                             </span>
                             <span className="font-mono text-[10px] text-slate/50 uppercase">
                               Min {p.moq} {p.unit}
                             </span>
                           </div>
                           <div className="font-mono text-[10px] text-blueprint uppercase">
-                            Wholesale PKR {p.wholesalePrice.toLocaleString()} at {p.wholesaleMinQty}+ {p.unit}
+                            Wholesale PKR {p.wholesalePrice?.toLocaleString()} at {p.wholesaleMinQty}+ {p.unit}
                           </div>
                         </div>
                       </div>
@@ -235,9 +265,7 @@ function Products() {
                   >
                     <FaChevronLeft size={12} />
                   </button>
-                  <span className="font-mono text-xs text-slate/60 px-4">
-                    {page} / {totalPages}
-                  </span>
+                  <span className="font-mono text-xs text-slate/60 px-4">{page} / {totalPages}</span>
                   <button
                     onClick={() => setPage((v) => Math.min(totalPages, v + 1))}
                     disabled={page === totalPages}
