@@ -21,7 +21,7 @@ const INQUIRY_TYPES = [
   'Part Cross-Reference Request',
   'General Inquiry',
 ]
-
+const API_BASE = 'http://localhost:4000/api'
 const FAQS = [
   {
     q: 'How do I verify if a part fits my specific car model?',
@@ -63,16 +63,27 @@ function Contact() {
     setIsOpenNow(day !== 0 && hour >= 9 && hour < 20)
   }, [])
 
-  const handleSubmit = (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault()
     if (!form.name || !form.phone || !form.message) {
       setError('Name, phone, and message are required.')
       return
     }
     setError('')
-    setSubmitted(true)
-  }
 
+    try {
+      const res = await fetch(`${API_BASE}/inquiries/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      })
+      if (!res.ok) throw new Error('Submit failed')
+      setSubmitted(true)
+    } catch (err) {
+      setError('Could not send your message — please check your connection and try again.')
+    }
+  }
+  
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text)
     setCopiedPhone(text)
