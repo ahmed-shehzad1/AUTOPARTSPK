@@ -3,6 +3,7 @@ import { FaCheckCircle, FaTruck, FaHeadset, FaTags, FaMoneyBillWave } from 'reac
 import Reveal from '../../components/common/Reveal'
 import { CATEGORIES } from '../../data/products'
 import { useLocation } from 'react-router-dom'
+const API_BASE = 'http://localhost:4000/api'
 
 const VOLUME_OPTIONS = [
   'Under PKR 50,000 / month',
@@ -35,16 +36,25 @@ function Wholesale() {
     }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (!form.businessName || !form.contactName || !form.phone) {
       setError('Business name, contact name, and phone number are required.')
       return
     }
     setError('')
-    // No backend yet — this is where a real API call goes once one exists.
-    // e.g. await fetch('/api/wholesale-inquiries', { method: 'POST', body: JSON.stringify(form) })
-    setSubmitted(true)
+
+    try {
+      const res = await fetch(`${API_BASE}/inquiries/wholesale`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      })
+      if (!res.ok) throw new Error('Submit failed')
+      setSubmitted(true)
+    } catch (err) {
+      setError('Could not submit your inquiry — please check your connection and try again.')
+    }
   }
 
   return (
