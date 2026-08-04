@@ -9,6 +9,7 @@ import { FaUserCircle } from 'react-icons/fa'
 import { useAuth } from '../../context/AuthContext'
 
 
+
 function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [catOpen, setCatOpen] = useState(false)
@@ -28,10 +29,24 @@ useEffect(() => {
   return (
     <header className="sticky top-0 z-50 bg-paper/80 backdrop-blur-xl border-b border-ink/10 shadow-sm transition-all">
       <div className="max-w-7xl mx-auto flex justify-between items-center px-6 md:px-10 py-4">
-        {/* Logo */}
-        <Link to="/" className="font-display font-black text-2xl text-ink tracking-tight hover:opacity-80 transition-opacity" onClick={closeMobile}>
-          Al Madina <span className="text-transparent bg-clip-text bg-gradient-to-r from-blueprint to-blue-600">Autos</span>
-        </Link>
+      <Link
+  to="/"
+  className="flex items-center gap-3 hover:opacity-80 transition-opacity"
+  onClick={closeMobile}
+>
+ <img
+  src="/resized logo.png"
+  alt="Al Madina Autos Logo"
+  className="w-12 h-12 object-contain"
+/>
+
+  <span className="font-display font-black text-2xl text-ink tracking-tight">
+    Al Madina{" "}
+    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blueprint to-blue-600">
+      Autos
+    </span>
+  </span>
+</Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-8 font-body text-sm font-semibold text-slate">
