@@ -6,6 +6,7 @@ const path = require('path')
 const uploadRouter = require('./routes/upload')
 const ordersRouter = require('./routes/orders')
 const API_BASE = 'http://localhost:4000/api'
+const inquiriesRouter = require('./routes/inquiries')
 require('dotenv').config()
 
 const app = express()
@@ -23,6 +24,7 @@ app.use('/api', catalogRouter)
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')))
 app.use('/api/upload', uploadRouter)
 app.use('/api/orders', ordersRouter)
+app.use('/api/inquiries', inquiriesRouter)
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`)
 })
