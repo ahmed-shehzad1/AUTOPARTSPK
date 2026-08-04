@@ -6,6 +6,7 @@ import CategoryList from './pages/Categories/CategoryList'
 import VehicleList from './pages/Vehicles/VehicleList'
 import BulkAddProducts from './pages/Products/BulkAddProducts'
 import OrderList from './pages/Orders/OrderList'
+import InquiryList from './pages/Inquiries/InquiryList'
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/vehicles" element={<VehicleList />} />
           <Route path="/products/bulk-add" element={<BulkAddProducts />} />
           <Route path="/orders" element={<OrderList />} />
+          <Route path="/inquiries" element={<InquiryList />} />
         </Route>
       </Routes>
     </BrowserRouter>
