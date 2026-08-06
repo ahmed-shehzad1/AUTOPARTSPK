@@ -1,0 +1,42 @@
+const express = require('express')
+const prisma = require('../db')
+
+const router = express.Router()
+
+// Company Info — single record
+router.get('/company', async (req, res) => {
+  const info = await prisma.companyInfo.findUnique({ where: { id: 'singleton' } })
+  res.json(info)
+})
+
+router.put('/company', async (req, res) => {
+  try {
+    const info = await prisma.companyInfo.update({
+      where: { id: 'singleton' },
+      data: req.body,
+    })
+    res.json(info)
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to update company info.' })
+  }
+})
+
+// Site Stats
+router.get('/stats', async (req, res) => {
+  const stats = await prisma.siteStat.findMany({ orderBy: { order: 'asc' } })
+  res.json(stats)
+})
+
+router.put('/stats/:id', async (req, res) => {
+  try {
+    const stat = await prisma.siteStat.update({
+      where: { id: req.params.id },
+      data: { label: req.body.label, value: req.body.value },
+    })
+    res.json(stat)
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to update stat.' })
+  }
+})
+
+module.exports = router
