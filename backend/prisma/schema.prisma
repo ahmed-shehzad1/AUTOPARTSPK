@@ -137,3 +137,24 @@ model AdminUser {
   role      String   @default("staff") // "admin" | "staff"
   createdAt DateTime @default(now())
 }
+
+model CompanyInfo {
+  id               String  @id @default("singleton")
+  name             String
+  tagline          String
+  phone1Label      String
+  phone1Number     String
+  phone2Label      String
+  phone2Number     String
+  address          String?
+  regionWholesale  String
+  regionRetail     String
+  deliveryNote     String
+}
+
+model SiteStat {
+  id    String @id @default(cuid())
+  label String
+  value String
+  order Int    @default(0)
+}
