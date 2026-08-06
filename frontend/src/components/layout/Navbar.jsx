@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FaWhatsapp, FaBars, FaTimes, FaChevronDown } from 'react-icons/fa'
 import { CATEGORY_MENU } from '../../data/categoryMenu'
-import { COMPANY } from '../../data/companyInfo'
+import { useCompanyInfo } from '../../hooks/useCompanyInfo'
 import { FaShoppingCart } from 'react-icons/fa'
 import { useCart } from '../../context/CartContext'
 import { FaUserCircle } from 'react-icons/fa'
@@ -25,6 +25,7 @@ useEffect(() => {
     setMobileOpen(false)
     setCatOpen(false)
   }
+  const company = useCompanyInfo()
 
   return (
     <header className="sticky top-0 z-50 bg-paper/80 backdrop-blur-xl border-b border-ink/10 shadow-sm transition-all">
@@ -61,13 +62,13 @@ useEffect(() => {
         {/* Right Actions */}
         <div className="flex items-center gap-4">
           <a
-            href={`https://wa.me/${COMPANY.phones[0].whatsapp}`}
+            href={`https://wa.me/${company.phones[0].whatsapp}`}
             target="_blank"
             rel="noopener noreferrer"
             className="hidden sm:flex items-center gap-2 text-sm font-mono text-slate hover:text-emerald-600 transition-colors group font-semibold"
           >
             <FaWhatsapp className="text-lg text-emerald-500 group-hover:scale-110 transition-transform" /> 
-            {COMPANY.phones[0].number}
+            {company.phones[0].number}
           </a>
           
        <Link to="/cart" className="relative h-10 w-10 flex items-center justify-center rounded-md border border-ink/10 text-ink hover:border-blueprint hover:text-blueprint transition-colors">
@@ -130,7 +131,7 @@ useEffect(() => {
 
           <div className="pt-6 pb-2 flex flex-col gap-4">
             <a
-              href={`https://wa.me/${COMPANY.phones[0].whatsapp}`}
+              href={`https://wa.me/${company.phones[0].whatsapp}`}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 font-mono font-bold text-sm text-ink bg-steel/50 py-3 rounded-lg hover:bg-emerald-50 hover:text-emerald-700 transition-colors"

@@ -16,7 +16,7 @@ import {
   FaBoxes
 } from 'react-icons/fa'
 import Reveal from '../../components/common/Reveal'
-import { COMPANY } from '../../data/companyInfo'
+import { useCompanyInfo } from '../../hooks/useCompanyInfo'
 
 const STATS = [
   { label: 'SKUs Managed', value: '27,000+' },
@@ -48,6 +48,7 @@ const PILLARS = [
   },
 ]
 
+
 const PROCESS_STEPS = [
   {
     step: '01',
@@ -73,6 +74,7 @@ const PROCESS_STEPS = [
 
 function About() {
   const [scrollY, setScrollY] = useState(0)
+  const company = useCompanyInfo()
 
   // Scroll position listener for subtle parallax effects
   useEffect(() => {
@@ -116,9 +118,9 @@ function About() {
             </h1>
 
             <p className="font-body text-slate text-base md:text-lg max-w-2xl mb-8 leading-relaxed">
-              {COMPANY.name} supplies genuine and premium aftermarket auto spare parts at direct wholesale rates across{' '}
-              <strong className="text-ink font-medium">{COMPANY.regionWholesale}</strong>, with nationwide retail sales and express delivery available across{' '}
-              <strong className="text-ink font-medium">{COMPANY.regionRetail}</strong>.
+              {company.name} supplies genuine and premium aftermarket auto spare parts at direct wholesale rates across{' '}
+              <strong className="text-ink font-medium">{company.regionWholesale}</strong>, with nationwide retail sales and express delivery available across{' '}
+              <strong className="text-ink font-medium">{company.regionRetail}</strong>.
             </p>
 
             <div className="flex flex-wrap gap-4">
@@ -176,7 +178,7 @@ function About() {
               [
                 FaWarehouse,
                 'Wholesale Supply',
-                `Bulk and dealer pricing on genuine spare parts engineered for workshops, fleet managers, and spare part retailers across ${COMPANY.regionWholesale}.`,
+                `Bulk and dealer pricing on genuine spare parts engineered for workshops, fleet managers, and spare part retailers across ${company.regionWholesale}.`,
                 'Bulk Orders & Quotes',
               ],
               [
@@ -338,12 +340,12 @@ function About() {
                       Wholesale Hub
                     </span>
                     <h3 className="font-display font-semibold text-ink text-lg">
-                      {COMPANY.regionWholesale}
+                      {company.regionWholesale}
                     </h3>
                   </div>
                 </div>
                 <p className="font-body text-sm text-slate leading-relaxed mb-6">
-                  Bulk order fulfillment, scheduled delivery runs, and direct workshop accounts servicing businesses across {COMPANY.regionWholesale}.
+                  Bulk order fulfillment, scheduled delivery runs, and direct workshop accounts servicing businesses across {company.regionWholesale}.
                 </p>
                 <div className="flex items-center gap-2 font-mono text-xs text-ink/70 bg-steel p-3 rounded-md border border-ink/5">
                   <FaBoxes className="text-blueprint shrink-0" />
@@ -362,12 +364,12 @@ function About() {
                       Retail Logistics
                     </span>
                     <h3 className="font-display font-semibold text-ink text-lg">
-                      {COMPANY.regionRetail}
+                      {company.regionRetail}
                     </h3>
                   </div>
                 </div>
                 <p className="font-body text-sm text-slate leading-relaxed mb-6">
-                  {COMPANY.deliveryNote}
+                  {company.deliveryNote}
                 </p>
                 <div className="flex items-center gap-2 font-mono text-xs text-ink/70 bg-steel p-3 rounded-md border border-ink/5">
                   <FaTruck className="text-blueprint shrink-0" />
@@ -405,7 +407,7 @@ function About() {
                   </h2>
 
                   <div className="space-y-4">
-                    {COMPANY.phones.map((p) => (
+                    {company.phones.map((p) => (
                       <div key={p.number} className="flex flex-wrap items-center gap-6">
                         <a
                           href={`tel:${p.tel}`}
@@ -426,7 +428,7 @@ function About() {
 
                     <div className="flex items-center gap-2.5 font-mono text-sm text-steel/70 pt-2 border-t border-paper/10">
                       <FaMapMarkerAlt className="text-blueprint-light shrink-0" size={13} />
-                      {COMPANY.address ?? <span className="italic">Address details available on contact page</span>}
+                      {company.address ?? <span className="italic">Address details available on contact page</span>}
                     </div>
                   </div>
                 </div>

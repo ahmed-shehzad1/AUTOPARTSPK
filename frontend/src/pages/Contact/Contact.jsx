@@ -12,7 +12,7 @@ import {
   FaBoxes,
 } from 'react-icons/fa'
 import Reveal from '../../components/common/Reveal'
-import { COMPANY } from '../../data/companyInfo'
+import { useCompanyInfo } from '../../hooks/useCompanyInfo'
 
 const INQUIRY_TYPES = [
   'Part Availability & Fitment',

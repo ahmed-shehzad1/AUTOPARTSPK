@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { COMPANY } from '../../data/companyInfo'
+import { useCompanyInfo } from '../../hooks/useCompanyInfo'
 import {
   FaFacebook,
   FaInstagram,
@@ -9,7 +9,10 @@ import {
 } from 'react-icons/fa'
 
 function Footer() {
+  const company = useCompanyInfo()
   return (
+
+    
     <footer className="relative overflow-hidden bg-ink text-steel/80">
       {/* Fading top hairline */}
       <div className="h-px w-full bg-gradient-to-r from-transparent via-blueprint/50 to-transparent" />
@@ -77,7 +80,7 @@ function Footer() {
             </h4>
 
             <ul className="space-y-4 text-sm font-body font-medium text-steel/70">
-              {COMPANY.phones.map((p) => (
+              {company.phones.map((p) => (
                 <li key={p.number}>
                   <a href={`tel:${p.tel}`} className="group flex items-start gap-3 hover:text-white transition-colors duration-300">
                     <FaPhoneAlt className="text-blueprint mt-1 shrink-0 group-hover:scale-110 transition-transform" size={12} />
@@ -90,7 +93,7 @@ function Footer() {
               <li className="flex items-start gap-3 pt-2">
                 <FaMapMarkerAlt className="text-blueprint mt-1 shrink-0" size={12} />
                 <span className="leading-relaxed">
-                  {COMPANY.address ?? <span className="italic text-steel/40">Address coming soon</span>}
+                  {company.address ?? <span className="italic text-steel/40">Address coming soon</span>}
                 </span>
               </li>
             </ul>
