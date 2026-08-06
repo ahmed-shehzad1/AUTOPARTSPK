@@ -26,6 +26,7 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads')))
 app.use('/api/upload', uploadRouter)
 app.use('/api/orders', ordersRouter)
 app.use('/api/inquiries', inquiriesRouter)
+app.use('/api/settings', settingsRouter)
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`)
 })
