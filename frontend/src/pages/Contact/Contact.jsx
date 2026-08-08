@@ -175,8 +175,8 @@ const handleSubmit = async (e) => {
               </span>
 
               <div className="space-y-5">
-                {company.phones.map((p) => (
-                  <div key={p.number} className="group flex items-start justify-between">
+                {company.phones.map((p, i) => (
+  <div key={p.label || i} className="group flex items-start justify-between">
                     <div>
                       <p className="font-mono text-[10px] text-blueprint uppercase mb-0.5">
                         {p.label}

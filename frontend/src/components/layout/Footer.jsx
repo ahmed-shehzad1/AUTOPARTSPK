@@ -80,12 +80,12 @@ function Footer() {
             </h4>
 
             <ul className="space-y-4 text-sm font-body font-medium text-steel/70">
-              {company.phones.map((p) => (
-                <li key={p.number}>
+              {company.phones.map((p, i) => (
+                <li key={p.label || i}>
                   <a href={`tel:${p.tel}`} className="group flex items-start gap-3 hover:text-white transition-colors duration-300">
                     <FaPhoneAlt className="text-blueprint mt-1 shrink-0 group-hover:scale-110 transition-transform" size={12} />
                     <span>
-                      {p.number} <span className="text-steel/40 block text-xs mt-0.5 uppercase tracking-wider">{p.label}</span>
+                      {p.label || i} <span className="text-steel/40 block text-xs mt-0.5 uppercase tracking-wider">{p.label}</span>
                     </span>
                   </a>
                 </li>
