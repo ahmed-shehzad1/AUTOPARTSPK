@@ -35,26 +35,23 @@ const STOCK_DOT = {
   Backorder: 'bg-slate',
 }
 
-const SITE_STATS = [
-  { id: 'stat-1', label: 'Catalog SKUs', value: '27,000+' },
-  { id: 'stat-2', label: 'Workshop Partners', value: '500+' },
-  { id: 'stat-3', label: 'Cities Covered', value: '120+' },
-  { id: 'stat-4', label: 'Years in Business', value: '15+' },
-]
+
 
 function Home() {
   const navigate = useNavigate()
   const [selectedMake, setSelectedMake] = useState('')
   const [selectedModel, setSelectedModel] = useState('')
 
-  const [categories, setCategories] = useState([])
-  const [makes, setMakes] = useState([])
-  const [featuredProducts, setFeaturedProducts] = useState([])
+const [categories, setCategories] = useState([])
+const [makes, setMakes] = useState([])
+const [featuredProducts, setFeaturedProducts] = useState([])
+const [siteStats, setSiteStats] = useState([])
 
   useEffect(() => {
     fetch(`${API_BASE}/categories`).then((r) => r.json()).then(setCategories).catch(() => {})
     fetch(`${API_BASE}/makes`).then((r) => r.json()).then(setMakes).catch(() => {})
     fetch(`${API_BASE}/products?page=1&pageSize=4`)
+    fetch(`${API_BASE}/settings/stats`).then((r) => r.json()).then(setSiteStats).catch(() => {})
       .then((r) => r.json())
       .then((data) => setFeaturedProducts(data.items || []))
       .catch(() => {})
