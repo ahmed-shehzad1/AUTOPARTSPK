@@ -8,10 +8,12 @@ import BulkAddProducts from './pages/Products/BulkAddProducts'
 import OrderList from './pages/Orders/OrderList'
 import InquiryList from './pages/Inquiries/InquiryList'
 import Settings from './pages/Settings/Settings'
+import { Toaster } from 'sonner'
 
 function App() {
   return (
     <BrowserRouter>
+    <Toaster position="top-center" richColors />
       <Routes>
         <Route element={<AdminLayout />}>
           <Route path="/" element={<div className="p-8 font-body text-slate">Dashboard — coming soon</div>} />
