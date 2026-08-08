@@ -49,6 +49,7 @@ function Contact() {
     inquiryType: INQUIRY_TYPES[0],
     message: '',
   })
+  const company = useCompanyInfo()
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
   const [copiedPhone, setCopiedPhone] = useState(null)
@@ -120,7 +121,7 @@ const handleSubmit = async (e) => {
               Direct Support &amp; Sales
             </span>
             <h1 className="font-display font-semibold text-3xl sm:text-4xl md:text-5xl text-ink mb-4">
-              Contact {COMPANY.name}
+              Contact {company.name}
             </h1>
             <p className="font-body text-slate max-w-2xl text-base leading-relaxed">
               Have a question regarding part compatibility, bulk pricing, or order delivery? Reach out to our technical team directly via phone, WhatsApp, or through the inquiry form below.
@@ -151,9 +152,9 @@ const handleSubmit = async (e) => {
                 <FaWhatsapp size={36} className="text-paper/20 shrink-0" />
               </div>
 
-              {COMPANY.phones[0] && (
+              {company.phones[0] && (
                 <a
-                  href={`https://wa.me/${COMPANY.phones[0].whatsapp}?text=${encodeURIComponent(
+                  href={`https://wa.me/${company.phones[0].whatsapp}?text=${encodeURIComponent(
                     'Hi AutoPartsPK, I have an inquiry about part fitment and availability.'
                   )}`}
                   target="_blank"
@@ -174,7 +175,7 @@ const handleSubmit = async (e) => {
               </span>
 
               <div className="space-y-5">
-                {COMPANY.phones.map((p) => (
+                {company.phones.map((p) => (
                   <div key={p.number} className="group flex items-start justify-between">
                     <div>
                       <p className="font-mono text-[10px] text-blueprint uppercase mb-0.5">
@@ -229,7 +230,7 @@ const handleSubmit = async (e) => {
               <div className="flex items-start gap-2.5 font-body text-sm text-ink mb-3">
                 <FaMapMarkerAlt className="text-blueprint shrink-0 mt-1" size={14} />
                 <span>
-                  {COMPANY.address ?? (
+                  {company.address ?? (
                     <span className="italic text-slate">Main Hub Address Available Upon Request</span>
                   )}
                 </span>
@@ -237,11 +238,11 @@ const handleSubmit = async (e) => {
               <div className="space-y-1.5 font-mono text-xs text-slate/80 bg-steel p-3 rounded-md border border-ink/5">
                 <div className="flex items-center gap-2">
                   <FaBoxes className="text-blueprint" size={12} />
-                  <span>Wholesale Hub: {COMPANY.regionWholesale}</span>
+                  <span>Wholesale Hub: {company.regionWholesale}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <FaMapMarkerAlt className="text-blueprint" size={12} />
-                  <span>Retail Logistics: {COMPANY.regionRetail}</span>
+                  <span>Retail Logistics: {company.regionRetail}</span>
                 </div>
               </div>
             </div>
