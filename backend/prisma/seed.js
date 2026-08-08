@@ -38,11 +38,7 @@ async function main() {
     }
   }
 
-
-  console.log('Seed complete.')
-}
-
-await prisma.companyInfo.upsert({
+  await prisma.companyInfo.upsert({
     where: { id: 'singleton' },
     update: {},
     create: {
@@ -71,6 +67,8 @@ await prisma.companyInfo.upsert({
     if (!existing) await prisma.siteStat.create({ data: stat })
   }
 
+  console.log('Seed complete.')
+}
 
 main()
   .catch((e) => { console.error(e); process.exit(1) })

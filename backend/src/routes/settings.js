@@ -5,8 +5,14 @@ const router = express.Router()
 
 // Company Info — single record
 router.get('/company', async (req, res) => {
-  const info = await prisma.companyInfo.findUnique({ where: { id: 'singleton' } })
-  res.json(info)
+  try {
+    const info = await prisma.companyInfo.findUnique({ where: { id: 'singleton' } })
+    console.log('CompanyInfo query result:', info)
+    res.json(info)
+  } catch (err) {
+    console.error('CompanyInfo query FAILED:', err)
+    res.status(500).json({ error: 'Failed to fetch company info.' })
+  }
 })
 
 router.put('/company', async (req, res) => {
