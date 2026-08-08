@@ -243,7 +243,7 @@ const [siteStats, setSiteStats] = useState([])
       {/* Stats strip */}
       <section className="bg-ink py-20">
         <div className="max-w-7xl mx-auto px-6 md:px-10 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          {SITE_STATS.map((stat, i) => (
+         {siteStats.map((stat, i) => (
             <Reveal key={stat.id} delay={i * 0.1}>
               <div>
                 <span className="font-display font-bold text-3xl md:text-4xl text-blueprint-light block mb-2">
