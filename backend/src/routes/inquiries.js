@@ -1,9 +1,13 @@
 const express = require('express')
 const prisma = require('../db')
+const requireAuth = require('../middleware/requireAuth')
+
 
 const router = express.Router()
 
+
 // ---- Wholesale Inquiries ----
+
 
 router.get('/wholesale', async (req, res) => {
   try {
@@ -18,6 +22,7 @@ router.get('/wholesale', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch wholesale inquiries.' })
   }
 })
+
 
 router.post('/wholesale', async (req, res) => {
   try {
@@ -42,7 +47,8 @@ router.post('/wholesale', async (req, res) => {
   }
 })
 
-router.patch('/wholesale/:id', async (req, res) => {
+
+router.patch('/wholesale/:id', requireAuth, async (req, res) => {
   try {
     const inquiry = await prisma.wholesaleInquiry.update({
       where: { id: req.params.id },
@@ -54,7 +60,9 @@ router.patch('/wholesale/:id', async (req, res) => {
   }
 })
 
+
 // ---- Contact Messages ----
+
 
 router.get('/contact', async (req, res) => {
   try {
@@ -69,6 +77,7 @@ router.get('/contact', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch contact messages.' })
   }
 })
+
 
 router.post('/contact', async (req, res) => {
   try {
@@ -86,7 +95,8 @@ router.post('/contact', async (req, res) => {
   }
 })
 
-router.patch('/contact/:id', async (req, res) => {
+
+router.patch('/contact/:id', requireAuth, async (req, res) => {
   try {
     const message = await prisma.contactMessage.update({
       where: { id: req.params.id },
@@ -97,5 +107,6 @@ router.patch('/contact/:id', async (req, res) => {
     res.status(500).json({ error: 'Failed to update message.' })
   }
 })
+
 
 module.exports = router

@@ -1,7 +1,10 @@
 const express = require('express')
 const prisma = require('../db')
+const requireAuth = require('../middleware/requireAuth')
+
 
 const router = express.Router()
+
 
 // Company Info — single record
 router.get('/company', async (req, res) => {
@@ -15,7 +18,8 @@ router.get('/company', async (req, res) => {
   }
 })
 
-router.put('/company', async (req, res) => {
+
+router.put('/company', requireAuth, async (req, res) => {
   try {
     const info = await prisma.companyInfo.update({
       where: { id: 'singleton' },
@@ -27,13 +31,15 @@ router.put('/company', async (req, res) => {
   }
 })
 
+
 // Site Stats
 router.get('/stats', async (req, res) => {
   const stats = await prisma.siteStat.findMany({ orderBy: { order: 'asc' } })
   res.json(stats)
 })
 
-router.put('/stats/:id', async (req, res) => {
+
+router.put('/stats/:id', requireAuth, async (req, res) => {
   try {
     const stat = await prisma.siteStat.update({
       where: { id: req.params.id },
@@ -44,5 +50,6 @@ router.put('/stats/:id', async (req, res) => {
     res.status(500).json({ error: 'Failed to update stat.' })
   }
 })
+
 
 module.exports = router
