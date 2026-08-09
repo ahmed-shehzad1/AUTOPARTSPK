@@ -99,20 +99,20 @@ function ProductList() {
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-ink/10 bg-steel/40">
-            <th className="text-left font-mono text-[10px] tracking-widest text-slate/60 uppercase px-5 py-3">Featured</th>
-              <th className="text-left font-mono text-[10px] tracking-widest text-slate/60 uppercase px-5 py-3">Part No.</th>
-              <th className="text-left font-mono text-[10px] tracking-widest text-slate/60 uppercase px-5 py-3">Name</th>
-              <th className="text-left font-mono text-[10px] tracking-widest text-slate/60 uppercase px-5 py-3">Category</th>
-              <th className="text-left font-mono text-[10px] tracking-widest text-slate/60 uppercase px-5 py-3">Price</th>
-              <th className="text-left font-mono text-[10px] tracking-widest text-slate/60 uppercase px-5 py-3">Stock</th>
-              <th className="text-right font-mono text-[10px] tracking-widest text-slate/60 uppercase px-5 py-3">Actions</th>
-            </tr>
+  <th className="text-left font-mono text-[10px] tracking-widest text-slate/60 uppercase px-5 py-3">Part No.</th>
+  <th className="text-left font-mono text-[10px] tracking-widest text-slate/60 uppercase px-5 py-3">Name</th>
+  <th className="text-left font-mono text-[10px] tracking-widest text-slate/60 uppercase px-5 py-3">Category</th>
+  <th className="text-left font-mono text-[10px] tracking-widest text-slate/60 uppercase px-5 py-3">Price</th>
+  <th className="text-left font-mono text-[10px] tracking-widest text-slate/60 uppercase px-5 py-3">Stock</th>
+  <th className="text-left font-mono text-[10px] tracking-widest text-slate/60 uppercase px-5 py-3">Featured</th>
+  <th className="text-right font-mono text-[10px] tracking-widest text-slate/60 uppercase px-5 py-3">Actions</th>
+</tr>
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={6} className="text-center py-10 text-slate font-body">Loading…</td></tr>
-            ) : products.length === 0 ? (
-              <tr><td colSpan={6} className="text-center py-10 text-slate font-body">No products yet — add your first one.</td></tr>
+  <tr><td colSpan={7} className="text-center py-10 text-slate font-body">Loading…</td></tr>
+) : products.length === 0 ? (
+  <tr><td colSpan={7} className="text-center py-10 text-slate font-body">No products yet — add your first one.</td></tr>
             ) : (
               products.map((p) => (
                 <tr key={p.id} className="border-b border-ink/5 last:border-b-0 hover:bg-steel/20">
@@ -122,20 +122,20 @@ function ProductList() {
                   <td className="px-5 py-3 font-body text-ink">PKR {p.price?.toLocaleString()}</td>
                   <td className="px-5 py-3 font-mono text-xs text-slate">{p.stock}</td>
                   <td className="px-5 py-3">
-                    <td className="px-5 py-3">
   <button onClick={() => toggleFeatured(p)} className={p.featured ? 'text-gold' : 'text-slate/30 hover:text-gold'}>
     <FaStar size={14} />
   </button>
 </td>
-                    <div className="flex items-center justify-end gap-3">
-                      <Link to={`/products/${p.id}/edit`} className="text-slate hover:text-blueprint transition-colors">
-                        <FaEdit size={14} />
-                      </Link>
-                      <button onClick={() => handleDelete(p.id, p.name)} className="text-slate hover:text-ignition transition-colors">
-                        <FaTrash size={14} />
-                      </button>
-                    </div>
-                  </td>
+<td className="px-5 py-3">
+  <div className="flex items-center justify-end gap-3">
+    <Link to={`/products/${p.id}/edit`} className="text-slate hover:text-blueprint transition-colors">
+      <FaEdit size={14} />
+    </Link>
+    <button onClick={() => handleDelete(p.id, p.name)} className="text-slate hover:text-ignition transition-colors">
+      <FaTrash size={14} />
+    </button>
+  </div>
+</td>
                 </tr>
               ))
             )}

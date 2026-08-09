@@ -48,14 +48,15 @@ const [featuredProducts, setFeaturedProducts] = useState([])
 const [siteStats, setSiteStats] = useState([])
 
   useEffect(() => {
-    fetch(`${API_BASE}/categories`).then((r) => r.json()).then(setCategories).catch(() => {})
-    fetch(`${API_BASE}/makes`).then((r) => r.json()).then(setMakes).catch(() => {})
-    fetch(`${API_BASE}/products?page=1&pageSize=4`)
-    fetch(`${API_BASE}/settings/stats`).then((r) => r.json()).then(setSiteStats).catch(() => {})
-      .then((r) => r.json())
-      .then((data) => setFeaturedProducts(data.items || []))
-      .catch(() => {})
-  }, [])
+  fetch(`${API_BASE}/categories`).then((r) => r.json()).then(setCategories).catch(() => {})
+  fetch(`${API_BASE}/makes`).then((r) => r.json()).then(setMakes).catch(() => {})
+  fetch(`${API_BASE}/settings/stats`).then((r) => r.json()).then(setSiteStats).catch(() => {})
+
+  fetch(`${API_BASE}/products?featured=true&page=1&pageSize=4`)
+    .then((r) => r.json())
+    .then((data) => setFeaturedProducts(data.items || []))
+    .catch(() => {})
+}, [])
 
   const modelOptions = selectedMake ? makes.find((m) => m.name === selectedMake)?.models || [] : []
 
