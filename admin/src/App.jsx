@@ -12,6 +12,7 @@ import VehicleList from './pages/Vehicles/VehicleList'
 import OrderList from './pages/Orders/OrderList'
 import InquiryList from './pages/Inquiries/InquiryList'
 import Settings from './pages/Settings/Settings'
+import Dashboard from './pages/Dashboard'
 
 function App() {
   return (
@@ -23,7 +24,7 @@ function App() {
 
           <Route element={<ProtectedRoute />}>
             <Route element={<AdminLayout />}>
-              <Route path="/" element={<div className="p-8 font-body text-slate">Dashboard — coming soon</div>} />
+              <Route path="/" element={<Dashboard />} />
               <Route path="/products" element={<ProductList />} />
               <Route path="/products/new" element={<ProductForm />} />
               <Route path="/products/:id/edit" element={<ProductForm />} />
