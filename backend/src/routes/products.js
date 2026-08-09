@@ -1,6 +1,6 @@
 const express = require('express')
 const prisma = require('../db')
-
+const requireAuth = require('../middleware/requireAuth')
 const router = express.Router()
 
 const PRODUCT_INCLUDE = {
@@ -56,6 +56,8 @@ router.get('/', async (req, res) => {
   }
 })
 
+
+
 // GET /api/products/:id
 router.get('/:id', async (req, res) => {
   try {
@@ -72,7 +74,7 @@ router.get('/:id', async (req, res) => {
 })
 
 // POST /api/products — create (admin only, once auth middleware exists)
-router.post('/', async (req, res) => {
+router.post('/', requireAuth, async (req, res) => {
   try {
     const {
   partNo, name, description, partBrand, condition, stock, featured,
@@ -113,7 +115,7 @@ router.post('/', async (req, res) => {
 })
 
 // PUT /api/products/:id — update
-router.put('/:id', async (req, res) => {
+router.put('/:id', requireAuth, async (req, res) => {
   try {
     const { images, crossReferences, fitments, ...fields } = req.body
 
@@ -134,7 +136,7 @@ router.put('/:id', async (req, res) => {
 })
 
 // DELETE /api/products/:id
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', requireAuth, async (req, res) => {
   try {
     await prisma.product.delete({ where: { id: req.params.id } })
     res.status(204).send()
@@ -148,7 +150,7 @@ router.delete('/:id', async (req, res) => {
 })
 
 // POST /api/products/:id/images — attach an uploaded image to a product
-router.post('/:id/images', async (req, res) => {
+router.post('/:id/images', requireAuth, async (req, res) => {
   try {
     const image = await prisma.productImage.create({
       data: { url: req.body.url, productId: req.params.id },
@@ -160,7 +162,7 @@ router.post('/:id/images', async (req, res) => {
 })
 
 // DELETE /api/products/images/:imageId — remove a single image
-router.delete('/images/:imageId', async (req, res) => {
+router.delete('/images/:imageId', requireAuth, async (req, res) => {
   try {
     await prisma.productImage.delete({ where: { id: req.params.imageId } })
     res.status(204).send()
