@@ -8,6 +8,7 @@ const ordersRouter = require('./routes/orders')
 const API_BASE = 'http://localhost:4000/api'
 const inquiriesRouter = require('./routes/inquiries')
 const settingsRouter = require('./routes/settings')
+const authRouter = require('./routes/auth')
 require('dotenv').config()
 
 const app = express()
@@ -27,6 +28,7 @@ app.use('/api/upload', uploadRouter)
 app.use('/api/orders', ordersRouter)
 app.use('/api/inquiries', inquiriesRouter)
 app.use('/api/settings', settingsRouter)
+app.use('/api/auth', authRouter)
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`)
 })
