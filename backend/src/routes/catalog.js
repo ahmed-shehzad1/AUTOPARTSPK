@@ -1,7 +1,10 @@
 const express = require('express')
 const prisma = require('../db')
+const requireAuth = require('../middleware/requireAuth')
+
 
 const router = express.Router()
+
 
 // Categories
 router.get('/categories', async (req, res) => {
@@ -9,7 +12,8 @@ router.get('/categories', async (req, res) => {
   res.json(categories)
 })
 
-router.post('/categories', async (req, res) => {
+
+router.post('/categories', requireAuth, async (req, res) => {
   try {
     const category = await prisma.category.create({ data: { name: req.body.name } })
     res.status(201).json(category)
@@ -19,7 +23,8 @@ router.post('/categories', async (req, res) => {
   }
 })
 
-router.delete('/categories/:id', async (req, res) => {
+
+router.delete('/categories/:id', requireAuth, async (req, res) => {
   try {
     await prisma.category.delete({ where: { id: req.params.id } })
     res.status(204).send()
@@ -27,6 +32,7 @@ router.delete('/categories/:id', async (req, res) => {
     res.status(500).json({ error: 'Failed to delete category — it may still have products assigned to it.' })
   }
 })
+
 
 // Makes
 router.get('/makes', async (req, res) => {
@@ -37,7 +43,8 @@ router.get('/makes', async (req, res) => {
   res.json(makes)
 })
 
-router.post('/makes', async (req, res) => {
+
+router.post('/makes', requireAuth, async (req, res) => {
   try {
     const make = await prisma.make.create({ data: { name: req.body.name } })
     res.status(201).json(make)
@@ -47,7 +54,8 @@ router.post('/makes', async (req, res) => {
   }
 })
 
-router.delete('/makes/:id', async (req, res) => {
+
+router.delete('/makes/:id', requireAuth, async (req, res) => {
   try {
     await prisma.make.delete({ where: { id: req.params.id } })
     res.status(204).send()
@@ -56,8 +64,9 @@ router.delete('/makes/:id', async (req, res) => {
   }
 })
 
+
 // Models (nested under a make)
-router.post('/makes/:makeId/models', async (req, res) => {
+router.post('/makes/:makeId/models', requireAuth, async (req, res) => {
   try {
     const model = await prisma.model.create({
       data: { name: req.body.name, makeId: req.params.makeId },
@@ -69,7 +78,8 @@ router.post('/makes/:makeId/models', async (req, res) => {
   }
 })
 
-router.delete('/models/:id', async (req, res) => {
+
+router.delete('/models/:id', requireAuth, async (req, res) => {
   try {
     await prisma.model.delete({ where: { id: req.params.id } })
     res.status(204).send()
@@ -77,5 +87,6 @@ router.delete('/models/:id', async (req, res) => {
     res.status(500).json({ error: 'Failed to delete model.' })
   }
 })
+
 
 module.exports = router
