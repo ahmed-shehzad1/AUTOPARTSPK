@@ -15,12 +15,13 @@ router.get('/', async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1
     const pageSize = parseInt(req.query.pageSize) || 12
-    const { category, make, model, search } = req.query
+    const { category, make, model, search, featured } = req.query
 
     const where = {
-      AND: [
-        category && category !== 'All' ? { category: { name: category } } : {},
-        search
+  AND: [
+    category && category !== 'All' ? { category: { name: category } } : {},
+    featured === 'true' ? { featured: true } : {},
+    search
           ? {
               OR: [
                 { name: { contains: search } },
@@ -74,10 +75,10 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const {
-      partNo, name, description, partBrand, condition, stock,
-      price, wholesalePrice, wholesaleMinQty, moq, unit, rfqThreshold,
-      categoryId, images = [], crossReferences = [], fitments = [],
-    } = req.body
+  partNo, name, description, partBrand, condition, stock, featured,
+  price, wholesalePrice, wholesaleMinQty, moq, unit, rfqThreshold,
+  categoryId, images = [], crossReferences = [], fitments = [],
+} = req.body
 
     if (!partNo || !name || !categoryId) {
       return res.status(400).json({ error: 'partNo, name, and categoryId are required.' })
