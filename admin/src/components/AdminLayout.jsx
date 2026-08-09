@@ -1,8 +1,10 @@
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import {
   FaBoxOpen, FaTachometerAlt, FaTags, FaCarSide,
   FaShoppingCart, FaEnvelope, FaCog,
 } from 'react-icons/fa'
+import { FaSignOutAlt } from 'react-icons/fa'
+import { useAuth } from '../context/AuthContext'
 
 const NAV_ITEMS = [
   { to: '/', label: 'Dashboard', icon: FaTachometerAlt, end: true },
@@ -15,6 +17,8 @@ const NAV_ITEMS = [
 ]
 
 function AdminLayout() {
+  const { user, logout } = useAuth()
+const navigate = useNavigate()
   return (
     <div className="flex min-h-screen bg-steel">
       {/* Sidebar */}
@@ -45,9 +49,16 @@ function AdminLayout() {
           ))}
         </nav>
 
-        <div className="px-6 py-4 border-t border-paper/10 font-mono text-[10px] text-steel/40 uppercase">
-          Connected to API v1
-        </div>
+        <div className="px-6 py-4 border-t border-paper/10">
+  <p className="font-body text-sm text-paper mb-1">{user?.name}</p>
+  <p className="font-mono text-[10px] text-steel/40 uppercase mb-3">{user?.role}</p>
+  <button
+    onClick={() => { logout(); navigate('/login') }}
+    className="flex items-center gap-2 font-mono text-[10px] uppercase text-steel/60 hover:text-ignition transition-colors"
+  >
+    <FaSignOutAlt size={11} /> Log Out
+  </button>
+</div>
       </aside>
 
       {/* Main content */}
