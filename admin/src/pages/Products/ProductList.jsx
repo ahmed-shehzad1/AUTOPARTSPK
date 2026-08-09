@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { FaPlus, FaEdit, FaTrash, FaSearch } from 'react-icons/fa'
+import { FaPlus, FaEdit, FaTrash, FaSearch, FaStar } from 'react-icons/fa'
 import api from '../../api/client'
 
 function ProductList() {
@@ -24,6 +24,15 @@ function ProductList() {
       setLoading(false)
     }
   }
+
+  const toggleFeatured = async (product) => {
+  try {
+    await api.put(`/products/${product.id}`, { featured: !product.featured })
+    fetchProducts()
+  } catch {
+    alert('Failed to update featured status.')
+  }
+}
 
   useEffect(() => {
     fetchProducts()
@@ -90,6 +99,7 @@ function ProductList() {
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-ink/10 bg-steel/40">
+            <th className="text-left font-mono text-[10px] tracking-widest text-slate/60 uppercase px-5 py-3">Featured</th>
               <th className="text-left font-mono text-[10px] tracking-widest text-slate/60 uppercase px-5 py-3">Part No.</th>
               <th className="text-left font-mono text-[10px] tracking-widest text-slate/60 uppercase px-5 py-3">Name</th>
               <th className="text-left font-mono text-[10px] tracking-widest text-slate/60 uppercase px-5 py-3">Category</th>
@@ -112,6 +122,11 @@ function ProductList() {
                   <td className="px-5 py-3 font-body text-ink">PKR {p.price?.toLocaleString()}</td>
                   <td className="px-5 py-3 font-mono text-xs text-slate">{p.stock}</td>
                   <td className="px-5 py-3">
+                    <td className="px-5 py-3">
+  <button onClick={() => toggleFeatured(p)} className={p.featured ? 'text-gold' : 'text-slate/30 hover:text-gold'}>
+    <FaStar size={14} />
+  </button>
+</td>
                     <div className="flex items-center justify-end gap-3">
                       <Link to={`/products/${p.id}/edit`} className="text-slate hover:text-blueprint transition-colors">
                         <FaEdit size={14} />
