@@ -1,6 +1,6 @@
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
-
+const bcrypt = require('bcryptjs')
 const CATEGORIES = [
   'Engine Parts', 'Suspension', 'Electrical', 'Body Parts',
   'Brakes', 'Filters', 'Lighting', 'Accessories',
@@ -66,7 +66,18 @@ async function main() {
     const existing = await prisma.siteStat.findFirst({ where: { label: stat.label } })
     if (!existing) await prisma.siteStat.create({ data: stat })
   }
-
+const adminPassword = await bcrypt.hash('ChangeThisPassword123', 10)
+  await prisma.adminUser.upsert({
+    where: { email: 'admin@almadinaautos.com' },
+    update: {},
+    create: {
+      name: 'Admin',
+      email: 'admin@almadinaautos.com',
+      password: adminPassword,
+      role: 'admin',
+    },
+  })
+  
   console.log('Seed complete.')
 }
 
