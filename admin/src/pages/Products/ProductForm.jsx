@@ -8,7 +8,7 @@ const STOCK_OPTIONS = ['In Stock', 'Limited Stock', 'Backorder']
 
 const EMPTY_FORM = {
   partNo: '', name: '', description: '', partBrand: '',
-  condition: 'New', stock: 'In Stock',
+  condition: 'New', stock: 'In Stock', featured: false,
   price: '', wholesalePrice: '', wholesaleMinQty: '', moq: 1, unit: 'pcs',
   rfqThreshold: 100, categoryId: '',
 }
@@ -37,7 +37,7 @@ api.get(`/products/${id}`).then((res) => {
       const p = res.data
         setForm({
         partNo: p.partNo, name: p.name, description: p.description || '',
-        partBrand: p.partBrand, condition: p.condition, stock: p.stock,
+        partBrand: p.partBrand, condition: p.condition, featured: p.featured, stock: p.stock,
         price: p.price, wholesalePrice: p.wholesalePrice, wholesaleMinQty: p.wholesaleMinQty,
         moq: p.moq, unit: p.unit, rfqThreshold: p.rfqThreshold, categoryId: p.categoryId,
       })
@@ -214,6 +214,15 @@ const payload = {
             <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" disabled={uploading} />
           </label>
         </Field>
+        <label className="flex items-center gap-3 cursor-pointer">
+  <input
+    type="checkbox"
+    checked={form.featured}
+    onChange={(e) => update('featured', e.target.checked)}
+    className="h-4 w-4 accent-blueprint"
+  />
+  <span className="font-body text-sm text-ink">Show in Featured Products on homepage</span>
+</label>
 
         {error && <p className="font-mono text-xs text-ignition">{error}</p>}
 
