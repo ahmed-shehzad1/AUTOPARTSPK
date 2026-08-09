@@ -37,6 +37,7 @@ model Product {
   partNo            String    @unique
   name              String
   description       String
+  featured          Boolean   @default(false)
   partBrand         String
   condition         String    // "New" | "Used" | "Refurbished"
   stock             String    // "In Stock" | "Limited Stock" | "Backorder"
