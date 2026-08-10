@@ -1,120 +1,87 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 
-// PLACEHOLDER AUTH — no backend exists yet.
-// Users are stored in localStorage in plain text, purely so the UI/UX can be
-// built and tested now. This is NOT secure and must be replaced with real
-// backend authentication (hashed passwords, sessions/JWT, verified tokens)
-// before launch.
-const USERS_KEY = 'autopartspk_users_demo'
-const SESSION_KEY = 'autopartspk_session_demo'
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000/api'
+const TOKEN_KEY = 'autopartspk_customer_token'
 
 const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(() => {
-    try {
-      const saved = localStorage.getItem(SESSION_KEY)
-      return saved ? JSON.parse(saved) : null
-    } catch {
-      return null
-    }
-  })
+  const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (user) localStorage.setItem(SESSION_KEY, JSON.stringify(user))
-    else localStorage.removeItem(SESSION_KEY)
-  }, [user])
+    const token = localStorage.getItem(TOKEN_KEY)
+    if (!token) {
+      setLoading(false)
+      return
+    }
+    fetch(`${API_BASE}/customer-auth/me`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => (res.ok ? res.json() : Promise.reject()))
+      .then(setUser)
+      .catch(() => localStorage.removeItem(TOKEN_KEY))
+      .finally(() => setLoading(false))
+  }, [])
 
-  const getUsers = () => {
-    try {
-      return JSON.parse(localStorage.getItem(USERS_KEY)) || []
-    } catch {
-      return []
-    }
-  }
-  const saveUsers = (users) => localStorage.setItem(USERS_KEY, JSON.stringify(users))
-
-const register = ({ name, email, phone, password, accountType, businessName }) => {
-  const normalizedEmail = email.trim().toLowerCase()
-  const users = getUsers()
-  if (users.some((u) => u.email === normalizedEmail)) {
-      return { success: false, error: 'An account with this email already exists.' }
-    }
-  const newUser = {
-      id: `u${Date.now()}`,
-      name,
-      email: normalizedEmail,
-      createdAt: Date.now(),
-      phone,
-      password,
-      accountType, // 'individual' | 'business'
-      businessName: businessName || null,
-      avatar: null,
-      address: '',
-      bio: '',
-      profileComplete: false,
-      authProvider: 'password',
-    }
-    saveUsers([...users, newUser])
-    const { password: _pw, ...safeUser } = newUser
-    setUser(safeUser)
+  const register = async ({ name, email, phone, password, accountType, businessName }) => {
+    const res = await fetch(`${API_BASE}/customer-auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, phone, password, accountType, businessName }),
+    })
+    const data = await res.json()
+    if (!res.ok) return { success: false, error: data.error }
+    localStorage.setItem(TOKEN_KEY, data.token)
+    setUser(data.customer)
     return { success: true }
   }
 
-  const registerWithGoogle = ({ name, email, avatar }) => {
-    const users = getUsers()
-    let existing = users.find((u) => u.email === email)
-    if (!existing) {
-existing = {
-  id: `u${Date.now()}`,
-  name,
-  email: email.trim().toLowerCase(),
-  createdAt: Date.now(),
-        phone: '',
-        password: null,
-        accountType: 'individual',
-        businessName: null,
-        avatar: avatar || null,
-        address: '',
-        bio: '',
-        profileComplete: false,
-        authProvider: 'google',
-      }
-      saveUsers([...users, existing])
-    }
-    const { password: _pw, ...safeUser } = existing
-    setUser(safeUser)
+  const login = async ({ email, password }) => {
+    const res = await fetch(`${API_BASE}/customer-auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    })
+    const data = await res.json()
+    if (!res.ok) return { success: false, error: data.error }
+    localStorage.setItem(TOKEN_KEY, data.token)
+    setUser(data.customer)
     return { success: true }
   }
 
-const login = ({ email, password }) => {
-  const normalizedEmail = email.trim().toLowerCase()
-  const users = getUsers()
-  const userExists = users.some((u) => u.email === normalizedEmail)
-  const match = users.find((u) => u.email === normalizedEmail && u.password === password)
-
-  if (!userExists) {
-    return { success: false, error: 'No account found with this email. Try registering instead.' }
-  }
-  if (!match) {
-    return { success: false, error: 'Incorrect password.' }
-  }
-    const { password: _pw, ...safeUser } = match
-    setUser(safeUser)
+  const loginWithGoogle = async (credential) => {
+    const res = await fetch(`${API_BASE}/customer-auth/google`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ credential }),
+    })
+    const data = await res.json()
+    if (!res.ok) return { success: false, error: data.error }
+    localStorage.setItem(TOKEN_KEY, data.token)
+    setUser(data.customer)
     return { success: true }
   }
 
-  const logout = () => setUser(null)
+  const logout = () => {
+    localStorage.removeItem(TOKEN_KEY)
+    setUser(null)
+  }
 
-  const updateProfile = (updates) => {
-    const users = getUsers()
-    const updatedUsers = users.map((u) => (u.id === user.id ? { ...u, ...updates } : u))
-    saveUsers(updatedUsers)
-    setUser((prev) => ({ ...prev, ...updates }))
+  const updateProfile = async (updates) => {
+    const token = localStorage.getItem(TOKEN_KEY)
+    const res = await fetch(`${API_BASE}/customer-auth/profile`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify(updates),
+    })
+    const data = await res.json()
+    if (res.ok) setUser(data)
+    return res.ok
   }
 
   return (
-    <AuthContext.Provider value={{ user, register, registerWithGoogle, login, logout, updateProfile }}>
+    <AuthContext.Provider value={{ user, loading, register, login, loginWithGoogle, logout, updateProfile }}>
       {children}
     </AuthContext.Provider>
   )
