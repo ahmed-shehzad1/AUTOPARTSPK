@@ -11,16 +11,16 @@ import AuthModalLayout from '../../components/auth/AuthModalLayout'
 const GOOGLE_CONFIGURED = !!import.meta.env.VITE_GOOGLE_CLIENT_ID
 
 function Login() {
-  const { login, registerWithGoogle } = useAuth()
+ const { login, loginWithGoogle } = useAuth()
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
 const [form, setForm] = useState({ email: '', password: '' })
 const [error, setError] = useState('')
 
-const handleSubmit = (e) => {
+const handleSubmit = async (e) => {
   e.preventDefault()
   setError('')
-  const result = login(form)
+  const result = await login(form)
   if (!result.success) {
     setError(result.error)
     toast.error(result.error)
@@ -30,12 +30,15 @@ const handleSubmit = (e) => {
   navigate('/profile')
 }
 
-  const handleGoogleSuccess = (credentialResponse) => {
-    const decoded = jwtDecode(credentialResponse.credential)
-    registerWithGoogle({ name: decoded.name, email: decoded.email, avatar: decoded.picture })
-    toast.success(`Welcome, ${decoded.given_name || decoded.name}`)
-    navigate('/profile')
+  const handleGoogleSuccess = async (credentialResponse) => {
+  const result = await loginWithGoogle(credentialResponse.credential)
+  if (!result.success) {
+    toast.error(result.error)
+    return
   }
+  toast.success('Welcome back!')
+  navigate('/profile')
+}
 
  return (
   <AuthModalLayout visual={<AuthModalLeftPanel />}>

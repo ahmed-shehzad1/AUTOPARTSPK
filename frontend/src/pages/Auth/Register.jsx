@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { GoogleLogin } from '@react-oauth/google'
-import { jwtDecode } from 'jwt-decode'
 import { FaEye, FaEyeSlash, FaWarehouse, FaUser } from 'react-icons/fa'
 import AuthModalLeftPanel from '../../components/auth/AuthModalLeftPanel'
 import { useAuth } from '../../context/AuthContext'
@@ -12,7 +11,7 @@ import AuthModalLayout from '../../components/auth/AuthModalLayout'
 const GOOGLE_CONFIGURED = !!import.meta.env.VITE_GOOGLE_CLIENT_ID
 
 function Register() {
-  const { register, registerWithGoogle } = useAuth()
+  const { register, loginWithGoogle } = useAuth()
   const navigate = useNavigate()
   const [accountType, setAccountType] = useState('individual')
   const [showPassword, setShowPassword] = useState(false)
@@ -35,10 +34,10 @@ function Register() {
       return
     }
 
-    setSubmitting(true)
-    await getRecaptchaToken('register') // token ready for backend verification once it exists
-    const result = register({ ...form, accountType })
-    setSubmitting(false)
+   setSubmitting(true)
+await getRecaptchaToken('register')
+const result = await register({ ...form, accountType })
+setSubmitting(false)
 
     if (!result.success) {
       toast.error(result.error)
@@ -48,12 +47,15 @@ function Register() {
     navigate('/profile/setup')
   }
 
-  const handleGoogleSuccess = (credentialResponse) => {
-    const decoded = jwtDecode(credentialResponse.credential)
-    registerWithGoogle({ name: decoded.name, email: decoded.email, avatar: decoded.picture })
-    toast.success(`Welcome, ${decoded.given_name || decoded.name}`)
-    navigate('/profile/setup')
+  const handleGoogleSuccess = async (credentialResponse) => {
+  const result = await loginWithGoogle(credentialResponse.credential)
+  if (!result.success) {
+    toast.error(result.error)
+    return
   }
+  toast.success('Signed in with Google')
+  navigate('/profile/setup')
+}
 
 return (
 <AuthModalLayout visual={<AuthModalLeftPanel />}>
