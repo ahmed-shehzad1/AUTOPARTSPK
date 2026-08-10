@@ -20,11 +20,15 @@ const [bio, setBio] = useState(user?.bio || '')
     reader.readAsDataURL(file)
   }
 
-  const handleSave = () => {
-    updateProfile({ avatar: avatarPreview, address, bio, profileComplete: true })
+  const handleSave = async () => {
+  const success = await updateProfile({ avatar: avatarPreview, address, bio })
+  if (success) {
     toast.success('Profile completed!')
     navigate('/profile')
+  } else {
+    toast.error('Failed to save profile.')
   }
+}
 
   const handleSkip = () => {
     navigate('/profile')
