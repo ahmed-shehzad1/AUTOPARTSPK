@@ -159,3 +159,18 @@ model SiteStat {
   value String
   order Int    @default(0)
 }
+model Customer {
+  id              String   @id @default(cuid())
+  name            String
+  email           String   @unique
+  phone           String?
+  password        String?  // null for Google-only accounts
+  accountType     String   @default("individual") // "individual" | "business"
+  businessName    String?
+  avatar          String?
+  address         String?
+  bio             String?
+  profileComplete Boolean  @default(false)
+  authProvider    String   @default("password") // "password" | "google"
+  createdAt       DateTime @default(now())
+}
