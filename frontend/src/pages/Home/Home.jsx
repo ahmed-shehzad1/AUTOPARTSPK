@@ -200,7 +200,7 @@ const [siteStats, setSiteStats] = useState([])
 
                       {p.images && p.images.length > 0 ? (
                         <img
-                          src={`http://localhost:4000${p.images[0].url}`}
+                          src={p.images[0].url}
                           alt={p.name}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />

@@ -108,7 +108,7 @@ function ProductDetail() {
             <>
               <div className="relative bg-paper border border-ink/10 rounded-lg overflow-hidden h-80 md:h-96 mb-3">
                 <img
-                  src={`http://localhost:4000${product.images[activeImage].url}`}
+                  src={product.images[activeImage].url}
                   alt={product.name}
                   className="w-full h-full object-cover"
                 />
@@ -123,7 +123,7 @@ function ProductDetail() {
                         activeImage === i ? 'border-blueprint' : 'border-ink/10'
                       }`}
                     >
-                      <img src={`http://localhost:4000${img.url}`} alt="" className="w-full h-full object-cover" />
+                      <img src={img.url} alt="" className="w-full h-full object-cover" />
                     </button>
                   ))}
                 </div>
