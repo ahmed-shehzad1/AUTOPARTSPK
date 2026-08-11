@@ -174,3 +174,15 @@ model Customer {
   authProvider    String   @default("password") // "password" | "google"
   createdAt       DateTime @default(now())
 }
+model BlogPost {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  title     String
+  category  String
+  excerpt   String
+  content   String   // paragraphs joined by a delimiter, e.g. "\n\n"
+  readTime  String
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
