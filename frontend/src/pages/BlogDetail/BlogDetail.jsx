@@ -1,13 +1,42 @@
-import { useMemo } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { FaClock, FaArrowLeft } from 'react-icons/fa'
-import { BLOG_POSTS, getPostBySlug } from '../../data/blogPosts'
+
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000/api'
 
 function BlogDetail() {
   const { slug } = useParams()
-  const post = useMemo(() => getPostBySlug(slug), [slug])
+  const [post, setPost] = useState(null)
+  const [related, setRelated] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [notFound, setNotFound] = useState(false)
 
-  if (!post) {
+  useEffect(() => {
+    setLoading(true)
+    setNotFound(false)
+    fetch(`${API_BASE}/blog/${slug}`)
+      .then((res) => {
+        if (res.status === 404) { setNotFound(true); return null }
+        return res.json()
+      })
+      .then((data) => {
+        if (!data) return
+        setPost(data)
+        fetch(`${API_BASE}/blog`)
+          .then((r) => r.json())
+          .then((all) => {
+            setRelated(all.filter((p) => p.category === data.category && p.slug !== data.slug).slice(0, 2))
+          })
+      })
+      .catch(() => setNotFound(true))
+      .finally(() => setLoading(false))
+  }, [slug])
+
+  if (loading) {
+    return <div className="bg-steel min-h-screen flex items-center justify-center font-body text-slate">Loading…</div>
+  }
+
+  if (notFound || !post) {
     return (
       <div className="bg-steel min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -18,7 +47,7 @@ function BlogDetail() {
     )
   }
 
-  const related = BLOG_POSTS.filter((p) => p.category === post.category && p.slug !== post.slug).slice(0, 2)
+  const paragraphs = post.content.split('\n\n')
 
   return (
     <div className="bg-steel min-h-screen">
@@ -38,12 +67,12 @@ function BlogDetail() {
           {post.title}
         </h1>
         <div className="flex items-center gap-4 font-mono text-xs text-slate/50 mb-10 pb-10 border-b border-ink/10">
-          <span>{new Date(post.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+          <span>{new Date(post.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
           <span className="flex items-center gap-1.5"><FaClock size={10} /> {post.readTime}</span>
         </div>
 
         <div className="space-y-5">
-          {post.content.map((para, i) => (
+          {paragraphs.map((para, i) => (
             <p key={i} className="font-body text-slate leading-relaxed">{para}</p>
           ))}
         </div>
