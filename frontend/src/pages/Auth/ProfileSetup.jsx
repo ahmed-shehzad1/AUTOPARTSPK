@@ -4,6 +4,8 @@ import { toast } from 'sonner'
 import { FaCamera } from 'react-icons/fa'
 import { useAuth } from '../../context/AuthContext'
 
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000/api'
+
 function ProfileSetup() {
   const { user, updateProfile } = useAuth()
   const navigate = useNavigate()
@@ -11,14 +13,29 @@ const [avatarPreview, setAvatarPreview] = useState(user?.avatar || null)
 const [address, setAddress] = useState(user?.address || '')
 const [bio, setBio] = useState(user?.bio || '')
 
-  const handleAvatarChange = (e) => {
-    const file = e.target.files[0]
-    if (!file) return
-    // Stored as base64 in localStorage for now — real file storage needs a backend.
-    const reader = new FileReader()
-    reader.onload = () => setAvatarPreview(reader.result)
-    reader.readAsDataURL(file)
+  const [uploading, setUploading] = useState(false)
+
+const handleAvatarChange = async (e) => {
+  const file = e.target.files[0]
+  if (!file) return
+
+  setUploading(true)
+  try {
+    const formData = new FormData()
+    formData.append('image', file)
+    const res = await fetch(`${API_BASE}/upload/avatar`, {
+      method: 'POST',
+      body: formData,
+    })
+    const data = await res.json()
+    if (!res.ok) throw new Error(data.error)
+    setAvatarPreview(data.url)
+  } catch (err) {
+    toast.error('Failed to upload avatar.')
+  } finally {
+    setUploading(false)
   }
+}
 
   const handleSave = async () => {
   const success = await updateProfile({ avatar: avatarPreview, address, bio })
@@ -47,15 +64,17 @@ const [bio, setBio] = useState(user?.bio || '')
 
         <div className="flex justify-center mb-8">
           <label className="relative cursor-pointer">
-            <div className="h-24 w-24 rounded-full bg-steel border-2 border-dashed border-ink/20 flex items-center justify-center overflow-hidden">
-              {avatarPreview ? (
-                <img src={avatarPreview} alt="Avatar preview" className="w-full h-full object-cover" />
-              ) : (
-                <FaCamera className="text-slate/40 text-xl" />
-              )}
-            </div>
-            <input type="file" accept="image/*" onChange={handleAvatarChange} className="hidden" />
-          </label>
+  <div className="h-24 w-24 rounded-full bg-steel border-2 border-dashed border-ink/20 flex items-center justify-center overflow-hidden">
+    {uploading ? (
+      <span className="font-mono text-[10px] text-slate/50">Uploading…</span>
+    ) : avatarPreview ? (
+      <img src={avatarPreview} alt="Avatar preview" className="w-full h-full object-cover" />
+    ) : (
+      <FaCamera className="text-slate/40 text-xl" />
+    )}
+  </div>
+  <input type="file" accept="image/*" onChange={handleAvatarChange} className="hidden" disabled={uploading} />
+</label>
         </div>
 
         <div className="space-y-4 mb-8">
