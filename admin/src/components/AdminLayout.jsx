@@ -5,15 +5,18 @@ import {
 } from 'react-icons/fa'
 import { FaSignOutAlt } from 'react-icons/fa'
 import { useAuth } from '../context/AuthContext'
+import { FaNewspaper } from 'react-icons/fa'
 
 const NAV_ITEMS = [
   { to: '/', label: 'Dashboard', icon: FaTachometerAlt, end: true },
   { to: '/products', label: 'Products', icon: FaBoxOpen },
   { to: '/categories', label: 'Categories', icon: FaTags },
+  { to: '/blog', label: 'Blog', icon: FaNewspaper },
   { to: '/vehicles', label: 'Vehicles', icon: FaCarSide },
   { to: '/orders', label: 'Orders', icon: FaShoppingCart },
   { to: '/inquiries', label: 'Inquiries', icon: FaEnvelope },
   { to: '/settings', label: 'Settings', icon: FaCog },
+  
 ]
 
 function AdminLayout() {

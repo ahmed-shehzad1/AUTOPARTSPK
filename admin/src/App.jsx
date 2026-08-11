@@ -13,6 +13,8 @@ import OrderList from './pages/Orders/OrderList'
 import InquiryList from './pages/Inquiries/InquiryList'
 import Settings from './pages/Settings/Settings'
 import Dashboard from './pages/Dashboard'
+import BlogList from './pages/Blog/BlogList'
+import BlogForm from './pages/Blog/BlogForm'
 
 function App() {
   return (
@@ -34,6 +36,9 @@ function App() {
               <Route path="/orders" element={<OrderList />} />
               <Route path="/inquiries" element={<InquiryList />} />
               <Route path="/settings" element={<Settings />} />
+              <Route path="/blog" element={<BlogList />} />
+<Route path="/blog/new" element={<BlogForm />} />
+<Route path="/blog/:id/edit" element={<BlogForm />} />
             </Route>
           </Route>
         </Routes>
