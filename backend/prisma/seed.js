@@ -126,6 +126,14 @@ async function main() {
     }
   }
 
+  for (const post of BLOG_POSTS_SEED) {
+    await prisma.blogPost.upsert({
+      where: { slug: post.slug },
+      update: {},
+      create: post,
+    })
+  }
+  
   await prisma.companyInfo.upsert({
     where: { id: 'singleton' },
     update: {},
