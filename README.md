@@ -1,10 +1,10 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&amp;color=1E5EA8&amp;height=200&amp;section=header&amp;text=AutoPartsPK&amp;fontSize=60&amp;fontColor=EDF0F2&amp;animation=fadeIn&amp;fontAlignY=38&amp;desc=Wholesale%20%26%20Retail%20Auto%20Parts%20Platform&amp;descAlignY=58&amp;descSize=18" width="100%"/>
+<img src="https://capsule-render.vercel.app/api?type=waving&color=1E5EA8&height=200&section=header&text=AutoPartsPK&fontSize=60&fontColor=EDF0F2&animation=fadeIn&fontAlignY=38&desc=Wholesale%20%26%20Retail%20Auto%20Parts%20Platform&descAlignY=58&descSize=18" width="100%" />
 
-<img src="https://readme-typing-svg.demolab.com?font=Space+Grotesk&amp;size=22&amp;duration=3000&amp;pause=1000&amp;color=1E5EA8&amp;center=true&amp;vCenter=true&amp;width=600&amp;lines=Full-stack+e-commerce+platform;React+%2B+Express+%2B+PostgreSQL;Customer+storefront+%7C+Admin+panel+%7C+REST+API" alt="Typing SVG" />
+<img src="https://readme-typing-svg.demolab.com?font=Space+Grotesk&size=22&duration=3000&pause=1000&color=1E5EA8&center=true&vCenter=true&width=600&lines=Full-stack+e-commerce+platform;React+%2B+Express+%2B+PostgreSQL;Customer+storefront+%7C+Admin+panel+%7C+REST+API" alt="Typing SVG" />
 
-<br/>
+<br />
 
 ![React](https://img.shields.io/badge/React-19-1E5EA8?style=for-the-badge&logo=react&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js-Express-1E5EA8?style=for-the-badge&logo=node.js&logoColor=white)
@@ -22,7 +22,7 @@
 
 - **Storefront** — the customer-facing website: product catalog with vehicle fitment search, cart & checkout, customer accounts, wholesale inquiries, and a blog
 - **Admin Panel** — a separate internal app for managing products, categories, vehicles, orders, inquiries, blog posts, and site settings
-- **Backend API** — a REST API and PostgreSQL database powering both
+- **Backend API** — a REST API and PostgreSQL database powering both applications
 
 ---
 
@@ -35,22 +35,23 @@
 - 🛒 **Full cart & checkout** with COD, bank transfer, and mobile wallet payment options
 - 🔐 **Real authentication** — bcrypt-hashed passwords, JWT sessions, Google Sign-In (server-verified)
 - 🖼️ **Cloud image hosting** for product photos and user avatars
-- 📊 **Admin dashboard** — live stats, recent orders, recent inquiries
+- 📊 **Admin dashboard** — live stats, recent orders, and recent inquiries
 - 📥 **Bulk product import** via CSV
 - 📝 **Blog** — fully admin-manageable articles
-- ⚖️ **Legal pages** — Privacy Policy, Terms of Service, Return Policy
+- ⚖️ **Legal pages** — Privacy Policy, Terms of Service, and Return Policy
 
 ---
 
 ## 🛠️ Tech Stack
 
 ### Frontend (Storefront) & Admin Panel
+
 | Technology | Purpose |
 |---|---|
 | **React** (Vite) | UI framework |
 | **React Router** | Client-side routing |
-| **Tailwind CSS v4** | Styling, custom design tokens |
-| **Framer Motion** | Scroll reveals, transitions, parallax |
+| **Tailwind CSS v4** | Styling and custom design tokens |
+| **Framer Motion** | Scroll reveals, transitions, and parallax |
 | **React Icons** | Iconography |
 | **Axios** | HTTP client (admin panel) |
 | **Sonner** | Toast notifications |
@@ -58,20 +59,22 @@
 | **@react-oauth/google** + **jwt-decode** | Google Sign-In |
 
 ### Backend
+
 | Technology | Purpose |
 |---|---|
 | **Node.js + Express** | REST API server |
-| **Prisma ORM** | Database modeling & queries |
+| **Prisma ORM** | Database modeling and queries |
 | **PostgreSQL** (via Neon) | Production database |
 | **SQLite** | Local development database |
 | **bcryptjs** | Password hashing |
 | **jsonwebtoken** | Session authentication |
 | **google-auth-library** | Server-side Google token verification |
-| **Cloudinary** | Image hosting (product photos, avatars) |
+| **Cloudinary** | Image hosting (product photos and avatars) |
 | **Multer** | Multipart form/file upload handling |
-| **CORS**, **dotenv** | Middleware & environment config |
+| **CORS**, **dotenv** | Middleware and environment configuration |
 
 ### Infrastructure
+
 | Service | Purpose |
 |---|---|
 | **Vercel** | Frontend + Admin hosting |
@@ -83,7 +86,7 @@
 
 ## 📁 Project Structure
 
-```
+```text
 AutoPartsPK/
 ├── frontend/          # Customer-facing storefront (React + Vite)
 ├── admin/             # Admin panel (React + Vite)
@@ -101,12 +104,14 @@ AutoPartsPK/
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Node.js 20.x (recommended — see note below)
 - npm
 
-> **Note:** This project was developed and tested against Node 20 LTS. Newer Node versions (e.g. 24+) have caused compatibility issues with Prisma's native engine binaries.
+> **Note:** This project was developed and tested with Node.js 20 LTS. Node.js 20 is recommended for the most predictable Prisma compatibility.
 
 ### 1. Backend Setup
+
 ```bash
 cd backend
 npm install
@@ -114,22 +119,27 @@ npx prisma migrate dev
 node prisma/seed.js
 npm run dev
 ```
+
 Runs on `http://localhost:4000`
 
 ### 2. Frontend (Storefront) Setup
+
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
+
 Runs on `http://localhost:5173`
 
 ### 3. Admin Panel Setup
+
 ```bash
 cd admin
 npm install
 npm run dev
 ```
+
 Runs on `http://localhost:5174`
 
 ---
@@ -137,7 +147,8 @@ Runs on `http://localhost:5174`
 ## 🔑 Environment Variables
 
 ### `backend/.env`
-```
+
+```env
 DATABASE_URL=
 JWT_SECRET=
 GOOGLE_CLIENT_ID=
@@ -147,11 +158,14 @@ CLOUDINARY_API_SECRET=
 ```
 
 ### `frontend/.env` and `admin/.env`
-```
+
+```env
 VITE_API_URL=
 VITE_RECAPTCHA_SITE_KEY=
 VITE_GOOGLE_CLIENT_ID=
 ```
+
+> **Security:** Never commit real secrets, API keys, database credentials, or JWT secrets to the repository. Add your `.env` files to `.gitignore`.
 
 ---
 
@@ -172,5 +186,7 @@ VITE_GOOGLE_CLIENT_ID=
 ---
 
 <div align="center">
-<img src="https://capsule-render.vercel.app/api?type=waving&amp;color=1E5EA8&amp;height=100&amp;section=footer" width="100%"/>
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=1E5EA8&height=100&section=footer" width="100%" />
+
 </div>
