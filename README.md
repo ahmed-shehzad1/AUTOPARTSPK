@@ -1,6 +1,5 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&amp;color=1E5EA8&amp;height=200&amp;section=header&amp;text=AutoPartsPK&amp;fontSize=60&amp;fontColor=EDF0F2&amp;animation=fadeIn&amp;fontAlignY=38&amp;desc=Wholesale%20%26%20Retail%20Auto%20Parts%20Platform&amp;descAlignY=58&amp;descSize=18" width="100%" />
 
 <img src="https://readme-typing-svg.demolab.com?font=Space+Grotesk&amp;size=22&amp;duration=3000&amp;pause=1000&amp;color=1E5EA8&amp;center=true&amp;vCenter=true&amp;width=600&amp;lines=Full-stack+e-commerce+platform;React+%2B+Express+%2B+PostgreSQL;Customer+storefront+%7C+Admin+panel+%7C+REST+API" alt="Typing SVG" />
 
