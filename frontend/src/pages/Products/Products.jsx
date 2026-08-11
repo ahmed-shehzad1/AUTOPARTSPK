@@ -210,7 +210,7 @@ function Products() {
                       {p.images && p.images.length > 0 && (
                         <div className="h-36 bg-steel border-b border-ink/10">
                           <img
-                            src={`http://localhost:4000${p.images[0].url}`}
+                           src={p.images[0].url}
                             alt={p.name}
                             className="w-full h-full object-cover"
                           />
