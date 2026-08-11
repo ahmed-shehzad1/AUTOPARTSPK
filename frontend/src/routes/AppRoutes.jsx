@@ -13,6 +13,9 @@ import ProfileSetup from '../pages/Auth/ProfileSetup'
 import Profile from '../pages/Auth/Profile'
 import Blog from '../pages/Blog/Blog'
 import BlogDetail from '../pages/BlogDetail/BlogDetail'
+import PrivacyPolicy from '../pages/Legal/PrivacyPolicy'
+import TermsOfService from '../pages/Legal/TermsOfService'
+import ReturnPolicy from '../pages/Legal/ReturnPolicy'
 
 function AppRoutes() {
   return (
@@ -31,6 +34,9 @@ function AppRoutes() {
       <Route path="/profile" element={<Profile />} />
       <Route path="/blog" element={<Blog />} />
       <Route path="/blog/:slug" element={<BlogDetail />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+<Route path="/terms-of-service" element={<TermsOfService />} />
+<Route path="/return-policy" element={<ReturnPolicy />} />
     </Routes>
   )
 }

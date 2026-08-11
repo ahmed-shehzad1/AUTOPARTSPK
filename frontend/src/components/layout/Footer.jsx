@@ -122,16 +122,14 @@ function Footer() {
         </div>
 
         {/* Bottom */}
-        <div className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-mono font-semibold">
-          <span className="text-steel/50">
-            © {new Date().getFullYear()} <span className="text-white/80">Al Madina Autos</span> — ALL RIGHTS RESERVED
-          </span>
-
-          <span className="flex items-center gap-2 text-steel/40 bg-white/5 px-3 py-1.5 rounded-full border border-white/5">
-            <span className="w-1.5 h-1.5 rounded-full bg-blueprint" />
-            CATALOG REF: PAK-2026
-          </span>
-        </div>
+        <div className="pt-6 flex flex-col md:flex-row justify-between items-center gap-3 text-xs font-mono text-steel/40">
+  <span>© {new Date().getFullYear()} {company.name?.toUpperCase()} — ALL RIGHTS RESERVED</span>
+  <div className="flex gap-5">
+    <Link to="/privacy-policy" className="hover:text-steel/70 transition-colors">Privacy</Link>
+    <Link to="/terms-of-service" className="hover:text-steel/70 transition-colors">Terms</Link>
+    <Link to="/return-policy" className="hover:text-steel/70 transition-colors">Returns</Link>
+  </div>
+</div>
       </div>
     </footer>
   )
