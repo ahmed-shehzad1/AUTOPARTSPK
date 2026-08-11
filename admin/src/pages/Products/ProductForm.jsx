@@ -198,7 +198,7 @@ const payload = {
           <div className="flex flex-wrap gap-3 mb-3">
             {(isEdit ? images : pendingImages.map((url) => ({ url }))).map((img, i) => (
               <div key={img.id || i} className="relative h-20 w-20 rounded-md overflow-hidden border border-ink/10 group">
-                <img src={`http://localhost:4000${img.url}`} alt="" className="w-full h-full object-cover" />
+                <img src={img.url} alt="" className="w-full h-full object-cover" />
                 <button
                   type="button"
                   onClick={() => (isEdit ? handleDeleteExistingImage(img.id) : handleRemovePendingImage(img.url))}
