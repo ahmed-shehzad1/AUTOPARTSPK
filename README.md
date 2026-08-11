@@ -1,53 +1,176 @@
 <div align="center">
 
-  <!-- Animated Live-Typing SVG Banner -->
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=22&pause=1000&color=38BDF8&center=true&vCenter=true&width=600&lines=Auto+Parts+E-Commerce+%26+Wholesale;Interactive+SVG+Blueprint+Engine;Retail+%2B+B2B+Trade+Platform" alt="Typing Banner" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=1E5EA8&height=200&section=header&text=AutoPartsPK&fontSize=60&fontColor=EDF0F2&animation=fadeIn&fontAlignY=38&desc=Wholesale%20%26%20Retail%20Auto%20Parts%20Platform&descAlignY=58&descSize=18" width="100%"/>
 
-  <h1>Auto Parts E-Commerce & Wholesale Platform</h1>
+<img src="https://readme-typing-svg.demolab.com?font=Space+Grotesk&size=22&duration=3000&pause=1000&color=1E5EA8&center=true&vCenter=true&width=600&lines=Full-stack+e-commerce+platform;React+%2B+Express+%2B+PostgreSQL;Customer+storefront+%7C+Admin+panel+%7C+REST+API" alt="Typing SVG" />
 
-  <p>
-    <b>A unified digital distribution platform engineered for retail auto parts buyers and B2B wholesale trade.</b>
-  </p>
+<br/>
 
-  <!-- Visual Shields & Tech Stack Badges -->
-  <p>
-    <img src="https://img.shields.io/badge/Status-Work_In_Progress-38bdf8?style=for-the-badge&labelColor=0f172a" alt="Status: WIP" />
-    <img src="https://img.shields.io/badge/Frontend-React_18_%7C_Vite-0f172a?style=for-the-badge&logo=react&logoColor=38bdf8" alt="Frontend" />
-    <img src="https://img.shields.io/badge/Styling-Tailwind_CSS-0f172a?style=for-the-badge&logo=tailwindcss&logoColor=38bdf8" alt="Tailwind CSS" />
-    <img src="https://img.shields.io/badge/Backend-Node.js-0f172a?style=for-the-badge&logo=nodedotjs&logoColor=38bdf8" alt="Backend" />
-  </p>
+![React](https://img.shields.io/badge/React-19-1E5EA8?style=for-the-badge&logo=react&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-Express-1E5EA8?style=for-the-badge&logo=node.js&logoColor=white)
+![Prisma](https://img.shields.io/badge/Prisma-ORM-1E5EA8?style=for-the-badge&logo=prisma&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-1E5EA8?style=for-the-badge&logo=postgresql&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-v4-1E5EA8?style=for-the-badge&logo=tailwindcss&logoColor=white)
 
 </div>
 
-⸻
+---
 
-### ◈ What Is This Platform?
+## Overview
 
-This application is a full-stack e-commerce and inventory ecosystem built specifically for automotive spare parts distribution. It bridges the gap between individual B2C retail customers and high-volume B2B wholesale buyers (mechanics, workshops, and trade dealers).
+**AutoPartsPK** is a full-stack e-commerce platform built for a wholesale and retail auto spare parts supplier. It's composed of three independent applications sharing one backend API:
 
-Instead of relying on standard static product landing pages, the platform features a **custom hardware-accelerated SVG blueprint engine** on the hero section that dynamically renders and morphs vehicle chassis geometries using native CSS path vector interpolation.
+- **Storefront** — the customer-facing website: product catalog with vehicle fitment search, cart & checkout, customer accounts, wholesale inquiries, and a blog
+- **Admin Panel** — a separate internal app for managing products, categories, vehicles, orders, inquiries, blog posts, and site settings
+- **Backend API** — a REST API and PostgreSQL database powering both
 
-⸻
+---
 
-### ⬡ Key System Capabilities
+## ✨ Key Features
 
-* **Dual-Market Pricing Engine:** Automatically switches product pricing based on account status—offering standard retail rates or verified wholesale trade discounts.
-* **Interactive Blueprint Engine:** Native vector SVG morphing (`transition: d`) that dynamically transitions chassis geometries across vehicle classes (Sedan, Supercar, Executive).
-* **Search & Categorization:** Deep filtering across engine, suspension, electrical, and body components by vehicle make, model, year, and OEM part numbers.
-* **Triple-Layer Monorepo Architecture:** Clean code separation across client storefront (`frontend`), REST API backend (`backend`), and administrative panel (`admin`).
+- 🔍 **Vehicle fitment search** — browse parts by make, model, and year
+- 💰 **Tiered wholesale pricing** — automatic retail → wholesale pricing based on order quantity
+- 📦 **Minimum order quantities (MOQ)** enforced end-to-end
+- 🧾 **Instant checkout vs. Request-for-Quote** — large orders route to manual quote confirmation
+- 🛒 **Full cart & checkout** with COD, bank transfer, and mobile wallet payment options
+- 🔐 **Real authentication** — bcrypt-hashed passwords, JWT sessions, Google Sign-In (server-verified)
+- 🖼️ **Cloud image hosting** for product photos and user avatars
+- 📊 **Admin dashboard** — live stats, recent orders, recent inquiries
+- 📥 **Bulk product import** via CSV
+- 📝 **Blog** — fully admin-manageable articles
+- ⚖️ **Legal pages** — Privacy Policy, Terms of Service, Return Policy
 
-⸻
+---
 
-### ◈ Project Directory Structure
+## 🛠️ Tech Stack
 
-```text
-├── admin/                  # Dedicated management portal for inventory & orders
-├── backend/                # Node.js API server & database services
-└── frontend/               # Client-facing web application
-    ├── public/             # Static vectors & iconography
-    └── src/
-        ├── components/     # UI modules (Hero blueprint, Cart, Common, Layout)
-        ├── context/        # Global state management (Cart, Auth)
-        ├── pages/          # Route views (Home, Products, Wholesale, Detail)
-        ├── routes/         # Centralized application routing
-        └── styles/         # Global Tailwind directives & SVG animations
+### Frontend (Storefront) & Admin Panel
+| Technology | Purpose |
+|---|---|
+| **React** (Vite) | UI framework |
+| **React Router** | Client-side routing |
+| **Tailwind CSS v4** | Styling, custom design tokens |
+| **Framer Motion** | Scroll reveals, transitions, parallax |
+| **React Icons** | Iconography |
+| **Axios** | HTTP client (admin panel) |
+| **Sonner** | Toast notifications |
+| **PapaParse** | CSV parsing (bulk product import) |
+| **@react-oauth/google** + **jwt-decode** | Google Sign-In |
+
+### Backend
+| Technology | Purpose |
+|---|---|
+| **Node.js + Express** | REST API server |
+| **Prisma ORM** | Database modeling & queries |
+| **PostgreSQL** (via Neon) | Production database |
+| **SQLite** | Local development database |
+| **bcryptjs** | Password hashing |
+| **jsonwebtoken** | Session authentication |
+| **google-auth-library** | Server-side Google token verification |
+| **Cloudinary** | Image hosting (product photos, avatars) |
+| **Multer** | Multipart form/file upload handling |
+| **CORS**, **dotenv** | Middleware & environment config |
+
+### Infrastructure
+| Service | Purpose |
+|---|---|
+| **Vercel** | Frontend + Admin hosting |
+| **Railway** | Backend API hosting |
+| **Neon** | Serverless PostgreSQL |
+| **Cloudinary** | Image CDN |
+
+---
+
+## 📁 Project Structure
+
+```
+AutoPartsPK/
+├── frontend/          # Customer-facing storefront (React + Vite)
+├── admin/             # Admin panel (React + Vite)
+├── backend/           # Express API + Prisma + database
+│   ├── prisma/        # Schema, migrations, seed data
+│   └── src/
+│       ├── routes/    # API route handlers
+│       ├── middleware/
+│       └── db.js
+└── shared/            # Shared constants (future use)
+```
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js 20.x (recommended — see note below)
+- npm
+
+> **Note:** This project was developed and tested against Node 20 LTS. Newer Node versions (e.g. 24+) have caused compatibility issues with Prisma's native engine binaries.
+
+### 1. Backend Setup
+```bash
+cd backend
+npm install
+npx prisma migrate dev
+node prisma/seed.js
+npm run dev
+```
+Runs on `http://localhost:4000`
+
+### 2. Frontend (Storefront) Setup
+```bash
+cd frontend
+npm install
+npm run dev
+```
+Runs on `http://localhost:5173`
+
+### 3. Admin Panel Setup
+```bash
+cd admin
+npm install
+npm run dev
+```
+Runs on `http://localhost:5174`
+
+---
+
+## 🔑 Environment Variables
+
+### `backend/.env`
+```
+DATABASE_URL=
+JWT_SECRET=
+GOOGLE_CLIENT_ID=
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+```
+
+### `frontend/.env` and `admin/.env`
+```
+VITE_API_URL=
+VITE_RECAPTCHA_SITE_KEY=
+VITE_GOOGLE_CLIENT_ID=
+```
+
+---
+
+## 🧭 Roadmap
+
+- [x] Storefront: catalog, cart, checkout, auth, blog
+- [x] Admin panel: products, orders, inquiries, settings, dashboard
+- [x] Real authentication (customer + admin)
+- [x] Cloud image storage
+- [x] Legal pages
+- [x] Blog content management
+- [ ] Email notifications
+- [ ] Live payment gateway integration
+- [ ] Production deployment (backend + admin)
+- [ ] Frontend visual redesign pass
+- [ ] SEO optimization
+
+---
+
+<div align="center">
+<img src="https://capsule-render.vercel.app/api?type=waving&color=1E5EA8&height=100&section=footer" width="100%"/>
+</div>
