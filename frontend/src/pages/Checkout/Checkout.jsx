@@ -165,8 +165,13 @@ function Checkout() {
           {error && <p className="font-mono text-xs text-ignition">{error}</p>}
 
           <button type="submit" className="w-full bg-ink text-paper font-medium py-3.5 rounded-md hover:bg-blueprint transition-colors">
-            Place Order
-          </button>
+  Place Order
+</button>
+<p className="font-mono text-[10px] text-slate/50 uppercase text-center">
+  By placing this order, you agree to our{' '}
+  <Link to="/terms-of-service" className="text-blueprint hover:underline">Terms</Link> and{' '}
+  <Link to="/return-policy" className="text-blueprint hover:underline">Return Policy</Link>
+</p>
         </form>
 
         {/* Summary */}
