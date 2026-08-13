@@ -1,84 +1,153 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { AnimatePresence, motion } from 'framer-motion'
-import { FaArrowRight } from 'react-icons/fa'
+import { motion, AnimatePresence } from 'framer-motion'
+import { FaArrowRight, FaChevronLeft, FaChevronRight } from 'react-icons/fa'
+
+const SPRING = { type: 'spring', stiffness: 60, damping: 14 }
 
 function CategorySelector({ categories, iconMap, fallbackIcon: Fallback }) {
   const [activeIdx, setActiveIdx] = useState(0)
+  const [rotation, setRotation] = useState(0)
 
   if (!categories || categories.length === 0) {
     return <p className="font-body text-steel/50 text-sm">No categories yet.</p>
   }
 
+  const n = categories.length
+  const segmentAngle = 360 / n
   const active = categories[activeIdx]
   const ActiveIcon = iconMap[active.name] || Fallback
 
+  const selectIndex = (i) => {
+    const targetMod = (i * segmentAngle) % 360
+    const currentMod = ((rotation % 360) + 360) % 360
+    const delta = ((targetMod - currentMod + 540) % 360) - 180
+    setRotation((r) => r + delta)
+    setActiveIdx(i)
+  }
+
+  const spin = (dir) => {
+    const nextIdx = (activeIdx + dir + n) % n
+    setRotation((r) => r + dir * segmentAngle)
+    setActiveIdx(nextIdx)
+  }
+
+  const ringRadiusPct = 42
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[1fr_1.2fr] gap-8 md:gap-12">
-      {/* Category list */}
-      <ul className="space-y-2">
-        {categories.map((cat, i) => {
-          const isActive = activeIdx === i
-          return (
-            <li key={cat.id}>
+    <div className="grid grid-cols-1 md:grid-cols-[1fr_1.1fr] gap-10 md:gap-14 items-center">
+      {/* Wheel */}
+      <div className="flex flex-col items-center">
+        <div className="relative w-full max-w-[360px] aspect-square">
+          {/* Rotating chrome dial */}
+          <motion.div
+            animate={{ rotate: rotation }}
+            transition={SPRING}
+            style={{ transformOrigin: '50% 50%' }}
+            className="absolute inset-[11%]"
+          >
+            <svg viewBox="0 0 200 200" className="w-full h-full">
+              <defs>
+                <radialGradient id="chromeGrad" cx="35%" cy="30%" r="75%">
+                  <stop offset="0%" stopColor="var(--color-paper)" />
+                  <stop offset="30%" stopColor="var(--color-steel)" />
+                  <stop offset="58%" stopColor="var(--color-blueprint-light)" />
+                  <stop offset="82%" stopColor="var(--color-blueprint)" />
+                  <stop offset="100%" stopColor="var(--color-ink)" />
+                </radialGradient>
+              </defs>
+
+              {/* Tire tread */}
+              <circle cx="100" cy="100" r="88" fill="none" stroke="var(--color-ink)" strokeWidth="9" strokeDasharray="2.5 3.2" opacity="0.85" />
+
+              {/* Rim */}
+              <circle cx="100" cy="100" r="77" fill="url(#chromeGrad)" stroke="var(--color-gold)" strokeWidth="1.2" opacity="0.95" />
+              <circle cx="100" cy="100" r="70" fill="none" stroke="var(--color-paper)" strokeWidth="0.75" opacity="0.25" />
+
+              {/* Decorative spokes */}
+              {Array.from({ length: 8 }).map((_, i) => {
+                const a = (i * 45 * Math.PI) / 180
+                const x1 = 100 + 26 * Math.cos(a)
+                const y1 = 100 + 26 * Math.sin(a)
+                const x2 = 100 + 68 * Math.cos(a)
+                const y2 = 100 + 68 * Math.sin(a)
+                return (
+                  <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="var(--color-gold)" strokeWidth="1" opacity="0.4" />
+                )
+              })}
+
+              {/* Hub */}
+              <circle cx="100" cy="100" r="24" fill="url(#chromeGrad)" stroke="var(--color-gold)" strokeWidth="1" />
+              {Array.from({ length: 5 }).map((_, i) => {
+                const a = (i * 72 * Math.PI) / 180
+                const x = 100 + 15 * Math.cos(a)
+                const y = 100 + 15 * Math.sin(a)
+                return <circle key={i} cx={x} cy={y} r="2.4" fill="var(--color-ink)" />
+              })}
+
+              {/* Pointer marker */}
+              <g>
+                <polygon points="100,10 94,22 106,22" fill="var(--color-gold)" />
+                <circle cx="100" cy="26" r="3.5" fill="var(--color-gold)" />
+              </g>
+            </svg>
+          </motion.div>
+
+          {/* Fixed icon ring */}
+          {categories.map((cat, i) => {
+            const angleDeg = -90 + i * segmentAngle
+            const rad = (angleDeg * Math.PI) / 180
+            const xPct = 50 + ringRadiusPct * Math.cos(rad)
+            const yPct = 50 + ringRadiusPct * Math.sin(rad)
+            const Icon = iconMap[cat.name] || Fallback
+            const isActive = i === activeIdx
+
+            return (
               <button
-                onClick={() => setActiveIdx(i)}
-                className={`group relative w-full flex items-center justify-between text-left py-4 px-5 rounded-lg overflow-hidden transition-all duration-300 ${
-                  isActive ? 'bg-gradient-to-r from-ignition/15 to-transparent' : 'hover:bg-paper/5'
+                key={cat.id}
+                onClick={() => selectIndex(i)}
+                style={{ left: `${xPct}%`, top: `${yPct}%` }}
+                className={`absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center rounded-full transition-all duration-300 ${
+                  isActive
+                    ? 'h-14 w-14 bg-blueprint shadow-lg shadow-blueprint/30 ring-2 ring-gold/60'
+                    : 'h-11 w-11 bg-paper/8 border border-paper/15 hover:border-gold/40 hover:bg-paper/12'
                 }`}
+                title={cat.name}
               >
-                {/* Left accent bar */}
-                <span
-                  className={`absolute left-0 top-0 bottom-0 w-[3px] transition-all duration-300 ${
-                    isActive ? 'bg-ignition' : 'bg-transparent group-hover:bg-blueprint-light/40'
-                  }`}
-                />
-
-                <span className="flex items-center gap-4">
-                  <span
-                    className={`font-mono text-xs w-7 h-7 rounded-full flex items-center justify-center transition-all duration-300 ${
-                      isActive
-                        ? 'bg-ignition text-paper'
-                        : 'text-steel/40 border border-steel/15 group-hover:border-blueprint-light/40 group-hover:text-steel/70'
-                    }`}
-                  >
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <span
-                    className={`font-display font-semibold text-lg md:text-xl transition-colors duration-300 ${
-                      isActive ? 'text-paper' : 'text-steel/50 group-hover:text-steel/80'
-                    }`}
-                  >
-                    {cat.name}
-                  </span>
-                </span>
-
-                <FaArrowRight
-                  size={12}
-                  className={`transition-all duration-300 ${
-                    isActive ? 'text-ignition opacity-100 translate-x-0' : 'text-steel/20 opacity-0 -translate-x-2'
-                  }`}
-                />
+                <Icon className={isActive ? 'text-paper text-lg' : 'text-steel/50 text-sm'} />
               </button>
-            </li>
-          )
-        })}
-      </ul>
+            )
+          })}
+        </div>
 
-      {/* Active category panel */}
+        {/* Spin controls */}
+        <div className="flex items-center gap-4 mt-6">
+          <button
+            onClick={() => spin(-1)}
+            className="h-9 w-9 rounded-full border border-paper/15 text-steel/60 hover:border-gold/50 hover:text-gold transition-colors flex items-center justify-center"
+          >
+            <FaChevronLeft size={12} />
+          </button>
+          <span className="font-mono text-[10px] tracking-widest text-steel/40 uppercase">Spin to browse</span>
+          <button
+            onClick={() => spin(1)}
+            className="h-9 w-9 rounded-full border border-paper/15 text-steel/60 hover:border-gold/50 hover:text-gold transition-colors flex items-center justify-center"
+          >
+            <FaChevronRight size={12} />
+          </button>
+        </div>
+      </div>
+
+      {/* Detail panel */}
       <div className="relative bg-gradient-to-br from-paper/8 to-paper/[0.02] border border-paper/10 rounded-xl p-7 md:p-9 overflow-hidden">
-        {/* Corner brackets, matching the rest of the site's motif */}
         {[
           'top-4 left-4 border-t border-l',
           'top-4 right-4 border-t border-r',
           'bottom-4 left-4 border-b border-l',
           'bottom-4 right-4 border-b border-r',
         ].map((pos) => (
-          <span key={pos} className={`absolute ${pos} w-3 h-3 border-blueprint-light/30`} />
+          <span key={pos} className={`absolute ${pos} w-3 h-3 border-gold/40`} />
         ))}
-
-        {/* Soft orange glow behind the icon */}
-        <div className="absolute -top-10 -right-10 w-40 h-40 bg-ignition/20 rounded-full blur-3xl pointer-events-none" />
 
         <AnimatePresence mode="wait">
           <motion.div
@@ -89,12 +158,12 @@ function CategorySelector({ categories, iconMap, fallbackIcon: Fallback }) {
             transition={{ duration: 0.3 }}
             className="relative"
           >
-            <div className="h-16 w-16 rounded-full bg-gradient-to-br from-blueprint to-ignition flex items-center justify-center mb-6 shadow-lg shadow-ignition/20">
+            <div className="h-16 w-16 rounded-full bg-gradient-to-br from-blueprint to-blueprint-light flex items-center justify-center mb-6 shadow-lg shadow-blueprint/20 ring-2 ring-gold/30">
               <ActiveIcon className="text-paper text-2xl" />
             </div>
 
-            <span className="font-mono text-[10px] tracking-widest text-ignition uppercase block mb-2">
-              Category {String(activeIdx + 1).padStart(2, '0')} of {String(categories.length).padStart(2, '0')}
+            <span className="font-mono text-[10px] tracking-widest text-gold uppercase block mb-2">
+              Category {String(activeIdx + 1).padStart(2, '0')} of {String(n).padStart(2, '0')}
             </span>
 
             <h3 className="font-display font-semibold text-2xl md:text-3xl text-paper mb-7">
