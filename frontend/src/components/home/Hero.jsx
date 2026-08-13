@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 
 // Normalized chassis data with identical SVG command signatures for 100% fluid CSS path morphing
 const CARS = [

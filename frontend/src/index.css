@@ -86,3 +86,16 @@ body {
 }
 .animate-glow-drift { animation: glow-drift 15s ease-in-out infinite; }
 .animate-glow-drift-rev { animation: glow-drift-rev 18s ease-in-out infinite; }
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-33.333%);
+  }
+}
+
+.brand-marquee-track {
+  animation: marquee 35s linear infinite;
+}
