@@ -146,7 +146,7 @@ export default function CategorySelector({ categories, iconMap, fallbackIcon: Fa
                   <stop offset="0%" stopColor="var(--color-slate)" />
                   <stop offset="70%" stopColor="var(--color-ink)" />
                   <stop offset="100%" stopColor="#000" />
-                </radialGradient>
+                </linearGradient>
 
                 {/* Rubber Tire Texture Gradient */}
                 <radialGradient id="tireRubber" cx="50%" cy="50%" r="50%">
