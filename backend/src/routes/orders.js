@@ -10,8 +10,9 @@ try {
 const page = parseInt(req.query.page) || 1
 const pageSize = parseInt(req.query.pageSize) || 15
 const status = req.query.status
+const { notifyNewOrder, sendOrderConfirmation } = require('../email')
 
-```
+
 
 const where = status && status !== 'All' ? { status } : {}
 
@@ -28,7 +29,6 @@ prisma.order.count({ where }),
 
 res.json({ items, total, page, totalPages: Math.ceil(total / pageSize) })
 
-```
 
 } catch (err) {
 console.error(err)
@@ -77,6 +77,8 @@ unitPrice: i.unitPrice,
 },
 include: { items: true },
 })
+notifyNewOrder(order) // fire-and-forget — doesn't block the response
+    if (req.body.email) sendOrderConfirmation(order, req.body.email)
 
 res.status(201).json(order)
 

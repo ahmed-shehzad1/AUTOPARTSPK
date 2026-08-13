@@ -1,7 +1,7 @@
 const express = require('express')
 const prisma = require('../db')
 const requireAuth = require('../middleware/requireAuth')
-
+const { notifyNewWholesaleInquiry, notifyNewContactMessage } = require('../email')
 
 const router = express.Router()
 
@@ -40,6 +40,7 @@ router.post('/wholesale', async (req, res) => {
         message: message || null,
       },
     })
+    notifyNewWholesaleInquiry(inquiry)
     res.status(201).json(inquiry)
   } catch (err) {
     console.error(err)
@@ -88,6 +89,7 @@ router.post('/contact', async (req, res) => {
     const contactMessage = await prisma.contactMessage.create({
       data: { name, phone, email: email || null, subject: subject || null, message },
     })
+    notifyNewContactMessage(contactMessage)
     res.status(201).json(contactMessage)
   } catch (err) {
     console.error(err)
