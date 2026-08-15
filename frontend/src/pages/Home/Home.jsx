@@ -15,6 +15,7 @@ import {
   FaCogs, FaCarSide, FaBolt, FaCar, FaCompactDisc, FaFilter, FaLightbulb, FaTools,
   FaCheckCircle, FaSearch, FaArrowRight, FaShieldAlt, FaShippingFast, FaEye, FaTag,
 } from 'react-icons/fa'
+import FeaturedCarousel from '../../components/home/FeaturedCarousel'
 
 const API_BASE = 'http://localhost:4000/api'
 
@@ -45,6 +46,7 @@ function Home() {
 const [categories, setCategories] = useState([])
 const [makes, setMakes] = useState([])
 const [featuredProducts, setFeaturedProducts] = useState([])
+const [featuredLoading, setFeaturedLoading] = useState(true)
 const [siteStats, setSiteStats] = useState([])
 
   useEffect(() => {
@@ -156,89 +158,40 @@ const [siteStats, setSiteStats] = useState([])
         </div>
       </section>
 
-      {/* Featured Products — parallax warehouse image, live data */}
-      <section className="relative py-24 overflow-hidden border-y border-ink/10">
-        <ParallaxLayer strength={40}>
-          <img src={warehouseImg} alt="" className="w-full h-full object-cover scale-110" />
-        </ParallaxLayer>
-        <div className="absolute inset-0 bg-paper/93" />
-
-        <div className="relative max-w-7xl mx-auto px-6 md:px-10">
-          <Reveal>
-            <div className="flex items-end justify-between mb-12 flex-wrap gap-4">
-              <div>
-                <span className="font-mono text-xs tracking-widest text-blueprint uppercase block mb-2">
-                  High-Demand Parts
-                </span>
-                <h2 className="font-display font-semibold text-2xl md:text-3xl text-ink">
-                  Featured Catalog Items
-                </h2>
-              </div>
-              <Link to="/products" className="font-mono text-xs tracking-widest text-blueprint hover:text-ink transition-colors uppercase flex items-center gap-2">
-                Explore Full Catalog <FaArrowRight size={10} />
-              </Link>
-            </div>
-          </Reveal>
-
-          {featuredProducts.length === 0 ? (
-            <p className="font-body text-slate text-sm">No products yet — add some from the admin panel.</p>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {featuredProducts.map((p, i) => (
-                <Reveal key={p.id} delay={i * 0.08}>
-                  <Link
-                    to={`/products/${p.id}`}
-                    className="group relative block bg-paper rounded-lg border border-ink/10 hover:border-blueprint hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex flex-col h-full overflow-hidden"
-                  >
-                    <div className="relative h-40 bg-steel border-b border-ink/10 flex items-center justify-center overflow-hidden">
-                      <span className="absolute top-3 left-3 z-10 font-mono text-[10px] tracking-widest uppercase bg-ink/80 text-paper px-2.5 py-1 rounded">
-                        {p.category?.name}
-                      </span>
-                      <span className="absolute top-3 right-3 z-10 flex items-center gap-1.5 font-mono text-[10px] uppercase text-ink bg-paper/90 px-2 py-1 rounded">
-                        <span className={`w-1.5 h-1.5 rounded-full ${STOCK_DOT[p.stock] || 'bg-blueprint'}`} /> {p.stock}
-                      </span>
-
-                      {p.images && p.images.length > 0 ? (
-                        <img
-                          src={p.images[0].url}
-                          alt={p.name}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                      ) : (
-                        <span className="font-mono text-xs text-slate/40">No image yet</span>
-                      )}
-
-                      <div className="absolute inset-0 bg-ink/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                        <span className="bg-paper text-ink font-mono text-xs font-semibold uppercase px-4 py-2 rounded-md flex items-center gap-2">
-                          <FaEye size={12} /> View Details
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="p-5 flex flex-col flex-grow">
-                      <div className="flex items-center justify-between text-[10px] font-mono text-slate/60 uppercase mb-2">
-                        <span className="text-blueprint">{p.partBrand}</span>
-                        <span>{p.condition}</span>
-                      </div>
-                      <h3 className="font-display font-semibold text-ink text-sm mb-2 group-hover:text-blueprint transition-colors">
-                        {p.name}
-                      </h3>
-                      <div className="flex items-center gap-1.5 font-mono text-[11px] text-slate mb-4">
-                        <FaTag size={9} className="text-blueprint" /> {p.partNo}
-                      </div>
-                      <div className="mt-auto pt-3 border-t border-ink/5">
-                        <span className="font-display font-semibold text-ink">PKR {p.price?.toLocaleString()}</span>
-                      </div>
-                    </div>
-                  </Link>
-                </Reveal>
-              ))}
-            </div>
-          )}
+      <section className="relative py-24 bg-paper border-y border-ink/10 overflow-hidden">
+  <div
+    className="absolute inset-0 opacity-[0.04] pointer-events-none"
+    style={{
+      backgroundImage:
+        'linear-gradient(var(--color-blueprint) 1px, transparent 1px), linear-gradient(90deg, var(--color-blueprint) 1px, transparent 1px)',
+      backgroundSize: '40px 40px',
+    }}
+  />
+  <div className="relative max-w-7xl mx-auto px-6 md:px-10">
+    <Reveal>
+      <div className="flex items-end justify-between mb-12 flex-wrap gap-4">
+        <div>
+          <span className="font-mono text-xs tracking-widest text-blueprint uppercase block mb-2">
+            High-Demand Parts
+          </span>
+          <h2 className="font-display font-semibold text-2xl md:text-3xl text-ink">
+            Featured Catalog Items
+          </h2>
         </div>
-      </section>
+        <Link to="/products" className="font-mono text-xs tracking-widest text-blueprint hover:text-ink transition-colors uppercase flex items-center gap-2">
+          Explore Full Catalog <FaArrowRight size={10} />
+        </Link>
+      </div>
+    </Reveal>
+
+    <FeaturedCarousel products={featuredProducts} loading={featuredLoading} />
+  </div>
+</section>
+
+
 
       <HowItWorks />
+      
       <AudienceTabs />
 
       {/* Stats strip */}
