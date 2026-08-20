@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 import { motion, useAnimation } from 'framer-motion'
 import Reveal from '../common/Reveal'
 
-/* -------------------------------------------------------
-   PRODUCT
-------------------------------------------------------- */
+/* =========================================================
+   SPARK PLUG
+========================================================= */
 
 const SparkPlug = ({ className = '' }) => (
   <svg
@@ -13,42 +13,68 @@ const SparkPlug = ({ className = '' }) => (
     fill="none"
     aria-hidden="true"
   >
-    {/* Terminal */}
-    <rect x="35" y="8" width="10" height="14" rx="1" fill="#111827" />
+    <rect
+      x="35"
+      y="8"
+      width="10"
+      height="14"
+      rx="1"
+      fill="#141A21"
+    />
 
-    {/* Ceramic */}
     <path
-      d="M29 22h22v11H29z
-         M26 33h28v10H26z
-         M29 43h22v10H29z
-         M26 53h28v10H26z
-         M29 63h22v13H29z"
-      fill="#F4F5F6"
-      stroke="#111827"
+      d="M29 22h22v11H29z"
+      fill="#FFFFFF"
+      stroke="#141A21"
       strokeWidth="2.5"
     />
 
-    {/* Metal hex */}
+    <path
+      d="M26 33h28v10H26z"
+      fill="#FFFFFF"
+      stroke="#141A21"
+      strokeWidth="2.5"
+    />
+
+    <path
+      d="M29 43h22v10H29z"
+      fill="#FFFFFF"
+      stroke="#141A21"
+      strokeWidth="2.5"
+    />
+
+    <path
+      d="M26 53h28v10H26z"
+      fill="#FFFFFF"
+      stroke="#141A21"
+      strokeWidth="2.5"
+    />
+
+    <path
+      d="M29 63h22v13H29z"
+      fill="#FFFFFF"
+      stroke="#141A21"
+      strokeWidth="2.5"
+    />
+
     <path
       d="M20 76h40v22H20z"
-      fill="#111827"
+      fill="#141A21"
     />
 
     <path
       d="M23 82h34v9H23z"
-      fill="#2563EB"
-      opacity=".8"
+      fill="#1E5EA8"
     />
 
-    {/* Threaded shell */}
     <rect
       x="26"
       y="98"
       width="28"
       height="51"
       rx="1"
-      fill="#66707B"
-      stroke="#111827"
+      fill="#5B6570"
+      stroke="#141A21"
       strokeWidth="2.5"
     />
 
@@ -59,25 +85,23 @@ const SparkPlug = ({ className = '' }) => (
         y1={y}
         x2="53"
         y2={y}
-        stroke="#111827"
+        stroke="#141A21"
         strokeWidth="2"
       />
     ))}
 
-    {/* Gasket */}
     <rect
       x="22"
       y="97"
       width="36"
       height="6"
       rx="2"
-      fill="#C89B3C"
+      fill="#C9962B"
     />
 
-    {/* Electrode */}
     <path
       d="M39 149v15h-11"
-      stroke="#111827"
+      stroke="#141A21"
       strokeWidth="4"
       strokeLinecap="square"
     />
@@ -86,206 +110,410 @@ const SparkPlug = ({ className = '' }) => (
       cx="40"
       cy="154"
       r="2"
-      fill="#F97316"
+      fill="#FF5A1F"
     />
   </svg>
 )
 
-/* -------------------------------------------------------
-   STATION ICONS
-------------------------------------------------------- */
+/* =========================================================
+   BOX
+========================================================= */
 
-const SearchIcon = () => (
-  <svg viewBox="0 0 32 32" className="w-7 h-7" fill="none">
-    <circle
-      cx="14"
-      cy="14"
-      r="8"
-      stroke="currentColor"
-      strokeWidth="2"
-    />
-    <path
-      d="m20 20 7 7"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-    />
-  </svg>
-)
-
-const BoxIcon = () => (
-  <svg viewBox="0 0 32 32" className="w-7 h-7" fill="none">
-    <path
-      d="m5 10 11-5 11 5-11 5-11-5Z"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M5 10v12l11 5 11-5V10"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M16 15v12"
-      stroke="currentColor"
-      strokeWidth="2"
-    />
-  </svg>
-)
-
-const TruckIcon = () => (
-  <svg viewBox="0 0 32 32" className="w-7 h-7" fill="none">
-    <path
-      d="M4 8h16v14H4z"
-      stroke="currentColor"
-      strokeWidth="2"
-    />
-    <path
-      d="M20 13h5l3 4v5h-8"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinejoin="round"
-    />
-    <circle
-      cx="9"
-      cy="24"
-      r="3"
-      stroke="currentColor"
-      strokeWidth="2"
-    />
-    <circle
-      cx="24"
-      cy="24"
-      r="3"
-      stroke="currentColor"
-      strokeWidth="2"
-    />
-  </svg>
-)
-
-/* -------------------------------------------------------
-   PACKAGE
-------------------------------------------------------- */
-
-const Package = ({
-  boxControls,
-  lidControls,
-  tapeControls,
+const Box = ({
+  controls,
+  leftFlap,
+  rightFlap,
+  tape,
 }) => (
   <motion.div
-    animate={boxControls}
-    className="absolute z-30 w-28 h-24"
+    animate={controls}
+    className="absolute z-30 w-20 h-16"
     style={{
-      translateX: '-50%',
-      translateY: '-50%',
+      x: '-50%',
+      y: '-50%',
     }}
   >
-    {/* Ground shadow */}
-    <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-24 h-3 rounded-full bg-black/15 blur-md" />
+    {/* Shadow */}
+    <div
+      className="
+        absolute
+        -bottom-2
+        left-1/2
+        -translate-x-1/2
+        w-16
+        h-2
+        rounded-full
+        bg-ink
+        opacity-15
+        blur-sm
+      "
+    />
 
-    {/* Box */}
-    <div className="absolute inset-0 overflow-visible">
+    {/* Main box */}
+    <div
+      className="
+        absolute
+        inset-0
+        overflow-hidden
+        rounded-sm
+        border-2
+        border-ink
+        bg-[#B88A57]
+      "
+    />
 
-      {/* Interior */}
-      <div className="absolute inset-x-1 top-2 bottom-0 bg-[#553D2B] border-2 border-[#17202A] rounded-sm" />
+    {/* Inside */}
+    <div
+      className="
+        absolute
+        left-1
+        right-1
+        top-1
+        bottom-1
+        bg-[#60442F]
+      "
+    />
 
-      {/* Product sitting inside */}
-      <motion.div
-        className="absolute left-1/2 top-1/2 z-10"
-        style={{ translateX: '-50%', translateY: '-50%' }}
+    {/* Product inside */}
+    <div
+      className="
+        absolute
+        left-1/2
+        top-1/2
+        -translate-x-1/2
+        -translate-y-[35%]
+        z-10
+      "
+    >
+      <SparkPlug className="w-5 h-10" />
+    </div>
+
+    {/* Left flap */}
+    <motion.div
+      animate={leftFlap}
+      className="
+        absolute
+        left-0
+        top-0
+        z-30
+        w-1/2
+        h-6
+        origin-top-left
+        border-2
+        border-ink
+        bg-[#C89B68]
+      "
+      style={{
+        transformPerspective: 500,
+      }}
+    />
+
+    {/* Right flap */}
+    <motion.div
+      animate={rightFlap}
+      className="
+        absolute
+        right-0
+        top-0
+        z-30
+        w-1/2
+        h-6
+        origin-top-right
+        border-2
+        border-ink
+        bg-[#C89B68]
+      "
+      style={{
+        transformPerspective: 500,
+      }}
+    />
+
+    {/* Front wall */}
+    <div
+      className="
+        absolute
+        left-0
+        right-0
+        bottom-0
+        z-20
+        h-9
+        border-2
+        border-ink
+        rounded-b-sm
+        bg-[#D8A878]
+      "
+    />
+
+    {/* Tape */}
+    <motion.div
+      animate={tape}
+      className="
+        absolute
+        left-0
+        right-0
+        top-[24px]
+        z-40
+        h-2
+        bg-blueprint
+      "
+    />
+  </motion.div>
+)
+
+/* =========================================================
+   SIMPLE DELIVERY TRUCK
+========================================================= */
+
+const Truck = ({ controls }) => (
+  <motion.div
+    animate={controls}
+    className="absolute z-40"
+    style={{
+      x: '-50%',
+      y: '-50%',
+    }}
+  >
+    <div className="relative w-32 h-16">
+
+      {/* Cargo body */}
+      <div
+        className="
+          absolute
+          left-0
+          bottom-3
+          w-[86px]
+          h-11
+          border-2
+          border-ink
+          rounded-sm
+          bg-paper
+        "
       >
-        <SparkPlug className="w-8 h-16 opacity-80" />
-      </motion.div>
-
-      {/* Left lid */}
-      <motion.div
-        animate={lidControls}
-        className="absolute left-0 top-0 w-1/2 h-9 origin-top-left bg-[#C99A66] border-2 border-[#17202A] rounded-sm z-30"
-      />
-
-      {/* Right lid */}
-      <motion.div
-        animate={lidControls}
-        className="absolute right-0 top-0 w-1/2 h-9 origin-top-right bg-[#B98755] border-2 border-[#17202A] rounded-sm z-30"
-      />
-
-      {/* Front panel */}
-      <div className="absolute left-0 right-0 bottom-0 h-16 bg-[#D8AA78] border-2 border-[#17202A] rounded-b-sm z-20">
-
-        {/* Box marking */}
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-6 border border-black/20 rounded flex items-center justify-center">
-          <div className="w-5 h-0.5 bg-black/20" />
-        </div>
-
-        {/* Tape */}
-        <motion.div
-          animate={tapeControls}
-          className="absolute -top-2 left-0 right-0 h-4 bg-blue-600 border-y border-black/20"
+        {/* Simple stripe */}
+        <div
+          className="
+            absolute
+            left-0
+            right-0
+            top-5
+            h-1.5
+            bg-blueprint
+          "
         />
       </div>
+
+      {/* Cab */}
+      <div
+        className="
+          absolute
+          right-0
+          bottom-3
+          w-12
+          h-11
+          border-2
+          border-ink
+          rounded-tr-sm
+          bg-paper
+        "
+      >
+        {/* Window */}
+        <div
+          className="
+            absolute
+            left-2
+            top-2
+            w-7
+            h-4
+            border
+            border-ink
+            bg-steel
+          "
+        />
+      </div>
+
+      {/* Wheels */}
+      <div
+        className="
+          absolute
+          left-3
+          bottom-0
+          w-6
+          h-6
+          rounded-full
+          border-4
+          border-steel
+          bg-ink
+        "
+      />
+
+      <div
+        className="
+          absolute
+          right-2
+          bottom-0
+          w-6
+          h-6
+          rounded-full
+          border-4
+          border-steel
+          bg-ink
+        "
+      />
+
+      {/* Headlight */}
+      <div
+        className="
+          absolute
+          right-0
+          bottom-7
+          w-1
+          h-2
+          bg-ignition
+        "
+      />
     </div>
   </motion.div>
 )
 
-/* -------------------------------------------------------
-   DESTINATION
-------------------------------------------------------- */
+/* =========================================================
+   SIMPLE HOUSE
+========================================================= */
 
-const Destination = () => (
-  <div className="relative flex flex-col items-center">
-    <div className="w-24 h-2 rounded-full bg-black/10 blur-sm mb-1" />
+const House = () => (
+  <div className="relative w-20 h-20">
 
-    <div className="relative w-20 h-16 rounded-t-lg border-2 border-[#17202A] bg-white shadow-sm">
-      <div className="absolute top-2 left-2 right-2 h-2 rounded-sm bg-slate-200 border border-black/10" />
+    {/* Ground */}
+    <div
+      className="
+        absolute
+        left-0
+        right-0
+        bottom-1
+        h-px
+        bg-ink
+      "
+      style={{
+        opacity: 0.15,
+      }}
+    />
 
-      <div className="absolute left-1/2 bottom-0 -translate-x-1/2 w-12 h-9 rounded-t-md border-2 border-[#17202A]/30 bg-slate-100 flex items-center justify-center">
-        <div className="w-2.5 h-2.5 rounded-full bg-blue-600" />
-      </div>
-    </div>
+    {/* Body */}
+    <div
+      className="
+        absolute
+        left-2
+        bottom-2
+        w-16
+        h-11
+        border-2
+        border-ink
+        bg-paper
+      "
+    />
+
+    {/* Roof */}
+    <div
+      className="
+        absolute
+        left-0
+        top-5
+        w-0
+        h-0
+        border-l-[40px]
+        border-l-transparent
+        border-r-[40px]
+        border-r-transparent
+        border-bottom-[22px]
+        border-b-ink
+      "
+    />
+
+    {/* Door */}
+    <div
+      className="
+        absolute
+        left-7
+        bottom-2
+        w-5
+        h-7
+        bg-blueprint
+        border
+        border-ink
+      "
+    />
+
+    {/* Window */}
+    <div
+      className="
+        absolute
+        right-4
+        bottom-7
+        w-4
+        h-4
+        bg-steel
+        border
+        border-ink
+      "
+    />
   </div>
 )
 
-/* -------------------------------------------------------
-   STAGE DATA
-------------------------------------------------------- */
+/* =========================================================
+   STAGE LABEL
+========================================================= */
 
-const stages = [
-  {
-    number: '01',
-    label: 'FIND',
-    title: 'Find Your Part',
-    description: 'Search by vehicle, category, or OEM number.',
-    icon: SearchIcon,
-  },
-  {
-    number: '02',
-    label: 'PACK',
-    title: 'Packed With Care',
-    description: 'Your part is checked, protected, and prepared for dispatch.',
-    icon: BoxIcon,
-  },
-  {
-    number: '03',
-    label: 'DELIVER',
-    title: 'At Your Doorstep',
-    description: 'Your order travels safely to the delivery address.',
-    icon: TruckIcon,
-  },
-]
+const Stage = ({
+  number,
+  label,
+  active,
+  className,
+}) => (
+  <div
+    className={`
+      absolute
+      ${className}
+      -translate-x-1/2
+      text-center
+    `}
+  >
+    <motion.div
+      animate={{
+        opacity: active ? 1 : 0.35,
+      }}
+      transition={{
+        duration: 0.25,
+      }}
+    >
+      <span
+        className={`
+          font-mono
+          text-[9px]
+          font-bold
+          tracking-[0.16em]
+          ${active ? 'text-blueprint' : 'text-slate'}
+        `}
+      >
+        {number} — {label}
+      </span>
+    </motion.div>
+  </div>
+)
 
-/* -------------------------------------------------------
+/* =========================================================
    MAIN
-------------------------------------------------------- */
+========================================================= */
 
 export default function HowItWorks() {
   const [activeStage, setActiveStage] = useState(0)
 
   const plug = useAnimation()
   const box = useAnimation()
-  const lids = useAnimation()
+
+  const leftFlap = useAnimation()
+  const rightFlap = useAnimation()
+
   const tape = useAnimation()
+  const truck = useAnimation()
 
   useEffect(() => {
     let mounted = true
@@ -293,105 +521,246 @@ export default function HowItWorks() {
     const wait = (ms) =>
       new Promise((resolve) => setTimeout(resolve, ms))
 
-    const reset = async () => {
+    const reset = () => {
+      /*
+       * POINT 1
+       *
+       * Plug is above/left of the box.
+       * Box is already present.
+       */
       plug.set({
-        left: '16%',
-        top: '50%',
+        left: '22%',
+        top: '43%',
         opacity: 1,
-        rotate: -12,
         scale: 1,
+        rotate: -12,
       })
 
       box.set({
-        left: '50%',
-        top: '50%',
+        left: '38%',
+        top: '59%',
         opacity: 1,
+        scale: 1,
       })
 
-      lids.set({
+      leftFlap.set({
+        rotateX: 65,
+      })
+
+      rightFlap.set({
         rotateX: 65,
       })
 
       tape.set({
         opacity: 0,
-        scaleX: 0.8,
+      })
+
+      /*
+       * Truck is waiting at POINT 2.
+       * It is larger than the box.
+       */
+      truck.set({
+        left: '63%',
+        top: '58%',
+        opacity: 0,
+        scale: 1,
       })
     }
 
     const sequence = async () => {
-      await reset()
+      reset()
+
+      await wait(500)
 
       while (mounted) {
-        /* FIND */
+
+        /* =================================================
+           POINT 1
+           
+           PLUG DROPS INTO BOX
+        ================================================= */
+
         setActiveStage(0)
-        await wait(1800)
 
-        /* PACK */
-        setActiveStage(1)
-
+        /*
+         * Plug moves directly above box.
+         */
         await plug.start({
-          left: '50%',
-          top: '22%',
+          left: '38%',
+          top: '30%',
           rotate: 0,
           transition: {
-            duration: 0.75,
+            duration: 0.65,
             ease: [0.22, 1, 0.36, 1],
           },
         })
 
         if (!mounted) return
 
+        /*
+         * Plug drops inside.
+         */
         await plug.start({
-          top: '53%',
+          top: '57%',
+          scale: 0.55,
           opacity: 0,
-          scale: 0.7,
+          transition: {
+            duration: 0.4,
+            ease: 'easeIn',
+          },
+        })
+
+        if (!mounted) return
+
+        /*
+         * Box closes.
+         */
+        await Promise.all([
+          leftFlap.start({
+            rotateX: 0,
+            transition: {
+              duration: 0.35,
+              ease: [0.34, 1.56, 0.64, 1],
+            },
+          }),
+
+          rightFlap.start({
+            rotateX: 0,
+            transition: {
+              duration: 0.35,
+              ease: [0.34, 1.56, 0.64, 1],
+            },
+          }),
+        ])
+
+        if (!mounted) return
+
+        /*
+         * Tape seals it.
+         */
+        await tape.start({
+          opacity: 1,
+          transition: {
+            duration: 0.2,
+          },
+        })
+
+        await wait(700)
+
+        if (!mounted) return
+
+        /* =================================================
+           POINT 2
+           
+           BOX MOVES TO TRUCK
+        ================================================= */
+
+        setActiveStage(1)
+
+        /*
+         * Truck appears at point 2.
+         */
+        await truck.start({
+          opacity: 1,
+          transition: {
+            duration: 0.25,
+          },
+        })
+
+        if (!mounted) return
+
+        /*
+         * Box moves toward truck.
+         *
+         * Notice the box is smaller than truck.
+         */
+        await box.start({
+          left: '61%',
+          top: '57%',
+          scale: 0.9,
+          transition: {
+            duration: 0.9,
+            ease: [0.22, 1, 0.36, 1],
+          },
+        })
+
+        if (!mounted) return
+
+        /*
+         * Box gets loaded into truck.
+         */
+        await box.start({
+          left: '64%',
+          top: '52%',
+          scale: 0.58,
+          opacity: 0,
           transition: {
             duration: 0.45,
             ease: 'easeIn',
           },
         })
 
-        await lids.start({
-          rotateX: 0,
-          transition: {
-            duration: 0.4,
-            ease: [0.34, 1.56, 0.64, 1],
-          },
-        })
+        await wait(500)
 
-        await tape.start({
-          opacity: 1,
-          scaleX: 1,
-          transition: {
-            duration: 0.25,
-          },
-        })
+        if (!mounted) return
 
-        await wait(1000)
+        /* =================================================
+           POINT 3
+           
+           TRUCK DRIVES TO HOUSE
+        ================================================= */
 
-        /* DELIVER */
         setActiveStage(2)
 
-        await box.start({
+        /*
+         * Truck travels from point 2 to point 3.
+         */
+        await truck.start({
           left: '84%',
           transition: {
-            duration: 1.4,
+            duration: 1.5,
             ease: [0.65, 0, 0.35, 1],
           },
         })
 
-        await wait(700)
+        await wait(900)
 
-        await box.start({
-          opacity: 0,
+        if (!mounted) return
+
+        /*
+         * Small pause at house.
+         */
+        await truck.start({
+          scale: 1.04,
           transition: {
-            duration: 0.35,
+            duration: 0.2,
           },
         })
 
         await wait(300)
 
-        await reset()
+        if (!mounted) return
+
+        /*
+         * Fade truck out.
+         */
+        await truck.start({
+          opacity: 0,
+          transition: {
+            duration: 0.3,
+          },
+        })
+
+        await wait(300)
+
+        if (!mounted) return
+
+        /*
+         * LOOP BACK TO POINT 1
+         */
+        reset()
+
+        await wait(500)
       }
     }
 
@@ -400,20 +769,45 @@ export default function HowItWorks() {
     return () => {
       mounted = false
     }
-  }, [])
+  }, [
+    plug,
+    box,
+    leftFlap,
+    rightFlap,
+    tape,
+    truck,
+  ])
 
   return (
-    <section className="relative overflow-hidden bg-slate-50 py-24 md:py-28 border-b border-black/10">
-
-      {/* Decorative blueprint grid */}
+    <section
+      className="
+        relative
+        overflow-hidden
+        bg-steel
+        py-14
+        md:py-16
+        border-b
+        border-ink
+      "
+      style={{
+        borderColor: 'rgba(20, 26, 33, 0.08)',
+      }}
+    >
+      {/* Blueprint grid */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.035]"
+        className="
+          pointer-events-none
+          absolute
+          inset-0
+          animate-grid-pan
+        "
         style={{
+          opacity: 0.035,
           backgroundImage: `
-            linear-gradient(to right, #111827 1px, transparent 1px),
-            linear-gradient(to bottom, #111827 1px, transparent 1px)
+            linear-gradient(to right, #141A21 1px, transparent 1px),
+            linear-gradient(to bottom, #141A21 1px, transparent 1px)
           `,
-          backgroundSize: '32px 32px',
+          backgroundSize: '40px 40px',
         }}
       />
 
@@ -421,284 +815,269 @@ export default function HowItWorks() {
 
         {/* HEADER */}
         <Reveal>
-          <div className="max-w-2xl mx-auto text-center mb-14 md:mb-16">
+          <div className="text-center mb-7">
 
-            <div className="inline-flex items-center gap-2 mb-4 px-3 py-1.5 rounded-full border border-blue-600/20 bg-blue-600/5">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-600" />
+            <div
+              className="
+                inline-flex
+                items-center
+                gap-2
+                mb-2
+                font-mono
+                text-[9px]
+                font-bold
+                tracking-[0.18em]
+                uppercase
+                text-blueprint
+              "
+            >
+              <span className="w-5 h-px bg-blueprint" />
 
-              <span className="font-mono text-[10px] font-bold tracking-[0.18em] text-blue-600 uppercase">
-                Simple process
-              </span>
+              Order Process
+
+              <span className="w-5 h-px bg-blueprint" />
             </div>
 
-            <h2 className="font-display font-bold text-3xl md:text-5xl text-slate-900 tracking-tight uppercase">
+            <h2
+              className="
+                font-display
+                font-bold
+                text-2xl
+                md:text-3xl
+                text-ink
+                tracking-tight
+                uppercase
+              "
+            >
               How Ordering Works
             </h2>
 
-            <p className="mt-3 font-body text-slate-500 text-base md:text-lg">
-              From finding the right part to receiving it at your door.
+            <p
+              className="
+                mt-1
+                font-body
+                text-sm
+                text-slate
+              "
+            >
+              Find it. Pack it. Deliver it.
             </p>
           </div>
         </Reveal>
 
-        {/* DESKTOP */}
-        <div className="hidden md:block">
-
-          {/* ANIMATION CANVAS */}
-          <div className="relative h-[330px] rounded-2xl border border-black/10 bg-white shadow-sm overflow-hidden">
-
-            {/* Grid */}
-            <div
-              className="absolute inset-0 opacity-[0.035]"
-              style={{
-                backgroundImage: `
-                  linear-gradient(to right, #111827 1px, transparent 1px),
-                  linear-gradient(to bottom, #111827 1px, transparent 1px)
-                `,
-                backgroundSize: '24px 24px',
-              }}
-            />
-
-            {/* Travel rail */}
-            <div className="absolute left-[9%] right-[9%] top-1/2 -translate-y-1/2">
-
-              <div className="h-px bg-slate-300" />
-
-              <div className="absolute inset-x-0 top-0 border-t border-dashed border-blue-600/20" />
-            </div>
-
-            {/* Station markers */}
-            {[
-              { left: '16%' },
-              { left: '50%' },
-              { left: '84%' },
-            ].map((station, index) => (
-              <div
-                key={index}
-                className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2"
-                style={{ left: station.left }}
-              >
-                <motion.div
-                  animate={{
-                    scale: activeStage === index ? 1.15 : 1,
-                    opacity: activeStage === index ? 1 : 0.35,
-                  }}
-                  className="w-3 h-3 rounded-full bg-blue-600 ring-8 ring-blue-600/5"
-                />
-              </div>
-            ))}
-
-            {/* Destination */}
-            <div className="absolute left-[84%] top-1/2 -translate-x-1/2 -translate-y-1/2">
-              <Destination />
-            </div>
-
-            {/* Package */}
-            <Package
-              boxControls={box}
-              lidControls={lids}
-              tapeControls={tape}
-            />
-
-            {/* Spark plug */}
-            <motion.div
-              animate={plug}
-              className="absolute z-40"
-              style={{
-                translateX: '-50%',
-                translateY: '-50%',
-              }}
-            >
-              <SparkPlug className="w-16 h-32 drop-shadow-xl" />
-            </motion.div>
-
-            {/* Small technical labels */}
-            <div className="absolute left-6 top-6 font-mono text-[9px] tracking-widest text-slate-400 uppercase">
-              ORDER FLOW / 03
-            </div>
-
-            <div className="absolute right-6 top-6 font-mono text-[9px] tracking-widest text-slate-400 uppercase">
-              LIVE PROCESS
-            </div>
-
-            <div className="absolute left-6 bottom-6 font-mono text-[9px] text-slate-400">
-              PART → PACKAGE → DELIVERY
-            </div>
+        {/* ANIMATION */}
+        <div
+          className="
+            relative
+            h-[255px]
+            md:h-[270px]
+            rounded-xl
+            border
+            bg-paper
+            overflow-hidden
+          "
+          style={{
+            borderColor: 'rgba(20, 26, 33, 0.10)',
+          }}
+        >
+          {/* Technical labels */}
+          <div
+            className="
+              absolute
+              left-4
+              top-4
+              font-mono
+              text-[8px]
+              tracking-[0.15em]
+              text-slate
+            "
+          >
+            ORDER_FLOW / 03
           </div>
 
-          {/* CONTENT */}
-          <div className="grid grid-cols-3 gap-6 mt-8">
-            {stages.map((stage, index) => {
-              const Icon = stage.icon
-              const active = activeStage === index
-
-              return (
-                <div
-                  key={stage.number}
-                  className={`
-                    relative rounded-xl border p-6
-                    transition-all duration-500
-                    ${
-                      active
-                        ? 'border-blue-600/30 bg-white shadow-md'
-                        : 'border-black/5 bg-white/50'
-                    }
-                  `}
-                >
-                  <div className="flex items-start justify-between">
-
-                    <div
-                      className={`
-                        flex items-center justify-center
-                        w-11 h-11 rounded-lg
-                        transition-all duration-500
-                        ${
-                          active
-                            ? 'bg-blue-600 text-white'
-                            : 'bg-slate-100 text-slate-500'
-                        }
-                      `}
-                    >
-                      <Icon />
-                    </div>
-
-                    <span className="font-mono text-[10px] font-bold tracking-widest text-slate-400">
-                      {stage.number}
-                    </span>
-                  </div>
-
-                  <div className="mt-5">
-                    <span
-                      className={`
-                        font-mono text-[10px] font-bold tracking-[0.18em]
-                        ${
-                          active
-                            ? 'text-blue-600'
-                            : 'text-slate-400'
-                        }
-                      `}
-                    >
-                      {stage.label}
-                    </span>
-
-                    <h3 className="mt-1 font-display font-bold text-xl text-slate-900">
-                      {stage.title}
-                    </h3>
-
-                    <p className="mt-2 font-body text-sm leading-relaxed text-slate-500">
-                      {stage.description}
-                    </p>
-                  </div>
-
-                  {active && (
-                    <motion.div
-                      layoutId="activeBar"
-                      className="absolute left-0 right-0 -bottom-px h-0.5 bg-blue-600 rounded-full"
-                    />
-                  )}
-                </div>
-              )
-            })}
+          <div
+            className="
+              absolute
+              right-4
+              top-4
+              font-mono
+              text-[8px]
+              tracking-[0.15em]
+              text-slate
+            "
+          >
+            LIVE
           </div>
+
+          {/* Main travel line */}
+          <div
+            className="
+              absolute
+              left-[8%]
+              right-[8%]
+              top-[67%]
+              border-t
+              border-dashed
+              border-ink
+            "
+            style={{
+              opacity: 0.18,
+            }}
+          />
+
+          {/* Ground */}
+          <div
+            className="
+              absolute
+              left-[8%]
+              right-[8%]
+              top-[71%]
+              h-px
+              bg-ink
+            "
+            style={{
+              opacity: 0.05,
+            }}
+          />
+
+          {/* POINT 1 */}
+          <motion.div
+            className="
+              absolute
+              left-[18%]
+              top-[67%]
+              w-2
+              h-2
+              -translate-x-1/2
+              -translate-y-1/2
+              rounded-full
+              bg-blueprint
+            "
+            animate={{
+              scale: activeStage === 0 ? 1.3 : 1,
+              opacity: activeStage === 0 ? 1 : 0.3,
+            }}
+          />
+
+          {/* POINT 2 */}
+          <motion.div
+            className="
+              absolute
+              left-[61%]
+              top-[67%]
+              w-2
+              h-2
+              -translate-x-1/2
+              -translate-y-1/2
+              rounded-full
+              bg-blueprint
+            "
+            animate={{
+              scale: activeStage === 1 ? 1.3 : 1,
+              opacity: activeStage === 1 ? 1 : 0.3,
+            }}
+          />
+
+          {/* POINT 3 */}
+          <motion.div
+            className="
+              absolute
+              left-[84%]
+              top-[67%]
+              w-2
+              h-2
+              -translate-x-1/2
+              -translate-y-1/2
+              rounded-full
+              bg-blueprint
+            "
+            animate={{
+              scale: activeStage === 2 ? 1.3 : 1,
+              opacity: activeStage === 2 ? 1 : 0.3,
+            }}
+          />
+
+          {/* House at point 3 */}
+          <div
+            className="
+              absolute
+              left-[84%]
+              top-[43%]
+              -translate-x-1/2
+              -translate-y-1/2
+            "
+          >
+            <House />
+          </div>
+
+          {/* BOX */}
+          <Box
+            controls={box}
+            leftFlap={leftFlap}
+            rightFlap={rightFlap}
+            tape={tape}
+          />
+
+          {/* SPARK PLUG */}
+          <motion.div
+            animate={plug}
+            className="absolute z-50"
+            style={{
+              x: '-50%',
+              y: '-50%',
+            }}
+          >
+            <SparkPlug className="w-11 h-[99px] md:w-13 md:h-[108px]" />
+          </motion.div>
+
+          {/* TRUCK */}
+          <Truck controls={truck} />
+
+          {/* STAGE LABELS */}
+          <Stage
+            number="01"
+            label="PACK"
+            active={activeStage === 0}
+            className="left-[18%] bottom-3"
+          />
+
+          <Stage
+            number="02"
+            label="SHIP"
+            active={activeStage === 1}
+            className="left-[61%] bottom-3"
+          />
+
+          <Stage
+            number="03"
+            label="ARRIVE"
+            active={activeStage === 2}
+            className="left-[84%] bottom-3"
+          />
         </div>
 
-        {/* MOBILE */}
-        <div className="md:hidden">
-
-          <div className="relative rounded-2xl border border-black/10 bg-white overflow-hidden">
-
-            <div className="absolute left-8 top-10 bottom-10 w-px bg-slate-200" />
-
-            <div className="relative divide-y divide-black/5">
-
-              {stages.map((stage, index) => {
-                const Icon = stage.icon
-                const active = activeStage === index
-
-                return (
-                  <div
-                    key={stage.number}
-                    className="relative min-h-[150px] pl-20 pr-6 py-7"
-                  >
-                    {/* timeline dot */}
-                    <motion.div
-                      animate={{
-                        scale: active ? 1.15 : 1,
-                      }}
-                      className={`
-                        absolute left-[23px] top-9
-                        w-3 h-3 rounded-full
-                        ring-8 ring-white
-                        ${
-                          active
-                            ? 'bg-blue-600'
-                            : 'bg-slate-300'
-                        }
-                      `}
-                    />
-
-                    <div className="flex items-center gap-3">
-
-                      <div
-                        className={`
-                          flex items-center justify-center
-                          w-10 h-10 rounded-lg
-                          ${
-                            active
-                              ? 'bg-blue-600 text-white'
-                              : 'bg-slate-100 text-slate-400'
-                          }
-                        `}
-                      >
-                        <Icon />
-                      </div>
-
-                      <span className="font-mono text-[10px] tracking-widest text-slate-400">
-                        {stage.number} / {stage.label}
-                      </span>
-                    </div>
-
-                    <h3 className="mt-4 font-display font-bold text-lg text-slate-900">
-                      {stage.title}
-                    </h3>
-
-                    <p className="mt-1 font-body text-xs leading-relaxed text-slate-500">
-                      {stage.description}
-                    </p>
-                  </div>
-                )
-              })}
-
-            </div>
-          </div>
-
-          {/* Small mobile visual */}
-          <div className="relative mt-5 h-40 rounded-2xl border border-black/10 bg-white overflow-hidden">
-
-            <div className="absolute inset-x-8 top-1/2 h-px bg-slate-200" />
-
-            <motion.div
-              animate={{
-                left:
-                  activeStage === 0
-                    ? '20%'
-                    : activeStage === 1
-                    ? '50%'
-                    : '80%',
-              }}
-              transition={{
-                duration: 0.8,
-                ease: [0.65, 0, 0.35, 1],
-              }}
-              className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2"
-            >
-              <SparkPlug className="w-10 h-20 drop-shadow-lg" />
-            </motion.div>
-
-            <div className="absolute left-[80%] top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-40">
-              <Destination />
-            </div>
-          </div>
+        {/* Bottom process line */}
+        <div
+          className="
+            flex
+            items-center
+            justify-center
+            gap-2
+            mt-4
+            font-mono
+            text-[8px]
+            tracking-[0.12em]
+            uppercase
+            text-slate
+          "
+        >
+          <span>PART</span>
+          <span className="text-blueprint">→</span>
+          <span>BOX</span>
+          <span className="text-blueprint">→</span>
+          <span>TRUCK</span>
+          <span className="text-blueprint">→</span>
+          <span>HOME</span>
         </div>
       </div>
     </section>

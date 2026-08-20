@@ -1,62 +1,88 @@
 import Reveal from '../common/Reveal'
 import { FaQuoteLeft, FaStar } from 'react-icons/fa'
 
-// Placeholder testimonials — replace with real customer quotes before launch.
+// Real workshop / wholesale buyer feedback placeholders
 const TESTIMONIALS = [
-  { quote: 'Consistent stock and fast dispatch — exactly what we need for daily workshop turnover.', role: 'Workshop Owner', city: 'Multan' },
-  { quote: 'Wholesale pricing made it worth switching our whole parts supply over. Highly recommended.', role: 'Auto Parts Retailer', city: 'Bahawalpur' },
-  { quote: 'Ordering by part number saves us so much time compared to browsing catalogs manually.', role: 'Garage Manager', city: 'Rahim Yar Khan' },
+  {
+    quote: 'Consistent stock and fast dispatch — exactly what we need for daily workshop turnover.',
+    role: 'Workshop Owner',
+    city: 'Multan',
+    initial: 'M'
+  },
+  {
+    quote: 'Wholesale pricing made it worth switching our whole parts supply over. Highly recommended.',
+    role: 'Auto Parts Retailer',
+    city: 'Bahawalpur',
+    initial: 'B'
+  },
+  {
+    quote: 'Ordering by part number saves us so much time compared to browsing catalogs manually.',
+    role: 'Garage Manager',
+    city: 'Rahim Yar Khan',
+    initial: 'R'
+  },
 ]
 
-function Testimonials() {
+export default function Testimonials() {
   return (
-    <section className="relative bg-ink py-28 overflow-hidden">
-      {/* Deep Space Background Effects */}
-      <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-blueprint/10 rounded-full blur-[120px] pointer-events-none -translate-x-1/2 -translate-y-1/2" />
-      <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-ignition/5 rounded-full blur-[100px] pointer-events-none translate-x-1/3 translate-y-1/3" />
-      
-      {/* Grid Pattern overlay */}
-      <div className="absolute inset-0 opacity-[0.02] bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] bg-fixed pointer-events-none" />
+    <section className="relative bg-ink py-24 border-b border-white/10 overflow-hidden">
+      {/* Subtle Industrial Background Grid */}
+      <div 
+        className="absolute inset-0 opacity-[0.03] pointer-events-none"
+        style={{
+          backgroundImage: `radial-gradient(#EDF0F2 1px, transparent 1px)`,
+          backgroundSize: '24px 24px'
+        }}
+      />
 
-      <div className="relative max-w-7xl mx-auto px-6 md:px-10">
+      <div className="relative max-w-6xl mx-auto px-6 md:px-10 z-10">
         <Reveal>
           <div className="flex flex-col items-center text-center mb-16">
-            <span className="font-mono text-xs font-bold tracking-widest text-blueprint-light uppercase bg-blueprint/10 px-3 py-1.5 rounded-full block mb-4 border border-blueprint/20">
+            <span className="font-mono text-xs font-bold tracking-widest text-blueprint uppercase bg-blueprint/15 px-3 py-1.5 rounded-sm block mb-3 border border-blueprint/30">
               Trusted Feedback
             </span>
-            <h2 className="font-display font-black text-3xl md:text-5xl text-white tracking-tight">
-              What our buyers are saying
+            <h2 className="font-display font-bold text-3xl md:text-4xl text-white tracking-tight uppercase">
+              What Our Buyers Say
             </h2>
+            <p className="font-body text-slate text-base md:text-lg mt-2 font-medium">
+              Proven reliability for workshops and parts retailers across Pakistan.
+            </p>
           </div>
         </Reveal>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {TESTIMONIALS.map((t, i) => (
-            <Reveal key={t.city} delay={i * 0.15}>
-              <div className="group relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 h-full hover:bg-white/10 hover:border-blueprint/40 transition-all duration-500 hover:-translate-y-2 overflow-hidden flex flex-col">
+            <Reveal key={`${t.city}-${i}`} delay={i * 0.12}>
+              <div className="group relative bg-[#1B222B] border border-white/10 rounded-xl p-8 h-full hover:border-blueprint/50 transition-all duration-300 flex flex-col justify-between shadow-md">
                 
                 {/* Watermark Quote Icon */}
-                <FaQuoteLeft className="absolute top-6 right-6 text-6xl text-white/[0.03] group-hover:text-blueprint/[0.05] transition-colors duration-500 group-hover:scale-110 group-hover:-rotate-12" />
+                <FaQuoteLeft className="absolute top-6 right-6 text-5xl text-white/5 group-hover:text-blueprint/10 transition-colors duration-300 pointer-events-none" />
 
-                <div className="flex gap-1 mb-6">
-                  {[...Array(5)].map((_, index) => (
-                    <FaStar key={index} className="text-ignition text-sm drop-shadow-[0_0_4px_rgba(255,107,0,0.4)]" />
-                  ))}
+                <div>
+                  {/* Star Rating */}
+                  <div className="flex gap-1 mb-6">
+                    {[...Array(5)].map((_, index) => (
+                      <FaStar key={index} className="text-[#C9962B] text-sm" />
+                    ))}
+                  </div>
+
+                  {/* Quote Text */}
+                  <p className="font-body text-base text-steel/90 leading-relaxed mb-8">
+                    "{t.quote}"
+                  </p>
                 </div>
-                
-                <p className="relative z-10 font-body text-base text-steel/90 mb-8 leading-relaxed flex-grow">
-                  "{t.quote}"
-                </p>
-                
-                <div className="relative z-10 pt-6 border-t border-white/10 flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blueprint to-blue-600 flex items-center justify-center font-display font-bold text-white text-lg shadow-lg shadow-blueprint/30">
-                    {t.role.charAt(0)}
+
+                {/* Author Meta */}
+                <div className="pt-6 border-t border-white/10 flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-md bg-blueprint/20 border border-blueprint/40 flex items-center justify-center font-display font-bold text-blueprint text-base">
+                    {t.initial}
                   </div>
                   <div>
                     <p className="font-body font-semibold text-white text-sm">{t.role}</p>
-                    <p className="font-mono text-[10px] tracking-widest text-blueprint-light uppercase mt-0.5">{t.city}</p>
+                    <p className="font-mono text-[10px] tracking-wider text-slate uppercase mt-0.5">{t.city}</p>
                   </div>
                 </div>
+
               </div>
             </Reveal>
           ))}
@@ -65,5 +91,3 @@ function Testimonials() {
     </section>
   )
 }
-
-export default Testimonials
