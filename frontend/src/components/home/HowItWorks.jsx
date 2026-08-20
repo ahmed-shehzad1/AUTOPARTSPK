@@ -1,608 +1,704 @@
-
 import { useEffect, useState } from 'react'
 import { motion, useAnimation } from 'framer-motion'
 import Reveal from '../common/Reveal'
 
-// --- Custom Mechanical SVGs ---
+/* -------------------------------------------------------
+   PRODUCT
+------------------------------------------------------- */
 
-const SparkPlugSVG = () => (
+const SparkPlug = ({ className = '' }) => (
   <svg
-    viewBox="0 0 100 200"
-    className="w-10 h-20 text-ink drop-shadow-md"
+    viewBox="0 0 80 180"
+    className={className}
     fill="none"
     aria-hidden="true"
   >
-    <path d="M40 10h20v20H40z" fill="currentColor" />
+    {/* Terminal */}
+    <rect x="35" y="8" width="10" height="14" rx="1" fill="#111827" />
 
+    {/* Ceramic */}
     <path
-      d="M35 30h30v60H35z"
-      fill="#EDF0F2"
-      stroke="currentColor"
-      strokeWidth="6"
+      d="M29 22h22v11H29z
+         M26 33h28v10H26z
+         M29 43h22v10H29z
+         M26 53h28v10H26z
+         M29 63h22v13H29z"
+      fill="#F4F5F6"
+      stroke="#111827"
+      strokeWidth="2.5"
     />
 
-    <line
-      x1="32"
-      y1="45"
-      x2="68"
-      y2="45"
-      stroke="currentColor"
-      strokeWidth="6"
-    />
-
-    <line
-      x1="32"
-      y1="60"
-      x2="68"
-      y2="60"
-      stroke="currentColor"
-      strokeWidth="6"
-    />
-
-    <line
-      x1="32"
-      y1="75"
-      x2="68"
-      y2="75"
-      stroke="currentColor"
-      strokeWidth="6"
-    />
-
-    <path d="M25 90h50v25H25z" fill="currentColor" />
-
+    {/* Metal hex */}
     <path
-      d="M35 115h30v55H35z"
-      fill="#5B6570"
-      stroke="currentColor"
-      strokeWidth="4"
-    />
-
-    <line
-      x1="35"
-      y1="130"
-      x2="65"
-      y2="130"
-      stroke="currentColor"
-      strokeWidth="4"
-    />
-
-    <line
-      x1="35"
-      y1="145"
-      x2="65"
-      y2="145"
-      stroke="currentColor"
-      strokeWidth="4"
-    />
-
-    <line
-      x1="35"
-      y1="160"
-      x2="65"
-      y2="160"
-      stroke="currentColor"
-      strokeWidth="4"
+      d="M20 76h40v22H20z"
+      fill="#111827"
     />
 
     <path
-      d="M50 170v20h-15"
-      stroke="currentColor"
-      strokeWidth="8"
+      d="M23 82h34v9H23z"
+      fill="#2563EB"
+      opacity=".8"
+    />
+
+    {/* Threaded shell */}
+    <rect
+      x="26"
+      y="98"
+      width="28"
+      height="51"
+      rx="1"
+      fill="#66707B"
+      stroke="#111827"
+      strokeWidth="2.5"
+    />
+
+    {[108, 118, 128, 138].map((y) => (
+      <line
+        key={y}
+        x1="27"
+        y1={y}
+        x2="53"
+        y2={y}
+        stroke="#111827"
+        strokeWidth="2"
+      />
+    ))}
+
+    {/* Gasket */}
+    <rect
+      x="22"
+      y="97"
+      width="36"
+      height="6"
+      rx="2"
+      fill="#C89B3C"
+    />
+
+    {/* Electrode */}
+    <path
+      d="M39 149v15h-11"
+      stroke="#111827"
+      strokeWidth="4"
       strokeLinecap="square"
+    />
+
+    <circle
+      cx="40"
+      cy="154"
+      r="2"
+      fill="#F97316"
     />
   </svg>
 )
 
-const DestinationSVG = () => (
-  <div className="relative w-32 h-32 flex flex-col items-center justify-end drop-shadow-sm">
-    <svg
-      viewBox="0 0 100 40"
-      className="w-[90%] text-blueprint"
-      aria-hidden="true"
-    >
-      <path d="M0 40L50 0L100 40Z" fill="currentColor" />
-    </svg>
+/* -------------------------------------------------------
+   STATION ICONS
+------------------------------------------------------- */
 
-    <div className="w-[75%] h-20 bg-white border-x-4 border-t-4 border-ink flex items-end justify-center px-2">
-      <div className="w-full h-16 bg-steel border-x-2 border-t-2 border-ink flex flex-col justify-evenly">
-        <div className="w-full h-px bg-ink/20" />
-        <div className="w-full h-px bg-ink/20" />
-        <div className="w-full h-px bg-ink/20" />
-      </div>
-    </div>
-  </div>
+const SearchIcon = () => (
+  <svg viewBox="0 0 32 32" className="w-7 h-7" fill="none">
+    <circle
+      cx="14"
+      cy="14"
+      r="8"
+      stroke="currentColor"
+      strokeWidth="2"
+    />
+    <path
+      d="m20 20 7 7"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+    />
+  </svg>
 )
 
-// --- Animated Box ---
+const BoxIcon = () => (
+  <svg viewBox="0 0 32 32" className="w-7 h-7" fill="none">
+    <path
+      d="m5 10 11-5 11 5-11 5-11-5Z"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M5 10v12l11 5 11-5V10"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M16 15v12"
+      stroke="currentColor"
+      strokeWidth="2"
+    />
+  </svg>
+)
 
-const AnimatedBox = ({
+const TruckIcon = () => (
+  <svg viewBox="0 0 32 32" className="w-7 h-7" fill="none">
+    <path
+      d="M4 8h16v14H4z"
+      stroke="currentColor"
+      strokeWidth="2"
+    />
+    <path
+      d="M20 13h5l3 4v5h-8"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinejoin="round"
+    />
+    <circle
+      cx="9"
+      cy="24"
+      r="3"
+      stroke="currentColor"
+      strokeWidth="2"
+    />
+    <circle
+      cx="24"
+      cy="24"
+      r="3"
+      stroke="currentColor"
+      strokeWidth="2"
+    />
+  </svg>
+)
+
+/* -------------------------------------------------------
+   PACKAGE
+------------------------------------------------------- */
+
+const Package = ({
   boxControls,
   lidControls,
   tapeControls,
 }) => (
   <motion.div
     animate={boxControls}
-    className="absolute w-20 h-20 z-30"
+    className="absolute z-30 w-28 h-24"
     style={{
-      perspective: 800,
-      x: '-50%',
-      y: '-50%',
+      translateX: '-50%',
+      translateY: '-50%',
     }}
   >
-    {/* Box Interior */}
-    <div className="absolute inset-0 bg-ink border-4 border-ink z-10 shadow-inner" />
+    {/* Ground shadow */}
+    <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-24 h-3 rounded-full bg-black/15 blur-md" />
 
-    {/* Box Front Face */}
-    <div className="absolute inset-0 bg-white border-4 border-ink z-30 flex flex-col items-center justify-end p-2">
-      <div className="w-8 h-4 border-2 border-slate/20 bg-steel/80 rounded-sm mb-1" />
+    {/* Box */}
+    <div className="absolute inset-0 overflow-visible">
 
+      {/* Interior */}
+      <div className="absolute inset-x-1 top-2 bottom-0 bg-[#553D2B] border-2 border-[#17202A] rounded-sm" />
+
+      {/* Product sitting inside */}
       <motion.div
-        animate={tapeControls}
-        className="absolute top-0 w-full h-3 bg-blueprint z-50 -translate-y-1/2"
-      />
-    </div>
+        className="absolute left-1/2 top-1/2 z-10"
+        style={{ translateX: '-50%', translateY: '-50%' }}
+      >
+        <SparkPlug className="w-8 h-16 opacity-80" />
+      </motion.div>
 
-    {/* Box Lid */}
-    <motion.div
-      animate={lidControls}
-      initial={{ rotateX: -180 }}
-      className="absolute bottom-full left-0 w-full h-10 bg-white border-4 border-ink origin-bottom z-40"
-      style={{
-        transformStyle: 'preserve-3d',
-      }}
-    />
+      {/* Left lid */}
+      <motion.div
+        animate={lidControls}
+        className="absolute left-0 top-0 w-1/2 h-9 origin-top-left bg-[#C99A66] border-2 border-[#17202A] rounded-sm z-30"
+      />
+
+      {/* Right lid */}
+      <motion.div
+        animate={lidControls}
+        className="absolute right-0 top-0 w-1/2 h-9 origin-top-right bg-[#B98755] border-2 border-[#17202A] rounded-sm z-30"
+      />
+
+      {/* Front panel */}
+      <div className="absolute left-0 right-0 bottom-0 h-16 bg-[#D8AA78] border-2 border-[#17202A] rounded-b-sm z-20">
+
+        {/* Box marking */}
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-6 border border-black/20 rounded flex items-center justify-center">
+          <div className="w-5 h-0.5 bg-black/20" />
+        </div>
+
+        {/* Tape */}
+        <motion.div
+          animate={tapeControls}
+          className="absolute -top-2 left-0 right-0 h-4 bg-blue-600 border-y border-black/20"
+        />
+      </div>
+    </div>
   </motion.div>
 )
 
-// --- Main Component ---
+/* -------------------------------------------------------
+   DESTINATION
+------------------------------------------------------- */
+
+const Destination = () => (
+  <div className="relative flex flex-col items-center">
+    <div className="w-24 h-2 rounded-full bg-black/10 blur-sm mb-1" />
+
+    <div className="relative w-20 h-16 rounded-t-lg border-2 border-[#17202A] bg-white shadow-sm">
+      <div className="absolute top-2 left-2 right-2 h-2 rounded-sm bg-slate-200 border border-black/10" />
+
+      <div className="absolute left-1/2 bottom-0 -translate-x-1/2 w-12 h-9 rounded-t-md border-2 border-[#17202A]/30 bg-slate-100 flex items-center justify-center">
+        <div className="w-2.5 h-2.5 rounded-full bg-blue-600" />
+      </div>
+    </div>
+  </div>
+)
+
+/* -------------------------------------------------------
+   STAGE DATA
+------------------------------------------------------- */
+
+const stages = [
+  {
+    number: '01',
+    label: 'FIND',
+    title: 'Find Your Part',
+    description: 'Search by vehicle, category, or OEM number.',
+    icon: SearchIcon,
+  },
+  {
+    number: '02',
+    label: 'PACK',
+    title: 'Packed With Care',
+    description: 'Your part is checked, protected, and prepared for dispatch.',
+    icon: BoxIcon,
+  },
+  {
+    number: '03',
+    label: 'DELIVER',
+    title: 'At Your Doorstep',
+    description: 'Your order travels safely to the delivery address.',
+    icon: TruckIcon,
+  },
+]
+
+/* -------------------------------------------------------
+   MAIN
+------------------------------------------------------- */
 
 export default function HowItWorks() {
-  const [activeStep, setActiveStep] = useState(0)
+  const [activeStage, setActiveStage] = useState(0)
 
-  // Desktop animation controls
-  const plugD = useAnimation()
-  const boxD = useAnimation()
-  const lidD = useAnimation()
-  const tapeD = useAnimation()
-
-  // Mobile animation controls
-  const plugM = useAnimation()
-  const boxM = useAnimation()
-  const lidM = useAnimation()
-  const tapeM = useAnimation()
+  const plug = useAnimation()
+  const box = useAnimation()
+  const lids = useAnimation()
+  const tape = useAnimation()
 
   useEffect(() => {
-    let isMounted = true
+    let mounted = true
 
-    const delay = (ms) =>
-      new Promise((resolve) => {
-        setTimeout(resolve, ms)
+    const wait = (ms) =>
+      new Promise((resolve) => setTimeout(resolve, ms))
+
+    const reset = async () => {
+      plug.set({
+        left: '16%',
+        top: '50%',
+        opacity: 1,
+        rotate: -12,
+        scale: 1,
       })
 
-    const runSequence = async () => {
-      // Give Framer Motion time to attach controls.
-      await delay(100)
+      box.set({
+        left: '50%',
+        top: '50%',
+        opacity: 1,
+      })
 
-      while (isMounted) {
-        // ==========================================
-        // PHASE 0 — FIND
-        // ==========================================
+      lids.set({
+        rotateX: 65,
+      })
 
-        setActiveStep(0)
+      tape.set({
+        opacity: 0,
+        scaleX: 0.8,
+      })
+    }
 
-        // Desktop initial state
-        plugD.set({
-          left: '16.6%',
-          top: '50%',
-          opacity: 1,
-          scale: 1,
-        })
+    const sequence = async () => {
+      await reset()
 
-        boxD.set({
+      while (mounted) {
+        /* FIND */
+        setActiveStage(0)
+        await wait(1800)
+
+        /* PACK */
+        setActiveStage(1)
+
+        await plug.start({
           left: '50%',
-          top: '50%',
-          opacity: 1,
-        })
-
-        lidD.set({
-          rotateX: -180,
-        })
-
-        tapeD.set({
-          opacity: 0,
-        })
-
-        // Mobile initial state
-        plugM.set({
-          left: '48px',
-          top: '16.6%',
-          opacity: 1,
-          scale: 1,
-        })
-
-        boxM.set({
-          left: '48px',
-          top: '50%',
-          opacity: 1,
-        })
-
-        lidM.set({
-          rotateX: -180,
-        })
-
-        tapeM.set({
-          opacity: 0,
-        })
-
-        await delay(2200)
-
-        if (!isMounted) break
-
-        // ==========================================
-        // PHASE 1 — PACK
-        // ==========================================
-
-        setActiveStep(1)
-
-        // Move plug above box
-        plugD.start({
-          left: '50%',
-          top: '15%',
+          top: '22%',
+          rotate: 0,
           transition: {
-            duration: 0.8,
-            ease: 'circOut',
+            duration: 0.75,
+            ease: [0.22, 1, 0.36, 1],
           },
         })
 
-        plugM.start({
-          top: '35%',
-          transition: {
-            duration: 0.8,
-            ease: 'circOut',
-          },
-        })
+        if (!mounted) return
 
-        await delay(900)
-
-        if (!isMounted) break
-
-        // Drop plug into box
-        plugD.start({
-          top: '60%',
+        await plug.start({
+          top: '53%',
           opacity: 0,
-          scale: 0.8,
+          scale: 0.7,
           transition: {
-            duration: 0.4,
+            duration: 0.45,
             ease: 'easeIn',
           },
         })
 
-        plugM.start({
-          top: '60%',
-          opacity: 0,
-          scale: 0.8,
-          transition: {
-            duration: 0.4,
-            ease: 'easeIn',
-          },
-        })
-
-        await delay(400)
-
-        if (!isMounted) break
-
-        // Close lid
-        lidD.start({
+        await lids.start({
           rotateX: 0,
           transition: {
             duration: 0.4,
-            ease: 'backOut',
+            ease: [0.34, 1.56, 0.64, 1],
           },
         })
 
-        lidM.start({
-          rotateX: 0,
-          transition: {
-            duration: 0.4,
-            ease: 'backOut',
-          },
-        })
-
-        await delay(300)
-
-        if (!isMounted) break
-
-        // Apply tape
-        tapeD.start({
+        await tape.start({
           opacity: 1,
+          scaleX: 1,
           transition: {
-            duration: 0.2,
+            duration: 0.25,
           },
         })
 
-        tapeM.start({
-          opacity: 1,
+        await wait(1000)
+
+        /* DELIVER */
+        setActiveStage(2)
+
+        await box.start({
+          left: '84%',
           transition: {
-            duration: 0.2,
+            duration: 1.4,
+            ease: [0.65, 0, 0.35, 1],
           },
         })
 
-        await delay(1800)
+        await wait(700)
 
-        if (!isMounted) break
-
-        // ==========================================
-        // PHASE 2 — DELIVER
-        // ==========================================
-
-        setActiveStep(2)
-
-        // Desktop: move box horizontally
-        boxD.start({
-          left: '83.3%',
-          transition: {
-            duration: 1.2,
-            ease: 'easeInOut',
-          },
-        })
-
-        // Mobile: move box vertically
-        boxM.start({
-          top: '83.3%',
-          transition: {
-            duration: 1.2,
-            ease: 'easeInOut',
-          },
-        })
-
-        await delay(2200)
-
-        if (!isMounted) break
-
-        // ==========================================
-        // RESET
-        // ==========================================
-
-        boxD.start({
+        await box.start({
           opacity: 0,
           transition: {
-            duration: 0.4,
+            duration: 0.35,
           },
         })
 
-        boxM.start({
-          opacity: 0,
-          transition: {
-            duration: 0.4,
-          },
-        })
+        await wait(300)
 
-        await delay(500)
+        await reset()
       }
     }
 
-    runSequence()
+    sequence()
 
     return () => {
-      isMounted = false
-
-      // Stop all running animations on unmount.
-      plugD.stop()
-      boxD.stop()
-      lidD.stop()
-      tapeD.stop()
-
-      plugM.stop()
-      boxM.stop()
-      lidM.stop()
-      tapeM.stop()
+      mounted = false
     }
-  }, [
-    plugD,
-    boxD,
-    lidD,
-    tapeD,
-    plugM,
-    boxM,
-    lidM,
-    tapeM,
-  ])
+  }, [])
 
   return (
-    <section className="bg-steel/30 py-24 border-b border-ink/10 overflow-hidden">
-      <div className="max-w-6xl mx-auto px-6 md:px-10">
+    <section className="relative overflow-hidden bg-slate-50 py-24 md:py-28 border-b border-black/10">
 
-        {/* Header */}
+      {/* Decorative blueprint grid */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.035]"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, #111827 1px, transparent 1px),
+            linear-gradient(to bottom, #111827 1px, transparent 1px)
+          `,
+          backgroundSize: '32px 32px',
+        }}
+      />
+
+      <div className="relative max-w-6xl mx-auto px-6 md:px-10">
+
+        {/* HEADER */}
         <Reveal>
-          <div className="text-center mb-16 md:mb-24">
-            <h2 className="font-display font-bold text-3xl md:text-4xl text-ink tracking-tight mb-3 uppercase">
+          <div className="max-w-2xl mx-auto text-center mb-14 md:mb-16">
+
+            <div className="inline-flex items-center gap-2 mb-4 px-3 py-1.5 rounded-full border border-blue-600/20 bg-blue-600/5">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-600" />
+
+              <span className="font-mono text-[10px] font-bold tracking-[0.18em] text-blue-600 uppercase">
+                Simple process
+              </span>
+            </div>
+
+            <h2 className="font-display font-bold text-3xl md:text-5xl text-slate-900 tracking-tight uppercase">
               How Ordering Works
             </h2>
 
-            <p className="font-body text-slate text-base md:text-lg">
-              Find it. Pack it. Deliver it.
+            <p className="mt-3 font-body text-slate-500 text-base md:text-lg">
+              From finding the right part to receiving it at your door.
             </p>
           </div>
         </Reveal>
 
-        {/* ==========================================
-            DESKTOP
-        ========================================== */}
-
+        {/* DESKTOP */}
         <div className="hidden md:block">
 
-          <div className="relative w-full h-56">
+          {/* ANIMATION CANVAS */}
+          <div className="relative h-[330px] rounded-2xl border border-black/10 bg-white shadow-sm overflow-hidden">
 
-            {/* Logistics route */}
-            <div className="absolute top-1/2 left-[10%] right-[10%] h-1 bg-ink/10 -translate-y-1/2 z-0" />
+            {/* Grid */}
+            <div
+              className="absolute inset-0 opacity-[0.035]"
+              style={{
+                backgroundImage: `
+                  linear-gradient(to right, #111827 1px, transparent 1px),
+                  linear-gradient(to bottom, #111827 1px, transparent 1px)
+                `,
+                backgroundSize: '24px 24px',
+              }}
+            />
 
-            {/* Track nodes */}
-            <div className="absolute left-[16.6%] top-1/2 w-3 h-3 rounded-full bg-ink/20 -translate-x-1/2 -translate-y-1/2 z-0" />
+            {/* Travel rail */}
+            <div className="absolute left-[9%] right-[9%] top-1/2 -translate-y-1/2">
 
-            <div className="absolute left-[50%] top-1/2 w-3 h-3 rounded-full bg-ink/20 -translate-x-1/2 -translate-y-1/2 z-0" />
+              <div className="h-px bg-slate-300" />
 
-            {/* Destination */}
-            <div className="absolute left-[83.3%] top-1/2 -translate-x-1/2 -translate-y-[45%] z-0">
-              <DestinationSVG />
+              <div className="absolute inset-x-0 top-0 border-t border-dashed border-blue-600/20" />
             </div>
 
-            {/* Box */}
-            <AnimatedBox
-              boxControls={boxD}
-              lidControls={lidD}
-              tapeControls={tapeD}
+            {/* Station markers */}
+            {[
+              { left: '16%' },
+              { left: '50%' },
+              { left: '84%' },
+            ].map((station, index) => (
+              <div
+                key={index}
+                className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2"
+                style={{ left: station.left }}
+              >
+                <motion.div
+                  animate={{
+                    scale: activeStage === index ? 1.15 : 1,
+                    opacity: activeStage === index ? 1 : 0.35,
+                  }}
+                  className="w-3 h-3 rounded-full bg-blue-600 ring-8 ring-blue-600/5"
+                />
+              </div>
+            ))}
+
+            {/* Destination */}
+            <div className="absolute left-[84%] top-1/2 -translate-x-1/2 -translate-y-1/2">
+              <Destination />
+            </div>
+
+            {/* Package */}
+            <Package
+              boxControls={box}
+              lidControls={lids}
+              tapeControls={tape}
             />
 
             {/* Spark plug */}
             <motion.div
-              animate={plugD}
-              className="absolute z-20 flex justify-center items-center"
+              animate={plug}
+              className="absolute z-40"
               style={{
-                x: '-50%',
-                y: '-50%',
+                translateX: '-50%',
+                translateY: '-50%',
               }}
             >
-              <SparkPlugSVG />
+              <SparkPlug className="w-16 h-32 drop-shadow-xl" />
             </motion.div>
+
+            {/* Small technical labels */}
+            <div className="absolute left-6 top-6 font-mono text-[9px] tracking-widest text-slate-400 uppercase">
+              ORDER FLOW / 03
+            </div>
+
+            <div className="absolute right-6 top-6 font-mono text-[9px] tracking-widest text-slate-400 uppercase">
+              LIVE PROCESS
+            </div>
+
+            <div className="absolute left-6 bottom-6 font-mono text-[9px] text-slate-400">
+              PART → PACKAGE → DELIVERY
+            </div>
           </div>
 
-          {/* Step descriptions */}
-          <div className="grid grid-cols-3 text-center mt-6 max-w-5xl mx-auto px-4">
+          {/* CONTENT */}
+          <div className="grid grid-cols-3 gap-6 mt-8">
+            {stages.map((stage, index) => {
+              const Icon = stage.icon
+              const active = activeStage === index
 
-            <div
-              className={`transition-opacity duration-500 ${
-                activeStep === 0 ? 'opacity-100' : 'opacity-40'
-              }`}
-            >
-              <h3 className="font-display text-xl font-bold text-ink uppercase tracking-wider mb-2">
-                Find Your Part
-              </h3>
+              return (
+                <div
+                  key={stage.number}
+                  className={`
+                    relative rounded-xl border p-6
+                    transition-all duration-500
+                    ${
+                      active
+                        ? 'border-blue-600/30 bg-white shadow-md'
+                        : 'border-black/5 bg-white/50'
+                    }
+                  `}
+                >
+                  <div className="flex items-start justify-between">
 
-              <p className="font-body text-slate text-sm max-w-xs mx-auto">
-                Search by vehicle, category, or OEM number.
-              </p>
-            </div>
+                    <div
+                      className={`
+                        flex items-center justify-center
+                        w-11 h-11 rounded-lg
+                        transition-all duration-500
+                        ${
+                          active
+                            ? 'bg-blue-600 text-white'
+                            : 'bg-slate-100 text-slate-500'
+                        }
+                      `}
+                    >
+                      <Icon />
+                    </div>
 
-            <div
-              className={`transition-opacity duration-500 ${
-                activeStep === 1 ? 'opacity-100' : 'opacity-40'
-              }`}
-            >
-              <h3 className="font-display text-xl font-bold text-ink uppercase tracking-wider mb-2">
-                Packed With Care
-              </h3>
+                    <span className="font-mono text-[10px] font-bold tracking-widest text-slate-400">
+                      {stage.number}
+                    </span>
+                  </div>
 
-              <p className="font-body text-slate text-sm max-w-xs mx-auto">
-                Your part is prepared securely for dispatch.
-              </p>
-            </div>
+                  <div className="mt-5">
+                    <span
+                      className={`
+                        font-mono text-[10px] font-bold tracking-[0.18em]
+                        ${
+                          active
+                            ? 'text-blue-600'
+                            : 'text-slate-400'
+                        }
+                      `}
+                    >
+                      {stage.label}
+                    </span>
 
-            <div
-              className={`transition-opacity duration-500 ${
-                activeStep === 2 ? 'opacity-100' : 'opacity-40'
-              }`}
-            >
-              <h3 className="font-display text-xl font-bold text-ink uppercase tracking-wider mb-2">
-                At Your Doorstep
-              </h3>
+                    <h3 className="mt-1 font-display font-bold text-xl text-slate-900">
+                      {stage.title}
+                    </h3>
 
-              <p className="font-body text-slate text-sm max-w-xs mx-auto">
-                Delivered nationwide with your chosen payment method.
-              </p>
-            </div>
+                    <p className="mt-2 font-body text-sm leading-relaxed text-slate-500">
+                      {stage.description}
+                    </p>
+                  </div>
 
+                  {active && (
+                    <motion.div
+                      layoutId="activeBar"
+                      className="absolute left-0 right-0 -bottom-px h-0.5 bg-blue-600 rounded-full"
+                    />
+                  )}
+                </div>
+              )
+            })}
           </div>
         </div>
 
-        {/* ==========================================
-            MOBILE
-        ========================================== */}
+        {/* MOBILE */}
+        <div className="md:hidden">
 
-        <div className="block md:hidden relative h-[650px] w-full">
+          <div className="relative rounded-2xl border border-black/10 bg-white overflow-hidden">
 
-          {/* Vertical route */}
-          <div className="absolute left-[48px] top-[10%] bottom-[10%] w-1 bg-ink/10 -translate-x-1/2 z-0" />
+            <div className="absolute left-8 top-10 bottom-10 w-px bg-slate-200" />
 
-          {/* Track nodes */}
-          <div className="absolute left-[48px] top-[16.6%] w-3 h-3 rounded-full bg-ink/20 -translate-x-1/2 -translate-y-1/2 z-0" />
+            <div className="relative divide-y divide-black/5">
 
-          <div className="absolute left-[48px] top-[50%] w-3 h-3 rounded-full bg-ink/20 -translate-x-1/2 -translate-y-1/2 z-0" />
+              {stages.map((stage, index) => {
+                const Icon = stage.icon
+                const active = activeStage === index
 
-          {/* Destination */}
-          <div className="absolute left-[48px] top-[83.3%] -translate-x-1/2 -translate-y-[45%] z-0 scale-75 origin-bottom">
-            <DestinationSVG />
-          </div>
+                return (
+                  <div
+                    key={stage.number}
+                    className="relative min-h-[150px] pl-20 pr-6 py-7"
+                  >
+                    {/* timeline dot */}
+                    <motion.div
+                      animate={{
+                        scale: active ? 1.15 : 1,
+                      }}
+                      className={`
+                        absolute left-[23px] top-9
+                        w-3 h-3 rounded-full
+                        ring-8 ring-white
+                        ${
+                          active
+                            ? 'bg-blue-600'
+                            : 'bg-slate-300'
+                        }
+                      `}
+                    />
 
-          {/* Box */}
-          <AnimatedBox
-            boxControls={boxM}
-            lidControls={lidM}
-            tapeControls={tapeM}
-          />
+                    <div className="flex items-center gap-3">
 
-          {/* Spark plug */}
-          <motion.div
-            animate={plugM}
-            className="absolute z-20 flex justify-center items-center"
-            style={{
-              x: '-50%',
-              y: '-50%',
-            }}
-          >
-            <SparkPlugSVG />
-          </motion.div>
+                      <div
+                        className={`
+                          flex items-center justify-center
+                          w-10 h-10 rounded-lg
+                          ${
+                            active
+                              ? 'bg-blue-600 text-white'
+                              : 'bg-slate-100 text-slate-400'
+                          }
+                        `}
+                      >
+                        <Icon />
+                      </div>
 
-          {/* Find */}
-          <div className="absolute left-[100px] right-2 top-[16.6%] -translate-y-1/2">
-            <div
-              className={`transition-opacity duration-500 ${
-                activeStep === 0 ? 'opacity-100' : 'opacity-40'
-              }`}
-            >
-              <h3 className="font-display text-lg font-bold text-ink uppercase tracking-wider mb-1">
-                Find Your Part
-              </h3>
+                      <span className="font-mono text-[10px] tracking-widest text-slate-400">
+                        {stage.number} / {stage.label}
+                      </span>
+                    </div>
 
-              <p className="font-body text-slate text-xs pr-4">
-                Search by vehicle, category, or OEM number.
-              </p>
+                    <h3 className="mt-4 font-display font-bold text-lg text-slate-900">
+                      {stage.title}
+                    </h3>
+
+                    <p className="mt-1 font-body text-xs leading-relaxed text-slate-500">
+                      {stage.description}
+                    </p>
+                  </div>
+                )
+              })}
+
             </div>
           </div>
 
-          {/* Pack */}
-          <div className="absolute left-[100px] right-2 top-[50%] -translate-y-1/2">
-            <div
-              className={`transition-opacity duration-500 ${
-                activeStep === 1 ? 'opacity-100' : 'opacity-40'
-              }`}
-            >
-              <h3 className="font-display text-lg font-bold text-ink uppercase tracking-wider mb-1">
-                Packed With Care
-              </h3>
+          {/* Small mobile visual */}
+          <div className="relative mt-5 h-40 rounded-2xl border border-black/10 bg-white overflow-hidden">
 
-              <p className="font-body text-slate text-xs pr-4">
-                Your part is prepared securely for dispatch.
-              </p>
+            <div className="absolute inset-x-8 top-1/2 h-px bg-slate-200" />
+
+            <motion.div
+              animate={{
+                left:
+                  activeStage === 0
+                    ? '20%'
+                    : activeStage === 1
+                    ? '50%'
+                    : '80%',
+              }}
+              transition={{
+                duration: 0.8,
+                ease: [0.65, 0, 0.35, 1],
+              }}
+              className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2"
+            >
+              <SparkPlug className="w-10 h-20 drop-shadow-lg" />
+            </motion.div>
+
+            <div className="absolute left-[80%] top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-40">
+              <Destination />
             </div>
           </div>
-
-          {/* Deliver */}
-          <div className="absolute left-[100px] right-2 top-[83.3%] -translate-y-1/2">
-            <div
-              className={`transition-opacity duration-500 ${
-                activeStep === 2 ? 'opacity-100' : 'opacity-40'
-              }`}
-            >
-              <h3 className="font-display text-lg font-bold text-ink uppercase tracking-wider mb-1">
-                At Your Doorstep
-              </h3>
-
-              <p className="font-body text-slate text-xs pr-4">
-                Delivered nationwide with your chosen payment method.
-              </p>
-            </div>
-          </div>
-
         </div>
       </div>
     </section>
