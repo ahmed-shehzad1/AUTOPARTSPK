@@ -385,70 +385,60 @@ const DeliveryTruck = ({ controls }) => (
 /* =========================================================
    SIMPLE HOUSE
 ========================================================= */
-
 const DestinationHouse = () => (
-  <div className="relative w-20 h-20">
+  <div className="relative w-24 h-24 select-none">
+    {/* Ground shadow */}
+    <div className="absolute left-1/2 bottom-1 -translate-x-1/2 w-20 h-2 rounded-full bg-ink/15 blur-[2px]" />
 
-    {/* House body */}
-    <div
-      className="
-        absolute
-        left-2
-        bottom-2
-        w-16
-        h-11
-        border-2
-        border-ink
-        bg-paper
-      "
-    />
+    {/* Chimney Smoke */}
+    <div className="absolute right-[22px] top-[3px] w-2 h-2 rounded-full bg-ink/20 blur-[1px] animate-pulse" />
+    <div className="absolute right-[19px] top-[9px] w-1.5 h-1.5 rounded-full bg-ink/15 blur-[0.5px]" />
 
-    {/* Roof */}
-    <div
-      className="
-        absolute
-        left-0
-        top-5
-        w-0
-        h-0
-        border-l-[40px]
-        border-l-transparent
-        border-r-[40px]
-        border-r-transparent
-        border-b-[22px]
-        border-b-ink
-      "
-    />
+    {/* Chimney */}
+    <div className="absolute right-[20px] top-[14px] w-3 h-6 border-2 border-b-0 border-ink bg-paper z-0" />
 
-    {/* Door */}
-    <div
-      className="
-        absolute
-        left-7
-        bottom-2
-        w-5
-        h-7
-        border
-        border-ink
-        bg-blueprint
-      "
-    />
+    {/* House Body */}
+    <div className="absolute left-3 bottom-3 w-[72px] h-[46px] border-2 border-ink bg-paper rounded-xs z-10">
+      {/* Garage */}
+      <div className="absolute left-2 bottom-0 w-[24px] h-[32px] border-2 border-b-0 border-ink bg-steel flex flex-col justify-evenly py-1 px-0.5">
+        <div className="w-full h-px bg-ink/25" />
+        <div className="w-full h-px bg-ink/25" />
+        <div className="w-full h-px bg-ink/25" />
+        <div className="w-full h-px bg-ink/25" />
+      </div>
 
-    {/* Window */}
-    <div
-      className="
-        absolute
-        right-4
-        bottom-7
-        w-4
-        h-4
-        border
-        border-ink
-        bg-steel
-      "
-    />
+      {/* Window */}
+      <div className="absolute left-[32px] top-2.5 w-[16px] h-[14px] border-2 border-ink bg-steel overflow-hidden">
+        <div className="absolute left-1/2 top-0 bottom-0 w-px bg-ink/30 -translate-x-1/2" />
+        <div className="absolute top-1/2 left-0 right-0 h-px bg-ink/30 -translate-y-1/2" />
+      </div>
+
+      {/* Front Door */}
+      <div className="absolute right-2 bottom-0 w-[16px] h-[26px] border-2 border-b-0 border-ink bg-blueprint">
+        <div className="absolute right-1 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-paper border border-ink/40" />
+      </div>
+    </div>
+
+    {/* Pitched Roof */}
+    <div className="absolute left-[7px] top-[10px] w-[82px] h-[34px] z-20 pointer-events-none">
+      <svg viewBox="0 0 82 34" className="w-full h-full overflow-visible">
+        {/* Main Roof Pitch */}
+        <polygon
+          points="41,2 2,32 80,32"
+          className="fill-steel stroke-ink stroke-[2.5] stroke-linejoin-round"
+        />
+        {/* Architectural Blueprint Line Accent */}
+        <polyline
+          points="41,8 8,32"
+          className="stroke-blueprint stroke-[1.5] fill-none opacity-80"
+        />
+      </svg>
+    </div>
+
+    {/* Doorstep */}
+    <div className="absolute right-[6px] bottom-[2px] w-[20px] h-[3px] border border-ink bg-steel rounded-xs z-20" />
   </div>
-)
+);
 
 /* =========================================================
    STAGE LABEL
