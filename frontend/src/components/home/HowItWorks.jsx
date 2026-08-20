@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { FaSearch, FaFileInvoiceDollar, FaTruck, FaArrowRight, FaCheckCircle } from 'react-icons/fa'
+import { FaSearch, FaFileInvoiceDollar, FaTruck, FaArrowRight, FaCheck } from 'react-icons/fa'
 import Reveal from '../common/Reveal'
 
 const STEPS = [
@@ -10,7 +10,6 @@ const STEPS = [
     tag: 'Catalog Search',
     desc: 'Filter by category, cross-reference OEM part numbers, or match your exact vehicle make, model, and year.',
     features: ['Instant OEM Lookup', 'Make & Model Filter'],
-    accent: 'from-blueprint to-blue-600'
   },
   {
     step: '02',
@@ -19,7 +18,6 @@ const STEPS = [
     tag: 'Wholesale & Retail',
     desc: 'Instant checkout for retail quantities. Submit bulk orders directly to get custom tiered wholesale pricing.',
     features: ['Instant Retail Checkout', 'Bulk Tier Discounting'],
-    accent: 'from-blue-600 to-indigo-600'
   },
   {
     step: '03',
@@ -28,7 +26,6 @@ const STEPS = [
     tag: 'Nationwide Delivery',
     desc: 'Pay via COD, Bank Transfer, or JazzCash/EasyPaisa with priority dispatch for verified workshop accounts.',
     features: ['Multiple Payment Modes', 'Priority Workshop Delivery'],
-    accent: 'from-indigo-600 to-blueprint'
   },
 ]
 
@@ -36,101 +33,112 @@ const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.2 }
+    transition: { staggerChildren: 0.15 }
   }
 }
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 20 },
   visible: { 
     opacity: 1, 
     y: 0, 
-    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } 
+    transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } 
   }
 }
 
 function HowItWorks() {
   return (
-    <section className="relative bg-steel/30 py-28 overflow-hidden border-y border-ink/5">
-      {/* Background ambient lighting */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[350px] bg-blueprint/5 rounded-full blur-[140px] pointer-events-none" />
+    <section className="relative bg-white py-24 border-t border-b border-ink/10">
+      
+      {/* Visual Section Separator Bar */}
+      <div className="absolute top-0 left-0 right-0 h-1.5 bg-steel flex items-center justify-center">
+        <div className="w-24 h-full bg-blueprint" />
+      </div>
 
       <div className="relative max-w-7xl mx-auto px-6 md:px-10">
         
         {/* Section Header */}
         <Reveal>
-          <div className="text-center max-w-2xl mx-auto mb-20">
-            <span className="font-mono text-xs font-bold tracking-widest text-blueprint uppercase bg-blueprint/10 px-3 py-1.5 rounded-full inline-block mb-3 border border-blueprint/10">
-              Simple & Transparent
-            </span>
-            <h2 className="font-display font-black text-3xl md:text-5xl text-ink tracking-tight mb-4">
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-steel border border-ink/10 rounded mb-3">
+              <span className="w-1.5 h-1.5 bg-blueprint rounded-full" />
+              <span className="font-mono text-xs font-bold tracking-wider text-ink uppercase">
+                Order Process
+              </span>
+            </div>
+            <h2 className="font-display font-bold text-3xl md:text-4xl text-ink tracking-tight mb-3">
               How Ordering Works
             </h2>
-            <p className="font-body text-slate text-base md:text-lg">
-              Get genuine parts delivered to your workshop or doorstep in three easy steps.
+            <p className="font-body text-slate text-base leading-relaxed">
+              Procure genuine OEM parts and certified aftermarket components delivered directly to your garage or doorstep.
             </p>
           </div>
         </Reveal>
 
-        {/* Steps Grid Pipeline */}
+        {/* Workflow Steps Grid */}
         <div className="relative">
           
-          {/* Desktop Connected Gradient Line */}
-          <div className="hidden md:block absolute top-1/2 left-12 right-12 h-1 bg-gradient-to-r from-blueprint via-indigo-500 to-blue-600 -translate-y-12 z-0 rounded-full opacity-20" />
+          {/* Subtle Horizontal Process Line (Desktop Only) */}
+          <div className="hidden md:block absolute top-28 left-20 right-20 h-0.5 bg-steel z-0" />
 
           <motion.div 
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10"
+            viewport={{ once: true, margin: '-50px' }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 relative z-10"
           >
             {STEPS.map((s, index) => {
               const Icon = s.icon
+
               return (
                 <motion.div
                   key={s.step}
                   variants={cardVariants}
-                  className="group relative bg-white/80 backdrop-blur-xl border border-ink/10 hover:border-blueprint/40 rounded-3xl p-8 shadow-xl shadow-slate/5 hover:shadow-2xl hover:shadow-blueprint/10 transition-all duration-500 hover:-translate-y-2 flex flex-col justify-between overflow-hidden"
+                  className="group relative bg-steel/30 border border-ink/10 hover:border-blueprint/40 rounded p-6 md:p-8 transition-all duration-300 flex flex-col justify-between"
                 >
-                  {/* Giant Watermark Step Number */}
-                  <span className="absolute -right-2 -bottom-6 font-display font-black text-8xl text-ink/[0.03] group-hover:text-blueprint/[0.08] transition-colors duration-500 select-none pointer-events-none">
-                    {s.step}
-                  </span>
-
                   <div>
                     {/* Top Header Row */}
-                    <div className="flex items-center justify-between mb-8">
-                      <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${s.accent} text-white flex items-center justify-center shadow-md shadow-blueprint/20 group-hover:scale-110 transition-transform duration-300`}>
-                        <Icon size={22} />
+                    <div className="flex items-center justify-between mb-6">
+                      <div className="w-12 h-12 rounded bg-ink text-white flex items-center justify-center shadow-sm group-hover:bg-blueprint transition-colors duration-300">
+                        <Icon size={20} />
                       </div>
-                      <span className="font-mono text-xs font-bold tracking-wider text-slate/60 uppercase bg-steel px-3 py-1 rounded-full border border-ink/5">
+                      <span className="font-mono text-xs font-bold text-slate uppercase bg-white px-2.5 py-1 rounded border border-ink/10">
                         {s.tag}
                       </span>
                     </div>
 
-                    {/* Step Title & Description */}
-                    <h3 className="font-display font-bold text-2xl text-ink mb-3 group-hover:text-blueprint transition-colors duration-300">
+                    {/* Step Identifier & Title */}
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="font-mono text-xs font-bold text-blueprint">
+                        STEP {s.step}
+                      </span>
+                    </div>
+                    
+                    <h3 className="font-display font-bold text-xl text-ink mb-3 tracking-wide">
                       {s.title}
                     </h3>
+                    
                     <p className="font-body text-slate text-sm leading-relaxed mb-6">
                       {s.desc}
                     </p>
                   </div>
 
                   {/* Feature Checklist */}
-                  <div className="pt-6 border-t border-ink/5 space-y-2.5">
+                  <div className="pt-5 border-t border-ink/10 space-y-2.5">
                     {s.features.map((feat) => (
-                      <div key={feat} className="flex items-center gap-2.5 font-mono text-xs font-medium text-slate/80">
-                        <FaCheckCircle className="text-emerald-500 shrink-0" size={13} />
+                      <div key={feat} className="flex items-center gap-2.5 text-xs font-body font-medium text-ink">
+                        <div className="w-4 h-4 rounded-full bg-volt/10 border border-volt/30 flex items-center justify-center text-volt flex-shrink-0">
+                          <FaCheck size={8} />
+                        </div>
                         <span>{feat}</span>
                       </div>
                     ))}
                   </div>
 
-                  {/* Arrow Indicator for Step Continuity */}
+                  {/* Next Step Arrow Marker (Desktop Only) */}
                   {index < STEPS.length - 1 && (
-                    <div className="hidden md:flex absolute top-1/2 -right-4 -translate-y-1/2 w-8 h-8 rounded-full bg-white border border-ink/10 shadow-md items-center justify-center text-slate z-20 group-hover:border-blueprint group-hover:text-blueprint transition-colors">
+                    <div className="hidden md:flex absolute top-28 -right-4 -translate-y-1/2 w-8 h-8 rounded-full bg-white border border-ink/10 shadow-sm items-center justify-center text-slate z-20 group-hover:border-blueprint group-hover:text-blueprint transition-colors">
                       <FaArrowRight size={10} />
                     </div>
                   )}
