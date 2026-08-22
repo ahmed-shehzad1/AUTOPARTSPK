@@ -3,7 +3,7 @@ import { FaCheckCircle, FaTruck, FaHeadset, FaTags, FaMoneyBillWave } from 'reac
 import Reveal from '../../components/common/Reveal'
 import { CATEGORIES } from '../../data/products'
 import { useLocation } from 'react-router-dom'
-const API_BASE = 'http://localhost:4000/api'
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000/api'
 
 const VOLUME_OPTIONS = [
   'Under PKR 50,000 / month',

@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import { FaTag } from 'react-icons/fa'
 import { useCart } from '../../context/CartContext'
 
-const API_BASE = 'http://localhost:4000/api'
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000/api'
 
 const STOCK_DOT = {
   'In Stock': 'bg-blueprint',

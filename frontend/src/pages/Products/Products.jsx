@@ -2,8 +2,7 @@
 import { Link, useSearchParams } from 'react-router-dom'
 import { FaSearch, FaTag, FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import Reveal from '../../components/common/Reveal'
-
-const API_BASE = 'http://localhost:4000/api'
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000/api'
 const PAGE_SIZE = 12
 
 const STOCK_DOT = {

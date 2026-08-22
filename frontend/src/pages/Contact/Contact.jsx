@@ -21,7 +21,7 @@ const INQUIRY_TYPES = [
   'Part Cross-Reference Request',
   'General Inquiry',
 ]
-const API_BASE = 'http://localhost:4000/api'
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000/api'
 const FAQS = [
   {
     q: 'How do I verify if a part fits my specific car model?',
