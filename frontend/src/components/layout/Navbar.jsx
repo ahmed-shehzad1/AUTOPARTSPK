@@ -16,7 +16,7 @@ function Navbar() {
   const { itemCount } = useCart()
   const { user } = useAuth()
   const [categories, setCategories] = useState([])
-  const API_BASE = 'http://localhost:4000/api'
+ const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000/api'
 useEffect(() => {
   fetch(`${API_BASE}/categories`).then((r) => r.json()).then(setCategories).catch(() => {})
 }, [])

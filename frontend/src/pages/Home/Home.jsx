@@ -17,7 +17,7 @@ import {
 } from 'react-icons/fa'
 import FeaturedCarousel from '../../components/home/FeaturedCarousel'
 
-const API_BASE = 'http://localhost:4000/api'
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000/api'
 
 const CATEGORY_ICONS = {
   'Engine Parts': FaCogs,
