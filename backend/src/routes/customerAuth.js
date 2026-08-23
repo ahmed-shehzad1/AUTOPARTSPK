@@ -131,7 +131,6 @@ router.get('/me', async (req, res) => {
   }
 })
 
-// PUT /api/customer-auth/profile
 router.put('/profile', async (req, res) => {
   const authHeader = req.headers.authorization
   if (!authHeader?.startsWith('Bearer ')) {
@@ -139,11 +138,20 @@ router.put('/profile', async (req, res) => {
   }
   try {
     const decoded = jwt.verify(authHeader.split(' ')[1], process.env.JWT_SECRET)
-    const { avatar, address, bio } = req.body
+    const { avatar, address, bio, phone, accountType, businessName } = req.body
+
+    if (accountType === 'business' && !businessName) {
+      return res.status(400).json({ error: 'Business name is required for a business account.' })
+    }
 
     const customer = await prisma.customer.update({
       where: { id: decoded.customerId },
-      data: { avatar, address, bio, profileComplete: true },
+      data: {
+        avatar, address, bio, phone,
+        accountType: accountType || undefined,
+        businessName: accountType === 'business' ? businessName : null,
+        profileComplete: true,
+      },
     })
 
     res.json(toSafeCustomer(customer))
