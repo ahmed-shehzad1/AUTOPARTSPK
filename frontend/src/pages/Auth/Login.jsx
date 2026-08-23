@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { toast } from 'sonner'
 import { GoogleLogin } from '@react-oauth/google'
 import { jwtDecode } from 'jwt-decode'
@@ -13,6 +13,8 @@ const GOOGLE_CONFIGURED = !!import.meta.env.VITE_GOOGLE_CLIENT_ID
 function Login() {
  const { login, loginWithGoogle } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
+const redirectTo = location.state?.redirectTo || '/profile'
   const [showPassword, setShowPassword] = useState(false)
 const [form, setForm] = useState({ email: '', password: '' })
 const [error, setError] = useState('')
@@ -37,7 +39,7 @@ const handleSubmit = async (e) => {
     return
   }
   toast.success('Welcome back!')
-  navigate('/profile')
+navigate(redirectTo)
 }
 
  return (
