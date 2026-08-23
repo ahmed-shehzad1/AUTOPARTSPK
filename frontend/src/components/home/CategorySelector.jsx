@@ -320,7 +320,7 @@ export default function CategorySelector({ categories, iconMap, fallbackIcon: Fa
           <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-ink)]/60 border border-[var(--color-slate)]/20">
             <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-gold)]" />
             <span className="font-mono text-[10px] tracking-widest text-[var(--color-slate)] uppercase">
-              Rotate Wheel
+              Select Category
             </span>
           </div>
 
