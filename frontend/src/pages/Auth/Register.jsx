@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { toast } from 'sonner'
 import { GoogleLogin } from '@react-oauth/google'
 import { FaEye, FaEyeSlash, FaWarehouse, FaUser } from 'react-icons/fa'
@@ -13,6 +13,8 @@ const GOOGLE_CONFIGURED = !!import.meta.env.VITE_GOOGLE_CLIENT_ID
 function Register() {
   const { register, loginWithGoogle } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
+const redirectTo = location.state?.redirectTo || '/profile'
   const [accountType, setAccountType] = useState('individual')
   const [showPassword, setShowPassword] = useState(false)
   const [submitting, setSubmitting] = useState(false)
@@ -44,7 +46,7 @@ setSubmitting(false)
       return
     }
     toast.success('Account created — let\'s finish your profile.')
-    navigate('/profile/setup')
+    navigate('/profile/setup', { state: { redirectTo } })
   }
 
   const handleGoogleSuccess = async (credentialResponse) => {
@@ -54,7 +56,7 @@ setSubmitting(false)
     return
   }
   toast.success('Signed in with Google')
-  navigate('/profile/setup')
+  navigate('/profile/setup', { state: { redirectTo } })
 }
 
 return (

@@ -29,7 +29,7 @@ const handleSubmit = async (e) => {
     return
   }
   toast.success('Welcome back!')
-  navigate('/profile')
+navigate(redirectTo)
 }
 
   const handleGoogleSuccess = async (credentialResponse) => {
