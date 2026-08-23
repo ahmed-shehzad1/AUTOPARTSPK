@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { FaCheckCircle, FaMoneyBillWave, FaUniversity, FaMobileAlt } from 'react-icons/fa'
 import { useCart } from '../../context/CartContext'
+import { useEffect } from 'react'
+import { useAuth } from '../../context/AuthContext'
 
 const PAYMENT_METHODS = [
   { id: 'cod', label: 'Cash on Delivery', icon: FaMoneyBillWave, desc: 'Pay when your order arrives' },
@@ -11,11 +13,31 @@ const PAYMENT_METHODS = [
 
 function Checkout() {
   const { items, subtotal, clearCart } = useCart()
+  const { user, loading: authLoading } = useAuth()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!authLoading && !user) {
+      navigate('/login', { state: { redirectTo: '/checkout' } })
+    }
+  }, [authLoading, user, navigate])
   const [payment, setPayment] = useState('cod')
-  const [form, setForm] = useState({ name: '', phone: '', address: '', city: '' })
+ const [form, setForm] = useState({
+  name: user?.name || '',
+  phone: user?.phone || '',
+  address: user?.address || '',
+  city: '',
+})
   const [error, setError] = useState('')
   const [orderPlaced, setOrderPlaced] = useState(null)
+
+    if (authLoading || !user) {
+    return (
+      <div className="bg-steel min-h-screen flex items-center justify-center">
+        <p className="font-body text-slate">Checking your account…</p>
+      </div>
+    )
+  }
 
   if (items.length === 0 && !orderPlaced) {
     navigate('/cart')
