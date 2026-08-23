@@ -2,9 +2,11 @@ import { useNavigate, Link } from 'react-router-dom'
 import { toast } from 'sonner'
 import { FaCamera, FaSignOutAlt, FaEdit, FaShoppingBag, FaMapMarkerAlt, FaWarehouse, FaHistory } from 'react-icons/fa'
 import { useAuth } from '../../context/AuthContext'
+import { useCart } from '../../context/CartContext'
 
 function Profile() {
   const { user, logout } = useAuth()
+  const { clearCart } = useCart()
   const navigate = useNavigate()
 
   if (!user) {
@@ -13,10 +15,11 @@ function Profile() {
   }
 
   const handleLogout = () => {
-    logout()
-    toast.success('Logged out.')
-    navigate('/')
-  }
+  logout()
+  clearCart()
+  toast.success('Logged out.')
+  navigate('/')
+}
 
   const memberSince = user.createdAt
     ? new Date(user.createdAt).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })
