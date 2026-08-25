@@ -12,44 +12,34 @@ export default function CategorySelector({ categories, iconMap, fallbackIcon: Fa
   const pausedRef = useRef(false)
   const resumeTimeoutRef = useRef(null)
 
-  if (!categories || categories.length === 0) {
-    return <p className="font-body text-[var(--color-slate)] text-sm">No categories available.</p>
-  }
+  // Safely determine the number of categories
+  const n = categories?.length || 0
+  const segmentAngle = n > 0 ? 360 / n : 0
 
-    const n = categories.length
-  const segmentAngle = 360 / n
-  const active = categories[activeIdx] || categories[0]
-  const ActiveIcon = (iconMap && iconMap[active.name]) || Fallback || FaArrowRight
+  // Keep active index within valid range if categories change
+  useEffect(() => {
+    if (n === 0) return
 
+    if (activeIdx >= n) {
+      setActiveIdx(0)
+      setRotation(0)
+    }
+  }, [n, activeIdx])
+
+  // Keep ref synchronized with active index
   useEffect(() => {
     activeIdxRef.current = activeIdx
   }, [activeIdx])
 
-  // Auto-advance every 4s, pausing for a bit whenever the person interacts manually.
-  useEffect(() => {
-    if (n <= 1) return
-    const interval = setInterval(() => {
-      if (pausedRef.current) return
-      const next = (activeIdxRef.current + 1) % n
-      selectIndex(next)
-    }, 4000)
-    return () => clearInterval(interval)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [n])
-
-  const pauseAutoplay = () => {
-    pausedRef.current = true
-    if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current)
-    resumeTimeoutRef.current = setTimeout(() => {
-      pausedRef.current = false
-    }, 6000)
-  }
-
   // Smooth shortest-path rotation calculation
   const selectIndex = (i) => {
+    if (n === 0) return
+
     const targetAngle = -i * segmentAngle
     const currentMod = rotation % 360
+
     let delta = (targetAngle - currentMod) % 360
+
     if (delta > 180) delta -= 360
     if (delta < -180) delta += 360
 
@@ -57,15 +47,68 @@ export default function CategorySelector({ categories, iconMap, fallbackIcon: Fa
     setActiveIdx(i)
   }
 
+  // Auto-advance every 4s
+  useEffect(() => {
+    if (n <= 1) return
+
+    const interval = setInterval(() => {
+      if (pausedRef.current) return
+
+      const next = (activeIdxRef.current + 1) % n
+      selectIndex(next)
+    }, 4000)
+
+    return () => clearInterval(interval)
+  }, [n, rotation])
+
+  // Pause autoplay after manual interaction
+  const pauseAutoplay = () => {
+    pausedRef.current = true
+
+    if (resumeTimeoutRef.current) {
+      clearTimeout(resumeTimeoutRef.current)
+    }
+
+    resumeTimeoutRef.current = setTimeout(() => {
+      pausedRef.current = false
+    }, 6000)
+  }
+
+  // Manual previous / next
   const spin = (dir) => {
+    if (n === 0) return
+
     const nextIdx = (activeIdx + dir + n) % n
     selectIndex(nextIdx)
   }
 
-  // Pre-calculated tread angles for realistic tire pattern (32 directional sipes)
-  const treadSipes = Array.from({ length: 32 }, (_, i) => (i * 360) / 32)
+  // Safely handle empty categories
+  if (!categories || categories.length === 0) {
+    return (
+      <p className="font-body text-[var(--color-slate)] text-sm">
+        No categories available.
+      </p>
+    )
+  }
+
+  const active = categories[activeIdx] || categories[0]
+
+  const ActiveIcon =
+    (iconMap && iconMap[active.name]) ||
+    Fallback ||
+    FaArrowRight
+
+  // Pre-calculated tread angles for realistic tire pattern
+  const treadSipes = Array.from(
+    { length: 32 },
+    (_, i) => (i * 360) / 32
+  )
+
   // Rotor cooling holes pattern
-  const rotorHoles = Array.from({ length: 18 }, (_, i) => (i * 360) / 18)
+  const rotorHoles = Array.from(
+    { length: 18 },
+    (_, i) => (i * 360) / 18
+  )
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-10 lg:gap-14 items-center max-w-6xl mx-auto p-4">
