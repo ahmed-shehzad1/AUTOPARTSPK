@@ -12,11 +12,9 @@ export default function CategorySelector({ categories, iconMap, fallbackIcon: Fa
   const pausedRef = useRef(false)
   const resumeTimeoutRef = useRef(null)
 
-  // Safely determine the number of categories.
   const n = categories?.length || 0
   const segmentAngle = n > 0 ? 360 / n : 0
 
-  // Keep active index within valid range if categories change.
   useEffect(() => {
     if (n === 0) return
 
@@ -30,7 +28,7 @@ export default function CategorySelector({ categories, iconMap, fallbackIcon: Fa
     activeIdxRef.current = activeIdx
   }, [activeIdx])
 
-  // Smooth shortest-path rotation calculation.
+  // Keeps the wheel taking the shortest visual path between categories.
   const selectIndex = (i) => {
     if (n === 0) return
 
@@ -46,7 +44,7 @@ export default function CategorySelector({ categories, iconMap, fallbackIcon: Fa
     setActiveIdx(i)
   }
 
-  // Auto-advance every 4s.
+  // Automatically advances the selector while preserving the existing pause behavior.
   useEffect(() => {
     if (n <= 1) return
 
@@ -60,7 +58,6 @@ export default function CategorySelector({ categories, iconMap, fallbackIcon: Fa
     return () => clearInterval(interval)
   }, [n, rotation])
 
-  // Pause autoplay after manual interaction.
   const pauseAutoplay = () => {
     pausedRef.current = true
 
@@ -73,7 +70,6 @@ export default function CategorySelector({ categories, iconMap, fallbackIcon: Fa
     }, 6000)
   }
 
-  // Manual previous / next.
   const spin = (dir) => {
     if (n === 0) return
 
@@ -97,83 +93,128 @@ export default function CategorySelector({ categories, iconMap, fallbackIcon: Fa
     FaArrowRight
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-8 lg:gap-16 items-center max-w-6xl mx-auto p-4">
-      {/* Simplified construction: the wheel uses broad forged surfaces, a deep barrel, and restrained edge highlights instead of many competing details. */}
+    <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-8 lg:gap-14 items-center max-w-6xl mx-auto p-4">
+
+      {/* =========================================================
+          WHEEL
+          The wheel is deliberately built from large, readable
+          surfaces instead of many small decorative SVG layers.
+          ========================================================= */}
       <div className="flex flex-col items-center">
-        <div className="relative w-full max-w-[440px] aspect-square select-none">
-          {/* Fixed position marker */}
+
+        <div className="relative w-full max-w-[460px] aspect-square select-none">
+
+          {/* Top orientation marker */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1 z-30 flex flex-col items-center pointer-events-none">
-            <div className="w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[12px] border-t-[var(--color-gold)]" />
-            <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-ignition)] ring-2 ring-[var(--color-paper)] mt-1" />
+            <div className="w-0 h-0 border-l-[7px] border-l-transparent border-r-[7px] border-r-transparent border-t-[11px] border-t-[var(--color-gold)]" />
+            <div className="w-px h-3 bg-[var(--color-gold)]/60" />
           </div>
 
-          {/* Static brake assembly behind the wheel */}
+          {/* =====================================================
+              BRAKE / ROTOR
+              Darker than the alloy face so the wheel has depth.
+              ===================================================== */}
           <div className="absolute inset-0 z-0 p-7 sm:p-8">
+
             <svg
               viewBox="0 0 500 500"
               className="w-full h-full"
               aria-hidden="true"
             >
               <defs>
-                <radialGradient id="categoryRotorMetal" cx="35%" cy="30%" r="75%">
-                  <stop offset="0%" stopColor="var(--color-steel)" />
-                  <stop offset="55%" stopColor="var(--color-slate)" />
-                  <stop offset="100%" stopColor="var(--color-ink)" />
+                <radialGradient
+                  id="rotorMetal"
+                  cx="35%"
+                  cy="30%"
+                  r="75%"
+                >
+                  <stop
+                    offset="0%"
+                    stopColor="var(--color-steel)"
+                  />
+                  <stop
+                    offset="60%"
+                    stopColor="var(--color-slate)"
+                  />
+                  <stop
+                    offset="100%"
+                    stopColor="var(--color-ink)"
+                  />
                 </radialGradient>
 
-                <linearGradient id="categoryCaliper" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="var(--color-blueprint-light)" />
-                  <stop offset="55%" stopColor="var(--color-blueprint)" />
-                  <stop offset="100%" stopColor="var(--color-ink)" />
+                <linearGradient
+                  id="caliperMetal"
+                  x1="0%"
+                  y1="0%"
+                  x2="100%"
+                  y2="100%"
+                >
+                  <stop
+                    offset="0%"
+                    stopColor="var(--color-blueprint-light)"
+                  />
+                  <stop
+                    offset="60%"
+                    stopColor="var(--color-blueprint)"
+                  />
+                  <stop
+                    offset="100%"
+                    stopColor="var(--color-ink)"
+                  />
                 </linearGradient>
               </defs>
 
               <circle
                 cx="250"
                 cy="250"
-                r="174"
-                fill="url(#categoryRotorMetal)"
+                r="176"
+                fill="url(#rotorMetal)"
+              />
+
+              <circle
+                cx="250"
+                cy="250"
+                r="151"
+                fill="none"
+                stroke="var(--color-ink)"
+                strokeWidth="18"
                 opacity="0.72"
               />
 
               <circle
                 cx="250"
                 cy="250"
-                r="153"
+                r="132"
                 fill="none"
                 stroke="var(--color-paper)"
                 strokeWidth="1"
                 opacity="0.12"
               />
 
-              <circle
-                cx="250"
-                cy="250"
-                r="126"
-                fill="none"
-                stroke="var(--color-ink)"
-                strokeWidth="14"
-                opacity="0.5"
+              <path
+                d="M366 126
+                   C398 151 411 194 408 237
+                   C406 270 394 296 373 312
+                   L345 287
+                   C359 259 363 226 356 193
+                   C351 167 340 148 326 136 Z"
+                fill="url(#caliperMetal)"
               />
 
               <path
-                d="M365 126 C397 150 411 194 408 239 C406 271 394 294 373 309 L344 286 C359 259 363 226 356 192 C351 166 340 148 326 136 Z"
-                fill="url(#categoryCaliper)"
-                opacity="0.95"
-              />
-
-              <path
-                d="M359 163 C371 184 376 210 374 237"
+                d="M359 164 C372 187 376 213 373 238"
                 fill="none"
                 stroke="var(--color-gold)"
                 strokeWidth="3"
                 strokeLinecap="round"
-                opacity="0.85"
               />
             </svg>
           </div>
 
-          {/* Rotating forged wheel */}
+          {/* =====================================================
+              ALLOY WHEEL
+              Light machined face against dark tire/background.
+              ===================================================== */}
           <motion.div
             animate={{ rotate: rotation }}
             transition={SPRING}
@@ -186,47 +227,96 @@ export default function CategorySelector({ categories, iconMap, fallbackIcon: Fa
               aria-hidden="true"
             >
               <defs>
-                <radialGradient id="categoryTire" cx="38%" cy="32%" r="78%">
-                  <stop offset="0%" stopColor="var(--color-slate)" />
-                  <stop offset="58%" stopColor="var(--color-ink)" />
-                  <stop offset="100%" stopColor="var(--color-ink)" />
+
+                {/* Bright alloy surface */}
+                <radialGradient
+                  id="alloyFace"
+                  cx="34%"
+                  cy="24%"
+                  r="82%"
+                >
+                  <stop
+                    offset="0%"
+                    stopColor="var(--color-paper)"
+                  />
+                  <stop
+                    offset="34%"
+                    stopColor="var(--color-steel)"
+                  />
+                  <stop
+                    offset="67%"
+                    stopColor="var(--color-steel)"
+                  />
+                  <stop
+                    offset="86%"
+                    stopColor="var(--color-slate)"
+                  />
+                  <stop
+                    offset="100%"
+                    stopColor="var(--color-ink)"
+                  />
                 </radialGradient>
 
-                <radialGradient id="categoryRimFace" cx="34%" cy="28%" r="78%">
-                  <stop offset="0%" stopColor="var(--color-paper)" />
-                  <stop offset="28%" stopColor="var(--color-steel)" />
-                  <stop offset="62%" stopColor="var(--color-slate)" />
-                  <stop offset="88%" stopColor="var(--color-ink)" />
-                  <stop offset="100%" stopColor="var(--color-ink)" />
-                </radialGradient>
-
-                <linearGradient id="categorySpokeLight" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="var(--color-paper)" />
-                  <stop offset="42%" stopColor="var(--color-steel)" />
-                  <stop offset="100%" stopColor="var(--color-slate)" />
+                <linearGradient
+                  id="alloySpoke"
+                  x1="15%"
+                  y1="5%"
+                  x2="90%"
+                  y2="95%"
+                >
+                  <stop
+                    offset="0%"
+                    stopColor="var(--color-paper)"
+                  />
+                  <stop
+                    offset="30%"
+                    stopColor="var(--color-steel)"
+                  />
+                  <stop
+                    offset="72%"
+                    stopColor="var(--color-steel)"
+                  />
+                  <stop
+                    offset="100%"
+                    stopColor="var(--color-slate)"
+                  />
                 </linearGradient>
 
-                <linearGradient id="categorySpokeDark" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="var(--color-slate)" />
-                  <stop offset="55%" stopColor="var(--color-ink)" />
-                  <stop offset="100%" stopColor="var(--color-ink)" />
-                </linearGradient>
-
-                <radialGradient id="categoryHub" cx="32%" cy="25%" r="80%">
-                  <stop offset="0%" stopColor="var(--color-steel)" />
-                  <stop offset="55%" stopColor="var(--color-slate)" />
-                  <stop offset="100%" stopColor="var(--color-ink)" />
+                <radialGradient
+                  id="alloyHub"
+                  cx="30%"
+                  cy="25%"
+                  r="80%"
+                >
+                  <stop
+                    offset="0%"
+                    stopColor="var(--color-paper)"
+                  />
+                  <stop
+                    offset="42%"
+                    stopColor="var(--color-steel)"
+                  />
+                  <stop
+                    offset="75%"
+                    stopColor="var(--color-slate)"
+                  />
+                  <stop
+                    offset="100%"
+                    stopColor="var(--color-ink)"
+                  />
                 </radialGradient>
               </defs>
 
-              {/* Tire: broad, quiet sidewall with only a few structural rings. */}
+              {/* =================================================
+                  TIRE
+                  ================================================= */}
               <circle
                 cx="250"
                 cy="250"
                 r="239"
-                fill="url(#categoryTire)"
-                stroke="var(--color-ink)"
-                strokeWidth="4"
+                fill="var(--color-ink)"
+                stroke="var(--color-slate)"
+                strokeWidth="5"
               />
 
               <circle
@@ -234,123 +324,133 @@ export default function CategorySelector({ categories, iconMap, fallbackIcon: Fa
                 cy="250"
                 r="226"
                 fill="none"
-                stroke="var(--color-slate)"
-                strokeWidth="1"
-                opacity="0.45"
-              />
-
-              <circle
-                cx="250"
-                cy="250"
-                r="214"
-                fill="none"
                 stroke="var(--color-paper)"
-                strokeWidth="1"
-                opacity="0.08"
+                strokeWidth="2"
+                opacity="0.12"
               />
 
-              {/* Subtle directional shoulder blocks. */}
+              {/* Very restrained shoulder markings */}
               {Array.from({ length: 16 }).map((_, i) => (
                 <path
                   key={`shoulder-${i}`}
                   d="M250 16 L258 34 L252 48 L244 32 Z"
                   fill="var(--color-slate)"
-                  opacity="0.28"
+                  opacity="0.24"
                   transform={`rotate(${i * 22.5} 250 250)`}
                 />
               ))}
 
-              {/* Main forged rim barrel. */}
+              {/* =================================================
+                  OUTER ALLOY LIP
+                  ================================================= */}
               <circle
                 cx="250"
                 cy="250"
-                r="198"
-                fill="url(#categoryRimFace)"
-                stroke="var(--color-steel)"
-                strokeWidth="2"
-              />
-
-              <circle
-                cx="250"
-                cy="250"
-                r="190"
-                fill="none"
+                r="207"
+                fill="url(#alloyFace)"
                 stroke="var(--color-paper)"
-                strokeWidth="2"
-                opacity="0.35"
-              />
-
-              <circle
-                cx="250"
-                cy="250"
-                r="178"
-                fill="var(--color-ink)"
-                stroke="var(--color-slate)"
                 strokeWidth="3"
               />
 
-              {/* Six broad split spokes create the premium forged-wheel silhouette. */}
+              <circle
+                cx="250"
+                cy="250"
+                r="194"
+                fill="none"
+                stroke="var(--color-slate)"
+                strokeWidth="5"
+              />
+
+              {/* Deep inner barrel */}
+              <circle
+                cx="250"
+                cy="250"
+                r="181"
+                fill="var(--color-ink)"
+              />
+
+              {/* =================================================
+                  SIX FORGED SPOKES
+                  ================================================= */}
               {Array.from({ length: 6 }).map((_, i) => {
                 const angle = i * 60
 
                 return (
-                  <g key={`spoke-${i}`} transform={`rotate(${angle} 250 250)`}>
+                  <g
+                    key={`spoke-${i}`}
+                    transform={`rotate(${angle} 250 250)`}
+                  >
+                    {/* Recessed channel */}
                     <path
-                      d="M239 250 L221 108 Q250 91 279 108 L261 250 Z"
-                      fill="url(#categorySpokeDark)"
-                      stroke="var(--color-ink)"
-                      strokeWidth="3"
+                      d="M236 250
+                         L216 112
+                         Q250 91 284 112
+                         L264 250 Z"
+                      fill="var(--color-ink)"
                     />
 
+                    {/* Main alloy spoke */}
                     <path
-                      d="M244 250 L232 112 Q250 103 267 112 L255 250 Z"
-                      fill="url(#categorySpokeLight)"
-                      opacity="0.95"
+                      d="M243 250
+                         L229 113
+                         Q250 102 271 113
+                         L257 250 Z"
+                      fill="url(#alloySpoke)"
+                      stroke="var(--color-paper)"
+                      strokeWidth="1"
                     />
 
+                    {/* Machined highlight */}
                     <path
-                      d="M248 250 L242 116"
+                      d="M244 246 L234 116"
                       fill="none"
                       stroke="var(--color-paper)"
-                      strokeWidth="2"
-                      opacity="0.38"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      opacity="0.65"
                     />
 
+                    {/* Recessed edge */}
                     <path
-                      d="M258 250 L270 116"
+                      d="M257 248 L270 116"
                       fill="none"
-                      stroke="var(--color-ink)"
-                      strokeWidth="5"
-                      opacity="0.6"
+                      stroke="var(--color-slate)"
+                      strokeWidth="6"
+                      strokeLinecap="round"
+                      opacity="0.9"
                     />
                   </g>
                 )
               })}
 
-              {/* Deep center pocket. */}
+              {/* =================================================
+                  CENTER WELL
+                  ================================================= */}
               <circle
                 cx="250"
                 cy="250"
-                r="76"
+                r="78"
                 fill="var(--color-ink)"
                 stroke="var(--color-slate)"
-                strokeWidth="3"
+                strokeWidth="4"
               />
 
               <circle
                 cx="250"
                 cy="250"
-                r="65"
-                fill="url(#categoryHub)"
-                stroke="var(--color-steel)"
+                r="67"
+                fill="url(#alloyHub)"
+                stroke="var(--color-paper)"
                 strokeWidth="2"
               />
 
-              {/* Five restrained lug details. */}
+              {/* Five lug nuts */}
               {Array.from({ length: 5 }).map((_, i) => {
-                const angle = (i * 72 * Math.PI) / 180 - Math.PI / 2
-                const lx = 250 + 40 * Math.cos(angle)
-                const ly = 250 + 40 * Math.sin(angle)
+                const angle =
+                  (i * 72 * Math.PI) / 180 - Math.PI / 2
+
+                const lx = 250 + 41 * Math.cos(angle)
+                const ly = 250 + 41 * Math.sin(angle)
 
                 return (
                   <g key={`lug-${i}`}>
@@ -359,21 +459,21 @@ export default function CategorySelector({ categories, iconMap, fallbackIcon: Fa
                       cy={ly}
                       r="8"
                       fill="var(--color-ink)"
-                      stroke="var(--color-slate)"
-                      strokeWidth="1.5"
+                      stroke="var(--color-steel)"
+                      strokeWidth="2"
                     />
 
                     <circle
                       cx={lx}
                       cy={ly}
                       r="4"
-                      fill="var(--color-steel)"
+                      fill="var(--color-paper)"
                     />
                   </g>
                 )
               })}
 
-              {/* Minimal premium center badge. */}
+              {/* Premium center cap */}
               <circle
                 cx="250"
                 cy="250"
@@ -386,22 +486,28 @@ export default function CategorySelector({ categories, iconMap, fallbackIcon: Fa
               <circle
                 cx="250"
                 cy="250"
-                r="21"
+                r="20"
                 fill="var(--color-blueprint)"
-                stroke="var(--color-steel)"
-                strokeWidth="1"
               />
 
               <path
-                d="M242 256 L250 239 L258 256 L250 252 Z"
+                d="M241 256
+                   L250 238
+                   L259 256
+                   L250 252 Z"
                 fill="var(--color-paper)"
               />
             </svg>
 
-            {/* Category icons retain their original rotation positioning and counter-rotation behavior. */}
+            {/* =================================================
+                CATEGORY ICONS
+                The positioning and counter-rotation behavior
+                remain tied to the existing wheel rotation.
+                ================================================= */}
             {categories.map((cat, i) => {
               const itemAngle = i * segmentAngle - 90
               const rad = (itemAngle * Math.PI) / 180
+
               const radiusPct = 34
               const xPct = 50 + radiusPct * Math.cos(rad)
               const yPct = 50 + radiusPct * Math.sin(rad)
@@ -416,7 +522,10 @@ export default function CategorySelector({ categories, iconMap, fallbackIcon: Fa
               return (
                 <div
                   key={cat.id || `cat-${i}`}
-                  style={{ left: `${xPct}%`, top: `${yPct}%` }}
+                  style={{
+                    left: `${xPct}%`,
+                    top: `${yPct}%`,
+                  }}
                   className="absolute -translate-x-1/2 -translate-y-1/2 z-20"
                 >
                   <button
@@ -426,17 +535,24 @@ export default function CategorySelector({ categories, iconMap, fallbackIcon: Fa
                     }}
                     className="group relative flex items-center justify-center focus:outline-none"
                     title={cat.name}
+                    aria-label={`Select ${cat.name}`}
                   >
                     <motion.div
                       animate={{ rotate: -rotation }}
                       transition={SPRING}
-                      className={`flex items-center justify-center rounded-full transition-all duration-300 ${
+                      className={
                         isActive
-                          ? 'w-14 h-14 bg-[var(--color-blueprint)] text-[var(--color-paper)] border-2 border-[var(--color-gold)] shadow-lg scale-110'
-                          : 'w-10 h-10 bg-[var(--color-ink)] text-[var(--color-steel)] border border-[var(--color-slate)]/60 hover:border-[var(--color-gold)] hover:text-[var(--color-paper)] hover:scale-105'
-                      }`}
+                          ? 'flex items-center justify-center w-14 h-14 rounded-full bg-[var(--color-blueprint)] text-[var(--color-paper)] border-2 border-[var(--color-gold)] shadow-lg scale-110 transition-all duration-300'
+                          : 'flex items-center justify-center w-10 h-10 rounded-full bg-[var(--color-ink)] text-[var(--color-steel)] border border-[var(--color-slate)]/60 hover:border-[var(--color-gold)] hover:text-[var(--color-paper)] hover:scale-105 transition-all duration-300'
+                      }
                     >
-                      <Icon className={isActive ? 'text-lg' : 'text-sm'} />
+                      <Icon
+                        className={
+                          isActive
+                            ? 'text-lg'
+                            : 'text-sm'
+                        }
+                      />
                     </motion.div>
 
                     {isActive && (
@@ -449,8 +565,11 @@ export default function CategorySelector({ categories, iconMap, fallbackIcon: Fa
           </motion.div>
         </div>
 
-        {/* Rotation controls */}
+        {/* =====================================================
+            WHEEL CONTROLS
+            ===================================================== */}
         <div className="flex items-center gap-4 mt-5 z-20">
+
           <button
             onClick={() => {
               pauseAutoplay()
@@ -462,10 +581,10 @@ export default function CategorySelector({ categories, iconMap, fallbackIcon: Fa
             <FaChevronLeft size={12} />
           </button>
 
-          <div className="flex items-center gap-3 px-4 py-2 rounded-full bg-[var(--color-ink)] border border-[var(--color-slate)]/40">
+          <div className="flex items-center gap-3 px-4 py-2 rounded-full bg-[var(--color-paper)] border border-[var(--color-steel)]">
             <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-gold)]" />
 
-            <span className="font-mono text-[10px] tracking-[0.22em] text-[var(--color-slate)] uppercase">
+            <span className="font-mono text-[10px] tracking-[0.22em] text-[var(--color-ink)] uppercase">
               Select Category
             </span>
           </div>
@@ -480,21 +599,24 @@ export default function CategorySelector({ categories, iconMap, fallbackIcon: Fa
           >
             <FaChevronRight size={12} />
           </button>
+
         </div>
       </div>
 
-      {/* Category detail panel */}
-      <div className="relative overflow-hidden bg-[var(--color-ink)] border border-[var(--color-slate)]/40 rounded-2xl p-7 sm:p-8 lg:p-10 shadow-2xl">
-        {/* Thin technical frame keeps the panel premium without competing with the wheel. */}
-        <span className="absolute top-0 left-8 right-8 h-px bg-[var(--color-gold)]/50" />
-        <span className="absolute bottom-0 left-8 right-8 h-px bg-[var(--color-slate)]/40" />
+      {/* =========================================================
+          CATEGORY INFORMATION
+          ========================================================= */}
+      <div className="relative overflow-hidden bg-[var(--color-paper)] border border-[var(--color-steel)] rounded-2xl p-7 sm:p-8 lg:p-10 shadow-xl">
+
+        {/* Small architectural corner details instead of generic UI labels. */}
+        <span className="absolute top-0 left-8 right-8 h-px bg-[var(--color-gold)]/60" />
 
         <span className="absolute top-5 left-5 w-3 h-3 border-t border-l border-[var(--color-gold)]/70" />
         <span className="absolute top-5 right-5 w-3 h-3 border-t border-r border-[var(--color-gold)]/70" />
         <span className="absolute bottom-5 left-5 w-3 h-3 border-b border-l border-[var(--color-gold)]/70" />
         <span className="absolute bottom-5 right-5 w-3 h-3 border-b border-r border-[var(--color-gold)]/70" />
 
-        <div className="absolute top-0 right-0 w-32 h-32 border-l border-b border-[var(--color-blueprint)]/20 pointer-events-none" />
+        <div className="absolute right-0 top-0 w-36 h-36 border-l border-b border-[var(--color-blueprint)]/10 pointer-events-none" />
 
         <AnimatePresence mode="wait">
           <motion.div
@@ -505,29 +627,33 @@ export default function CategorySelector({ categories, iconMap, fallbackIcon: Fa
             transition={{ duration: 0.25 }}
             className="flex flex-col items-start"
           >
+
+            {/* Category identity */}
             <div className="flex items-center gap-4 mb-7">
+
               <div className="h-14 w-14 rounded-xl bg-[var(--color-blueprint)] border border-[var(--color-gold)]/50 flex items-center justify-center">
                 <ActiveIcon className="text-[var(--color-paper)] text-xl" />
               </div>
 
               <div>
                 <span className="font-mono text-[10px] tracking-[0.2em] text-[var(--color-gold)] uppercase block mb-1">
-                  SYSTEM SPEC // {String(activeIdx + 1).padStart(2, '0')} OF {String(n).padStart(2, '0')}
+                  FITMENT CATEGORY
                 </span>
 
                 <span className="font-mono text-[10px] tracking-widest text-[var(--color-slate)] uppercase">
-                  OEM Part Group
+                  {String(activeIdx + 1).padStart(2, '0')} · {String(n).padStart(2, '0')}
                 </span>
               </div>
+
             </div>
 
             <div className="w-10 h-px bg-[var(--color-gold)] mb-5" />
 
-            <h3 className="font-display font-bold text-3xl lg:text-4xl text-[var(--color-paper)] tracking-tight mb-4">
+            <h3 className="font-display font-bold text-3xl lg:text-4xl text-[var(--color-ink)] tracking-tight mb-4">
               {active.name}
             </h3>
 
-            <p className="font-body text-sm text-[var(--color-steel)] opacity-80 leading-relaxed mb-8 max-w-lg">
+            <p className="font-body text-sm text-[var(--color-slate)] leading-relaxed mb-8 max-w-lg">
               Explore wholesale inventory, assemblies, and high-performance replacement components engineered for {active.name.toLowerCase()}.
             </p>
 
@@ -536,14 +662,17 @@ export default function CategorySelector({ categories, iconMap, fallbackIcon: Fa
               className="inline-flex items-center gap-3 bg-[var(--color-ignition)] text-[var(--color-paper)] font-mono text-xs font-semibold uppercase tracking-wider px-6 py-3.5 rounded-lg hover:brightness-110 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 group"
             >
               <span>Browse {active.name}</span>
+
               <FaArrowRight
                 size={12}
                 className="group-hover:translate-x-1 transition-transform"
               />
             </Link>
+
           </motion.div>
         </AnimatePresence>
       </div>
+
     </div>
   )
 }
