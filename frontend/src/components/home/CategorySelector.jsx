@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { FaArrowRight, FaChevronLeft, FaChevronRight } from 'react-icons/fa'
@@ -8,15 +8,42 @@ const SPRING = { type: 'spring', stiffness: 50, damping: 15, mass: 0.8 }
 export default function CategorySelector({ categories, iconMap, fallbackIcon: Fallback }) {
   const [activeIdx, setActiveIdx] = useState(0)
   const [rotation, setRotation] = useState(0)
+  const activeIdxRef = useRef(0)
+  const pausedRef = useRef(false)
+  const resumeTimeoutRef = useRef(null)
 
   if (!categories || categories.length === 0) {
     return <p className="font-body text-[var(--color-slate)] text-sm">No categories available.</p>
   }
 
-  const n = categories.length
+    const n = categories.length
   const segmentAngle = 360 / n
   const active = categories[activeIdx] || categories[0]
   const ActiveIcon = (iconMap && iconMap[active.name]) || Fallback || FaArrowRight
+
+  useEffect(() => {
+    activeIdxRef.current = activeIdx
+  }, [activeIdx])
+
+  // Auto-advance every 4s, pausing for a bit whenever the person interacts manually.
+  useEffect(() => {
+    if (n <= 1) return
+    const interval = setInterval(() => {
+      if (pausedRef.current) return
+      const next = (activeIdxRef.current + 1) % n
+      selectIndex(next)
+    }, 4000)
+    return () => clearInterval(interval)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [n])
+
+  const pauseAutoplay = () => {
+    pausedRef.current = true
+    if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current)
+    resumeTimeoutRef.current = setTimeout(() => {
+      pausedRef.current = false
+    }, 6000)
+  }
 
   // Smooth shortest-path rotation calculation
   const selectIndex = (i) => {
@@ -278,8 +305,8 @@ export default function CategorySelector({ categories, iconMap, fallbackIcon: Fa
                   style={{ left: `${xPct}%`, top: `${yPct}%` }}
                   className="absolute -translate-x-1/2 -translate-y-1/2 z-20"
                 >
-                  <button
-                    onClick={() => selectIndex(i)}
+                                                     <button
+                    onClick={() => { pauseAutoplay(); selectIndex(i) }}
                     className="group relative flex items-center justify-center focus:outline-none"
                     title={cat.name}
                   >
@@ -309,8 +336,8 @@ export default function CategorySelector({ categories, iconMap, fallbackIcon: Fa
 
         {/* ROTATION CONTROLS */}
         <div className="flex items-center gap-5 mt-4 z-20">
-          <button
-            onClick={() => spin(-1)}
+                    <button
+            onClick={() => { pauseAutoplay(); spin(-1) }}
             className="h-10 w-10 rounded-full bg-[var(--color-paper)]/5 border border-[var(--color-slate)]/30 text-[var(--color-steel)] hover:text-[var(--color-gold)] hover:border-[var(--color-gold)] transition-all flex items-center justify-center active:scale-95 shadow-xs"
             aria-label="Previous Category"
           >
@@ -324,8 +351,8 @@ export default function CategorySelector({ categories, iconMap, fallbackIcon: Fa
             </span>
           </div>
 
-          <button
-            onClick={() => spin(1)}
+                    <button
+            onClick={() => { pauseAutoplay(); spin(1) }}
             className="h-10 w-10 rounded-full bg-[var(--color-paper)]/5 border border-[var(--color-slate)]/30 text-[var(--color-steel)] hover:text-[var(--color-gold)] hover:border-[var(--color-gold)] transition-all flex items-center justify-center active:scale-95 shadow-xs"
             aria-label="Next Category"
           >
